@@ -3,7 +3,7 @@
    ============================================================ */
 
 const API_URL =
-"https://script.google.com/macros/s/AKfycbwbZ_KSjyTTDM2iONJC87-jgVZysubMfKChDxDs8l1RKJgjUJ6Q2_7oA_RhuDna39Ra/exec?action=getvehiclesdata";
+    "https://script.google.com/macros/s/AKfycbwbZ_KSjyTTDM2iONJC87-jgVZysubMfKChDxDs8l1RKJgjUJ6Q2_7oA_RhuDna39Ra/exec?action=getvehiclesdata";
 
 /* ============================================================
    MAIN LOADER
@@ -14,16 +14,43 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 /* ============================================================
+   SPINNER CONTROLS
+   ============================================================ */
+
+function showSpinner() {
+    const spinner = document.getElementById("loading-spinner");
+    if (spinner) {
+        spinner.style.display = "flex";
+        spinner.style.opacity = "1";
+    }
+}
+
+function hideSpinner() {
+    const spinner = document.getElementById("loading-spinner");
+    if (spinner) {
+        spinner.style.opacity = "0";
+        setTimeout(() => {
+            spinner.style.display = "none";
+        }, 300);
+    }
+}
+
+/* ============================================================
    FETCH VEHICLES DATA
    ============================================================ */
 
 async function loadVehiclesData() {
+    showSpinner();
     try {
         const response = await fetch(API_URL);
         const data = await response.json();
 
-        const trucks = Array.isArray(data.trucks) ? data.trucks : [];
-        const tanktrailers = Array.isArray(data.tanktrailers) ? data.tanktrailers : [];
+        let trucks = Array.isArray(data.trucks) ? data.trucks : [];
+        let tanktrailers = Array.isArray(data.tanktrailers) ? data.tanktrailers : [];
+
+        // ⭐ SORTOWANIE ADR — obowiązuje wszędzie
+        trucks = sortVehiclesByADR(trucks);
+        tanktrailers = sortVehiclesByADR(tanktrailers);
 
         // SEKCJA 1 — overview tiles
         updateCounters(trucks, tanktrailers);
@@ -45,9 +72,34 @@ async function loadVehiclesData() {
     } catch (err) {
         console.error("API ERROR:", err);
         showErrorState();
+    } finally {
+        hideSpinner();
     }
 }
 
+/* ============================================================
+   GLOBAL SORTING FUNCTION — ADR ASCENDING + NO ADR LAST
+   ============================================================ */
+
+function sortVehiclesByADR(arr) {
+    const withDate = [];
+    const withoutDate = [];
+
+    arr.forEach(v => {
+        const adrRaw = v["ADR VALID"];
+        const adrDate = parseDate(adrRaw);
+
+        if (adrDate && !isNaN(adrDate.getTime())) {
+            withDate.push({ ...v, __adrDate: adrDate });
+        } else {
+            withoutDate.push({ ...v, __adrDate: null });
+        }
+    });
+
+    withDate.sort((a, b) => a.__adrDate - b.__adrDate);
+
+    return [...withDate, ...withoutDate];
+}
 
 /* ============================================================
    SEKCJA 1 — VEHICLES OVERVIEW (kafle)
@@ -81,7 +133,6 @@ function updateADRStatus(trucks, tanktrailers) {
 
     [...trucks, ...tanktrailers].forEach((item) => {
 
-        // NAZWY KOLUMN — zgodne z Twoim arkuszem
         const adr = item["ADR VALID"];
         const plates = item["PLATES"] || item["REG"] || "UNKNOWN";
         const internal = item["INTERNAL NR."] || "—";
@@ -222,7 +273,6 @@ function fmtDate(d) {
     });
 }
 
-
 /* ============================================================
    SEKCJA 2 — DODATKOWE KAFELKI (ADR DOCUMENT MISSING + ALERTS)
    ============================================================ */
@@ -247,7 +297,6 @@ function updateADRExtraCounters(trucks, tanktrailers) {
         alertsEl.style.color = "#0f9d58";
     }
 }
-
 
 /* ============================================================
    SEKCJA 3 — ADR REMINDER CENTER (FINAL FIXED)
@@ -303,7 +352,6 @@ function renderADRReminderCenter(trucks, tanktrailers) {
 
         const diff = daysBetween(today, adrDate);
 
-        // ⭐ IDENTYCZNA LOGIKA JAK TELEGRAM
         if (diff < 0) {
             addVehicleReminder(item, "EXPIRED", diff);
         } else if (diff <= 7) {
@@ -311,8 +359,6 @@ function renderADRReminderCenter(trucks, tanktrailers) {
         } else if (diff <= 21) {
             addVehicleReminder(item, "21 DAYS", diff);
         }
-
-        // ⭐ wszystko powyżej 21 dni NIE trafia do sekcji 3
     });
 
     const sorted = [
@@ -362,8 +408,13 @@ function renderADRReminderCenter(trucks, tanktrailers) {
    ============================================================ */
 
 function renderADRFleetGrids(trucks, tanktrailers) {
-    renderFleetColumn("adr-trucks-list", "adr-trucks-count", trucks, "TRUCK");
-    renderFleetColumn("adr-trailers-list", "adr-trailers-count", tanktrailers, "TRAILER");
+
+    // ⭐ SORTOWANIE ADR — obowiązuje również tutaj
+    const sortedTrucks = sortVehiclesByADR(trucks);
+    const sortedTrailers = sortVehiclesByADR(tanktrailers);
+
+    renderFleetColumn("adr-trucks-list", "adr-trucks-count", sortedTrucks, "TRUCK");
+    renderFleetColumn("adr-trailers-list", "adr-trailers-count", sortedTrailers, "TRAILER");
 }
 
 function renderFleetColumn(listId, counterId, vehicles, typeLabel) {
@@ -379,7 +430,6 @@ function renderFleetColumn(listId, counterId, vehicles, typeLabel) {
 
     vehicles.forEach((v) => {
 
-        // NAZWY KOLUMN — zgodne z Twoim arkuszem
         const plates = v["PLATES"] || v["REG"] || "UNKNOWN";
         const internal = v["INTERNAL NR."] || "—";
         const model = v["MODEL"] || v["TYPE"] || "—";
@@ -465,6 +515,7 @@ function renderFleetColumn(listId, counterId, vehicles, typeLabel) {
         listEl.appendChild(card);
     });
 }
+
 /* ============================================================
    ERROR STATE — clean fallback
    ============================================================ */
@@ -499,6 +550,167 @@ function safeGet(obj, key, fallback = "—") {
 
 function safeNumber(n, fallback = 0) {
     return typeof n === "number" && !isNaN(n) ? n : fallback;
+}
+
+/* ============================================================
+   SEKCJA 5 — ALL VEHICLES (TWO COLUMNS, PREMIUM VERSION)
+   ============================================================ */
+
+function renderAllVehicles(trucks, tanktrailers) {
+
+    // ⭐ SORTOWANIE ADR — obowiązuje również tutaj
+    const sortedTrucks = sortVehiclesByADR(trucks);
+    const sortedTrailers = sortVehiclesByADR(tanktrailers);
+
+    const trucksEl = document.getElementById("adr-all-trucks-list");
+    const trailersEl = document.getElementById("adr-all-trailers-list");
+
+    if (!trucksEl || !trailersEl) return;
+
+    trucksEl.innerHTML = "";
+    trailersEl.innerHTML = "";
+
+    sortedTrucks.forEach(v => renderAllRow(v, trucksEl));
+    sortedTrailers.forEach(v => renderAllRow(v, trailersEl));
+}
+
+function renderAllRow(v, container) {
+    const plates = v["PLATES"] || v["REG"] || "UNKNOWN";
+    const internal = v["INTERNAL NR."] || "—";
+    const model = v["MODEL"] || v["TYPE"] || "—";
+
+    const adrRaw =
+        v["ADR VALID"] ||
+        v["ADR"] ||
+        v["ADR_VALID"] ||
+        v["ADR DATE"] ||
+        v["ADR_VALID_DATE"] ||
+        v["ADR EXPIRATION"] ||
+        "—";
+
+    const adrDate = parseDate(adrRaw);
+    const adrText = adrDate ? fmtDate(adrDate) : "—";
+
+    const row = document.createElement("div");
+    row.className = "adr-all-row";
+    row.setAttribute("data-plate", plates);
+    row.setAttribute("data-internal", internal);
+
+    row.innerHTML = `
+        <span>${plates}</span>
+        <span>${internal}</span>
+        <span>${model}</span>
+
+        <span class="adr-all-adr-cell">
+            <span class="adr-all-adr-icon">
+                <svg viewBox="0 0 32 32" class="adr-svg-icon">
+                    <rect x="4" y="4" width="24" height="24" rx="6"
+                          stroke="#ff2a6d" stroke-width="2.5" fill="none"/>
+                    <text x="16" y="20" text-anchor="middle"
+                          font-size="10" font-weight="700"
+                          fill="#ff2a6d">ADR</text>
+                </svg>
+            </span>
+
+            <span class="adr-all-adr-text">${adrText}</span>
+        </span>
+    `;
+
+    container.appendChild(row);
+}
+
+/* ============================================================
+   PREMIUM SEARCH — SEKCJA 5 (identyczna jak sekcja 4)
+   ============================================================ */
+
+function initAllVehiclesSearch(trucks, tanktrailers) {
+
+    const input = document.getElementById("adr-search-input-all");
+    const suggestionsEl = document.getElementById("adr-search-suggestions-all");
+
+    const trucksEl = document.getElementById("adr-all-trucks-list");
+    const trailersEl = document.getElementById("adr-all-trailers-list");
+
+    if (!input || !suggestionsEl || !trucksEl || !trailersEl) return;
+
+    const index = [...trucks, ...tanktrailers].map(v => ({
+        plates: v["PLATES"] || v["REG"] || "",
+        internal: v["INTERNAL NR."] || "",
+        model: v["MODEL"] || v["TYPE"] || "",
+        isTruck: trucks.includes(v)
+    }));
+
+    function clearSuggestions() {
+        suggestionsEl.innerHTML = "";
+        suggestionsEl.classList.remove("adr-search-suggestions-visible");
+    }
+
+    function clearHighlight() {
+        document.querySelectorAll(".adr-all-highlight")
+            .forEach(el => el.classList.remove("adr-all-highlight"));
+    }
+
+    function scrollToRow(match) {
+        clearHighlight();
+
+        const selector = `.adr-all-row[data-plate="${CSS.escape(match.plates)}"][data-internal="${CSS.escape(match.internal)}"]`;
+        const row = document.querySelector(selector);
+
+        if (!row) return;
+
+        row.classList.add("adr-all-highlight");
+        row.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+
+    input.addEventListener("input", () => {
+        const q = input.value.trim().toLowerCase();
+        clearSuggestions();
+        clearHighlight();
+
+        if (!q) return;
+
+        const matches = index
+            .filter(item => {
+                const haystack = (item.plates + " " + item.internal + " " + item.model).toLowerCase();
+                return haystack.includes(q);
+            })
+            .slice(0, 8);
+
+        if (!matches.length) return;
+
+        matches.forEach(m => {
+            const row = document.createElement("div");
+            row.className = "adr-search-suggestion-item";
+
+            row.innerHTML = `
+                <span class="adr-search-suggestion-type">${m.isTruck ? "TRUCK" : "TRAILER"}</span>
+                <span class="adr-search-suggestion-main">${m.plates}</span>
+                <span class="adr-search-suggestion-sub">${m.internal} · ${m.model}</span>
+            `;
+
+            row.addEventListener("click", e => {
+                e.stopPropagation();
+                scrollToRow(m);
+                clearSuggestions();
+            });
+
+            suggestionsEl.appendChild(row);
+        });
+
+        suggestionsEl.classList.add("adr-search-suggestions-visible");
+    });
+
+    document.addEventListener("click", e => {
+        if (
+            e.target === input ||
+            e.target.closest(".adr-search-inner") ||
+            e.target.closest(".adr-search-suggestions")
+        ) return;
+
+        input.value = "";
+        clearSuggestions();
+        clearHighlight();
+    });
 }
 
 /* ============================================================
@@ -628,7 +840,6 @@ function initADRSearch(trucks, tanktrailers) {
         suggestionsEl.classList.add("adr-search-suggestions-visible");
     });
 
-    // kliknięcie poza — reset
     document.addEventListener("click", (e) => {
         if (
             e.target === input ||
@@ -638,17 +849,9 @@ function initADRSearch(trucks, tanktrailers) {
             return;
         }
 
-        // ⭐ czyści wpis
         input.value = "";
-
-        // ⭐ usuwa listę sugestii
         clearSuggestions();
-
-        // ⭐ usuwa pulsowanie / highlight
         clearHighlight();
-
-        // ❌ USUNIĘTO przewijanie do sekcji 4
-        // vehiclesCenter.scrollIntoView({ behavior: "smooth", block: "start" });
     });
 }
 
@@ -662,161 +865,3 @@ renderADRFleetGrids = function (trucks, tanktrailers) {
     _origRenderADRFleetGrids(trucks, tanktrailers);
     initADRSearch(trucks, tanktrailers);
 };
-/* ============================================================
-   SEKCJA 5 — ALL VEHICLES (TWO COLUMNS, PREMIUM VERSION)
-   ============================================================ */
-
-function renderAllVehicles(trucks, tanktrailers) {
-    const trucksEl = document.getElementById("adr-all-trucks-list");
-    const trailersEl = document.getElementById("adr-all-trailers-list");
-
-    if (!trucksEl || !trailersEl) return;
-
-    trucksEl.innerHTML = "";
-    trailersEl.innerHTML = "";
-
-    trucks.forEach(v => renderAllRow(v, trucksEl));
-    tanktrailers.forEach(v => renderAllRow(v, trailersEl));
-}
-
-function renderAllRow(v, container) {
-    const plates = v["PLATES"] || v["REG"] || "UNKNOWN";
-    const internal = v["INTERNAL NR."] || "—";
-    const model = v["MODEL"] || v["TYPE"] || "—";
-
-    // ⭐ poprawione pobieranie daty ADR (różne możliwe nazwy)
-    const adrRaw =
-        v["ADR VALID"] ||
-        v["ADR"] ||
-        v["ADR_VALID"] ||
-        v["ADR DATE"] ||
-        v["ADR_VALID_DATE"] ||
-        v["ADR EXPIRATION"] ||
-        "—";
-
-    const adrDate = parseDate(adrRaw);
-    const adrText = adrDate ? fmtDate(adrDate) : "—";
-
-    const row = document.createElement("div");
-    row.className = "adr-all-row";
-    row.setAttribute("data-plate", plates);
-    row.setAttribute("data-internal", internal);
-
-    row.innerHTML = `
-        <span>${plates}</span>
-        <span>${internal}</span>
-        <span>${model}</span>
-
-        <span class="adr-all-adr-cell">
-            <span class="adr-all-adr-icon">
-                <svg viewBox="0 0 32 32" class="adr-svg-icon">
-                    <rect x="4" y="4" width="24" height="24" rx="6"
-                          stroke="#ff2a6d" stroke-width="2.5" fill="none"/>
-                    <text x="16" y="20" text-anchor="middle"
-                          font-size="10" font-weight="700"
-                          fill="#ff2a6d">ADR</text>
-                </svg>
-            </span>
-
-            <span class="adr-all-adr-text">${adrText}</span>
-        </span>
-    `;
-
-    container.appendChild(row);
-}
-
-/* ============================================================
-   PREMIUM SEARCH — SEKCJA 5 (identyczna jak sekcja 4)
-   ============================================================ */
-
-function initAllVehiclesSearch(trucks, tanktrailers) {
-
-    const input = document.getElementById("adr-search-input-all");
-    const suggestionsEl = document.getElementById("adr-search-suggestions-all");
-
-    const trucksEl = document.getElementById("adr-all-trucks-list");
-    const trailersEl = document.getElementById("adr-all-trailers-list");
-
-    if (!input || !suggestionsEl || !trucksEl || !trailersEl) return;
-
-    // PREMIUM INDEX — identyczny jak sekcja 4
-    const index = [...trucks, ...tanktrailers].map(v => ({
-        plates: v["PLATES"] || v["REG"] || "",
-        internal: v["INTERNAL NR."] || "",
-        model: v["MODEL"] || v["TYPE"] || "",
-        isTruck: trucks.includes(v)
-    }));
-
-    function clearSuggestions() {
-        suggestionsEl.innerHTML = "";
-        suggestionsEl.classList.remove("adr-search-suggestions-visible");
-    }
-
-    function clearHighlight() {
-        document.querySelectorAll(".adr-all-highlight")
-            .forEach(el => el.classList.remove("adr-all-highlight"));
-    }
-
-    function scrollToRow(match) {
-        clearHighlight();
-
-        const selector = `.adr-all-row[data-plate="${CSS.escape(match.plates)}"][data-internal="${CSS.escape(match.internal)}"]`;
-        const row = document.querySelector(selector);
-
-        if (!row) return;
-
-        row.classList.add("adr-all-highlight");
-        row.scrollIntoView({ behavior: "smooth", block: "center" });
-    }
-
-    input.addEventListener("input", () => {
-        const q = input.value.trim().toLowerCase();
-        clearSuggestions();
-        clearHighlight();
-
-        if (!q) return;
-
-        const matches = index
-            .filter(item => {
-                const haystack = (item.plates + " " + item.internal + " " + item.model).toLowerCase();
-                return haystack.includes(q);
-            })
-            .slice(0, 8);
-
-        if (!matches.length) return;
-
-        matches.forEach(m => {
-            const row = document.createElement("div");
-            row.className = "adr-search-suggestion-item";
-
-            row.innerHTML = `
-                <span class="adr-search-suggestion-type">${m.isTruck ? "TRUCK" : "TRAILER"}</span>
-                <span class="adr-search-suggestion-main">${m.plates}</span>
-                <span class="adr-search-suggestion-sub">${m.internal} · ${m.model}</span>
-            `;
-
-            row.addEventListener("click", e => {
-                e.stopPropagation();
-                scrollToRow(m);
-                clearSuggestions();
-            });
-
-            suggestionsEl.appendChild(row);
-        });
-
-        suggestionsEl.classList.add("adr-search-suggestions-visible");
-    });
-
-    // kliknięcie poza — reset
-    document.addEventListener("click", e => {
-        if (
-            e.target === input ||
-            e.target.closest(".adr-search-inner") ||
-            e.target.closest(".adr-search-suggestions")
-        ) return;
-
-        input.value = "";
-        clearSuggestions();
-        clearHighlight();
-    });
-}

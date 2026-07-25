@@ -1,0 +1,896 @@
+/* ============================================================
+   FILES MODULE — PREMIUM LAYOUT (WERSJA ROBOCZA / JUTRO)
+   Na bazie koncepcji addresses.css, adr.css oraz base.css
+   ============================================================ */
+
+/* ============================================================
+   SEKCJA 1 — STATUS OVERVIEW (WZÓR DRIVER DOWNLOAD CENTER 3D)
+   ============================================================ */
+
+/* GŁÓWNY PANEL - EFEKT KRYSTALICZNEJ MATRYCY 3D Z POŚWIATĄ */
+.repository-panel {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    padding: 35px 30px 30px 30px;
+    border-radius: 24px;
+    margin-bottom: 25px;
+    box-sizing: border-box;
+
+    background:
+        radial-gradient(circle at 50% 40%, rgba(255, 255, 255, 0.35) 0%, transparent 70%),
+        linear-gradient(135deg, rgba(215, 220, 232, 0.5) 0%, rgba(175, 182, 202, 0.45) 100%);
+
+    backdrop-filter: blur(40px) saturate(110%);
+    -webkit-backdrop-filter: blur(40px) saturate(110%);
+
+    border-top: 2.5px solid rgba(255, 255, 255, 0.75);
+    border-left: 2.5px solid rgba(255, 255, 255, 0.45);
+    border-right: 2.5px solid rgba(0, 0, 0, 0.12);
+    border-bottom: 2.5px solid rgba(0, 0, 0, 0.22);
+
+    box-shadow:
+        0 30px 60px rgba(35, 45, 70, 0.15),
+        -15px -10px 40px rgba(255, 210, 140, 0.18),
+        -5px -5px 20px rgba(255, 160, 100, 0.12),
+        15px 15px 45px rgba(230, 80, 200, 0.15),
+        5px 10px 25px rgba(255, 75, 140, 0.12),
+        inset 2px 4px 8px rgba(255, 255, 255, 0.9),
+        inset -6px -9px 18px rgba(0, 0, 0, 0.14),
+        inset 6px 9px 18px rgba(255, 255, 255, 0.25);
+}
+
+/* GRADIENTOWY KONTUR NA OBWODZIE PANELU */
+.repository-panel::before {
+    content: "";
+    position: absolute;
+    top: -2.5px;
+    left: -2.5px;
+    right: -2.5px;
+    bottom: -2.5px;
+    border-radius: 24px;
+    padding: 2px;
+
+    background: linear-gradient(135deg,
+            rgba(255, 215, 130, 0.35) 0%,
+            rgba(255, 150, 80, 0.3) 30%,
+            rgba(230, 80, 190, 0.35) 60%,
+            rgba(255, 120, 160, 0.2) 90%,
+            transparent 100%);
+
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+
+    box-shadow:
+        inset 6px -6px 12px rgba(255, 245, 200, 0.4),
+        inset 2px -2px 4px rgba(255, 165, 90, 0.3);
+}
+
+/* BIAŁA SIATKA TŁA (DOT TEXTURE) */
+.panel-dot-texture {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 22px;
+    background-image: radial-gradient(rgba(255, 255, 255, 0.4) 1px, transparent 1px);
+    background-size: 6.5px 6.5px;
+    pointer-events: none;
+    z-index: 0;
+
+    -webkit-mask-image: linear-gradient(90deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.6) 15%, rgba(0, 0, 0, 0) 35%);
+    mask-image: linear-gradient(90deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.6) 15%, rgba(0, 0, 0, 0) 35%);
+}
+
+/* NAGŁÓWEK PANELU */
+.panel-header {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.panel-header h1 {
+    font-size: 18px;
+    font-weight: 800;
+    color: #1a1e29;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin: 0;
+}
+
+.header-divider {
+    position: relative;
+    width: 280px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, rgba(200, 150, 100, 0.25) 50%, transparent 100%);
+    margin: 10px auto 0 auto;
+}
+
+.divider-glow {
+    position: absolute;
+    top: -3px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 25px;
+    height: 7px;
+    background: radial-gradient(circle, rgba(255, 212, 163, 0.6) 0%, rgba(255, 255, 255, 0) 80%);
+    filter: blur(1.5px);
+}
+
+/* SIATKA KAFELKÓW (8 W RZĘDZIE) */
+.tiles-grid {
+    position: relative;
+    z-index: 1;
+    display: grid !important;
+    grid-template-columns: repeat(8, 1fr) !important;
+    gap: 12px !important;
+    width: 100%;
+}
+
+/* POJEDYNCZY KAFELEK 3D */
+.tile {
+    position: relative !important;
+    background: linear-gradient(145deg, rgba(232, 236, 245, 0.85) 0%, rgba(214, 218, 228, 0.75) 100%);
+    border-radius: 16px;
+    padding: 16px 6px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    min-height: 130px;
+    text-align: center !important;
+    cursor: pointer;
+    overflow: hidden !important;
+    box-sizing: border-box;
+
+    border-top: 1.5px solid rgba(255, 255, 255, 0.7);
+    border-left: 1.5px solid rgba(255, 255, 255, 0.5);
+    border-right: 1.5px solid rgba(0, 0, 0, 0.05);
+    border-bottom: 1.5px solid rgba(0, 0, 0, 0.08);
+
+    transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+
+    box-shadow:
+        8px 12px 20px rgba(35, 45, 65, 0.22),
+        -4px -4px 10px rgba(255, 255, 255, 0.5),
+        inset 1px 2px 3px rgba(255, 255, 255, 0.9),
+        inset -3px -4px 6px rgba(0, 0, 0, 0.07);
+}
+
+.tile:hover {
+    background: linear-gradient(145deg, rgba(244, 247, 252, 0.95) 0%, rgba(228, 232, 242, 0.9) 100%);
+    transform: translateY(-6px);
+
+    box-shadow:
+        0 22px 38px rgba(35, 45, 65, 0.28),
+        -5px -5px 15px rgba(255, 255, 255, 0.7),
+        inset 1px 2px 4px rgba(255, 255, 255, 0.95),
+        inset -4px -5px 8px rgba(0, 0, 0, 0.09);
+}
+
+/* POŁYSK SZKŁA NA HOVER */
+.tile::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -150%;
+    width: 60%;
+    height: 200%;
+    background: linear-gradient(90deg,
+            rgba(255, 255, 255, 0) 0%,
+            rgba(255, 255, 255, 0.03) 20%,
+            rgba(255, 255, 255, 0.45) 50%,
+            rgba(255, 255, 255, 0.03) 80%,
+            rgba(255, 255, 255, 0) 100%);
+    transform: rotate(25deg);
+    pointer-events: none;
+    transition: left 0.6s ease;
+}
+
+.tile:hover::after {
+    left: 200%;
+    transition: left 0.6s cubic-bezier(0.3, 1, 0.2, 1);
+}
+
+/* BLOKADA MARTWEGO BŁYSKU NA EKRANACH DOTYKOWYCH */
+@media (hover: none) {
+    .tile::after {
+        display: none !important;
+    }
+}
+
+/* IKONY I TYPOGRAFIA */
+.icon-wrapper {
+    color: #ff2a6d;
+    width: 22px;
+    height: 22px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 6px;
+    transition: transform 0.3s ease;
+}
+
+.icon-wrapper svg {
+    width: 100%;
+    height: 100%;
+}
+
+.tile:hover .icon-wrapper {
+    animation: pulseIcon 1.2s infinite ease-in-out;
+}
+
+@keyframes pulseIcon {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.12);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.tile-number {
+    font-size: 20px;
+    font-weight: 800;
+    color: #1a1e29;
+    line-height: 1.1;
+    margin-bottom: 4px;
+    text-shadow: 0 2px 4px rgba(26, 30, 41, 0.08);
+}
+
+.tile-number.text-small {
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: 0.3px;
+    margin-top: 3px;
+    margin-bottom: 5px;
+}
+
+.tile-number.text-small-sub {
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.2px;
+    margin-top: 6px;
+    margin-bottom: 6px;
+}
+
+.tile-label {
+    font-size: 8px;
+    font-weight: 700;
+    color: #727a8e;
+    letter-spacing: 0.3px;
+    line-height: 1.2;
+    text-transform: uppercase;
+    text-shadow: 0 1px 0 #ffffff;
+}
+
+/* RESPONSYWNOŚĆ SEKCJI 1 */
+@media (max-width: 1200px) {
+    .tiles-grid {
+        grid-template-columns: repeat(4, 1fr) !important;
+        gap: 14px !important;
+    }
+}
+
+@media (max-width: 600px) {
+    .tiles-grid {
+        grid-template-columns: 1fr !important;
+        gap: 10px !important;
+    }
+}
+
+/* ============================================================
+   SEKCJA 2 — SEARCH & CATEGORY FILTER BAR (80/20)
+   ============================================================ */
+
+.files-search-bar {
+    display: grid;
+    grid-template-columns: 4fr 1fr;
+    gap: 10px;
+    margin: 16px 0 18px;
+    align-items: center;
+}
+
+@media (max-width: 768px) {
+    .files-search-bar {
+        grid-template-columns: 1fr;
+        width: 100% !important;
+    }
+}
+
+.files-search-main {
+    width: 100%;
+}
+
+.files-search-category {
+    width: 100%;
+}
+
+/* GŁÓWNY INPUT WYSZUKIWARKI */
+.file-search-inner {
+    position: relative;
+    width: 100%;
+    padding: 10px 14px;
+    border-radius: 24px;
+    background: linear-gradient(145deg, #f0f0f0, #d8d8d8);
+    outline: 1px solid #ff2a6d;
+    box-shadow:
+        0 0 12px rgba(255, 42, 109, 0.35),
+        0 10px 25px rgba(0, 0, 0, 0.18),
+        inset 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+
+.file-search-input {
+    width: 100%;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 13px;
+    color: #333;
+    padding: 6px 4px;
+}
+
+.file-search-input::placeholder {
+    color: #888;
+}
+
+/* PODPOWIEDZI (SUGGESTIONS) */
+.file-search-suggestions {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    margin-top: 6px;
+    background: #f5f5f5;
+    border-radius: 18px;
+    box-shadow:
+        0 12px 24px rgba(0, 0, 0, 0.18),
+        inset 0 1px 0 rgba(255, 255, 255, 0.7);
+    max-height: 220px;
+    overflow-y: auto;
+    padding: 6px 0;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-4px);
+    transition: opacity 0.18s ease, transform 0.18s ease;
+    z-index: 50;
+}
+
+.file-search-suggestions-visible {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+}
+
+.file-search-suggestion-item {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 8px;
+    align-items: center;
+    padding: 6px 12px;
+    font-size: 11px;
+    color: #333;
+    cursor: pointer;
+    border-radius: 14px;
+    margin: 2px 8px;
+    background: rgba(255, 255, 255, 0.9);
+    transition: background 0.15s ease, transform 0.15s ease;
+}
+
+.file-search-suggestion-item:hover {
+    background: #e0e0e0;
+    transform: translateY(-1px);
+}
+
+.file-search-suggestion-type {
+    font-weight: 700;
+    color: #ff2a6d;
+    font-size: 10px;
+}
+
+.file-search-suggestion-main {
+    font-weight: 600;
+}
+
+.file-search-suggestion-sub {
+    font-size: 10px;
+    color: #666;
+    text-align: right;
+}
+
+/* FILTR KATEGORII (PREMIUM DROPDOWN - 20%) */
+.file-cat-select-wrapper {
+    position: relative;
+    width: 100%;
+    z-index: 99999;
+}
+
+.file-cat-button {
+    width: 100%;
+    padding: 8px 12px;
+    border-radius: 20px;
+    background: linear-gradient(145deg, #f7f9fc, #e0e0e0);
+    border: none;
+    font-size: 13px;
+    font-weight: 700;
+    color: #333;
+    cursor: pointer;
+    box-shadow:
+        0 6px 14px rgba(0, 0, 0, 0.12),
+        inset 1px 1px 2px rgba(255, 255, 255, 0.9),
+        0 0 10px rgba(255, 42, 109, 0.25);
+    transition: box-shadow 0.25s ease, transform 0.25s ease;
+    text-align: center;
+}
+
+.file-cat-button:hover {
+    box-shadow:
+        0 0 18px rgba(255, 42, 109, 0.45),
+        0 10px 25px rgba(0, 0, 0, 0.18);
+    transform: translateY(-1px);
+}
+
+.file-cat-dropdown {
+    position: absolute;
+    top: 110%;
+    left: 0;
+    right: 0;
+    background: #ffffff;
+    border-radius: 20px;
+    list-style: none;
+    margin: 0;
+    padding: 6px 0;
+
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-6px);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+
+    z-index: 999999;
+
+    box-shadow:
+        0 20px 40px rgba(0, 0, 0, 0.25),
+        0 10px 25px rgba(0, 0, 0, 0.25),
+        inset 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+
+.file-cat-dropdown.visible {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+}
+
+.file-cat-dropdown li {
+    padding: 8px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #333;
+    text-align: center;
+    border-radius: 16px;
+    cursor: pointer;
+
+    opacity: 0;
+    transform: translateY(6px);
+
+    transition:
+        background 0.25s ease,
+        transform 0.25s ease,
+        color 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+.file-cat-dropdown li.animate {
+    animation: dropdownFadeSlide 0.35s ease forwards;
+    animation-delay: calc(var(--i) * 60ms);
+}
+
+.file-cat-dropdown li:hover {
+    background: linear-gradient(145deg, #9a9898, #b1b0b0);
+    color: #ffffff;
+    box-shadow:
+        inset 0 0 6px rgba(255, 255, 255, 0.35),
+        0 2px 6px rgba(0, 0, 0, 0.25);
+    transform: translateY(-1px) scale(1.05);
+}
+
+.file-cat-dropdown li:active {
+    transform: scale(0.97);
+    background: linear-gradient(145deg, #8c8a8a, #a7a6a6);
+    box-shadow:
+        inset 0 0 12px rgba(255, 255, 255, 0.45),
+        0 2px 6px rgba(0, 0, 0, 0.25);
+}
+
+@keyframes dropdownFadeSlide {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ============================================================
+   SEKCJA 3 — FOLDERS / FTP GRID (DOPASOWANIE DLA 10 FOLDERÓW)
+   ============================================================ */
+
+.files-section-panel {
+    margin-top: 25px;
+}
+
+.files-section-panel .tiles-grid,
+.files-section-panel .folders-grid {
+    display: grid !important;
+    grid-template-columns: repeat(5, 1fr) !important;
+    gap: 12px !important;
+    width: 100%;
+}
+
+.files-section-panel .file-tile-title {
+    font-size: 9px;
+    font-weight: 700;
+    color: #727a8e;
+    letter-spacing: 0.3px;
+    line-height: 1.2;
+    text-transform: uppercase;
+    text-shadow: 0 1px 0 #ffffff;
+}
+
+.files-section-panel .file-tile-value {
+    font-size: 16px;
+    font-weight: 800;
+    color: #1a1e29;
+    line-height: 1.1;
+    margin-bottom: 4px;
+    text-shadow: 0 2px 4px rgba(26, 30, 41, 0.08);
+}
+
+@media (max-width: 992px) {
+
+    .files-section-panel .tiles-grid,
+    .files-section-panel .folders-grid {
+        grid-template-columns: repeat(3, 1fr) !important;
+    }
+}
+
+@media (max-width: 576px) {
+
+    .files-section-panel .tiles-grid,
+    .files-section-panel .folders-grid {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+/* ============================================================
+   SEKCJA 4 — CLOUD STATUS GRID (6 KAFELKÓW)
+   ============================================================ */
+
+.cloud-status-panel {
+    margin-top: 25px;
+}
+
+.cloud-status-panel .cloud-grid {
+    display: grid !important;
+    grid-template-columns: repeat(6, 1fr) !important;
+    gap: 12px !important;
+    width: 100%;
+}
+
+@media (max-width: 1200px) {
+    .cloud-status-panel .cloud-grid {
+        grid-template-columns: repeat(3, 1fr) !important;
+    }
+}
+
+@media (max-width: 600px) {
+    .cloud-status-panel .cloud-grid {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+/* ============================================================
+   SEKCJA 5 — FILES LIST (GLOW LIST & ROWS)
+   ============================================================ */
+
+.files-list-wrapper {
+    margin-top: 10px;
+    background: #ffffff;
+    border-radius: 18px;
+    padding: 16px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}
+
+.files-header-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr 0.8fr 1.2fr 1fr;
+    align-items: center;
+    padding: 6px 12px;
+    font-size: 12px;
+    font-weight: 700;
+    background: #e6f3ff;
+    border-radius: 10px;
+    margin-bottom: 8px;
+    border: 1px solid #b8c7d9;
+    text-align: center;
+}
+
+.files-header-row>* {
+    justify-self: center;
+}
+
+.files-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    max-height: 480px;
+    overflow-y: auto;
+}
+
+.file-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr 0.8fr 1.2fr 1fr;
+    align-items: center;
+    padding: 8px 12px;
+    font-size: 12px;
+    border-radius: 12px;
+    border: 1px solid #4a4848;
+    background: linear-gradient(145deg, #fdfdfd, #f1f1f1);
+    box-shadow:
+        3px 3px 8px rgba(0, 0, 0, 0.08),
+        -3px -3px 8px rgba(255, 255, 255, 0.9);
+    transition: all 0.2s ease;
+    text-align: center;
+}
+
+.file-row>* {
+    justify-self: center;
+}
+
+.file-row:nth-child(odd) {
+    background: linear-gradient(145deg, #fdfdfd, #f1f1f1);
+}
+
+.file-row:nth-child(even) {
+    background: linear-gradient(145deg, #f7f7f7, #ebebeb);
+}
+
+.file-row:hover {
+    transform: translateY(-3px);
+    background: linear-gradient(145deg, #f0f0f0, #e6e6e6);
+    box-shadow:
+        0 8px 18px rgba(0, 0, 0, 0.18),
+        -3px -3px 8px rgba(255, 255, 255, 0.9);
+    border-color: #ff2a6d;
+}
+
+.file-name-cell {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 700;
+    color: #222;
+    text-align: left;
+    justify-self: start;
+}
+
+.file-icon-svg {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    color: #ff2a6d;
+}
+
+.file-actions-cell {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.file-action-btn {
+    padding: 5px 10px;
+    border-radius: 12px;
+    border: none;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+    background: linear-gradient(145deg, #ffffff, #e8e8e8);
+    color: #333;
+    box-shadow:
+        2px 2px 6px rgba(0, 0, 0, 0.12),
+        -2px -2px 6px rgba(255, 255, 255, 0.9);
+    transition: all 0.15s ease;
+}
+
+.file-action-btn:hover {
+    transform: translateY(-1px);
+    box-shadow:
+        3px 3px 8px rgba(0, 0, 0, 0.18),
+        -2px -2px 6px rgba(255, 255, 255, 0.9);
+    background: linear-gradient(145deg, #ffe8d0, #fff3e0);
+    color: #ff2a6d;
+}
+
+.file-action-primary {
+    background: #ff2a6d;
+    color: #ffffff;
+}
+
+.file-action-primary:hover {
+    background: #ff4a85;
+    color: #ffffff;
+}
+
+/* ============================================================
+   EFEKTY HIGHLIGHT & ANIMACJE
+   ============================================================ */
+
+.file-highlight {
+    animation: fileBreath 1.6s ease-in-out 0s 3;
+    border-color: #ff2a6d !important;
+    box-shadow:
+        0 0 0 2px rgba(255, 42, 109, 0.35),
+        0 10px 25px rgba(0, 0, 0, 0.18),
+        inset 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+
+@keyframes fileBreath {
+    0% {
+        box-shadow:
+            0 10px 25px rgba(0, 0, 0, 0.18),
+            inset 0 1px 0 rgba(255, 255, 255, 0.7);
+        border-color: #d0d0d0;
+    }
+
+    50% {
+        box-shadow:
+            0 0 0 10px rgba(255, 42, 109, 0.18),
+            0 16px 32px rgba(0, 0, 0, 0.35);
+        border-color: #ff2a6d;
+    }
+
+    100% {
+        box-shadow:
+            0 10px 25px rgba(0, 0, 0, 0.18),
+            inset 0 1px 0 rgba(255, 255, 255, 0.7);
+        border-color: #d0d0d0;
+    }
+}
+
+/* ============================================================
+   RESPONSYWNOŚĆ MOBILE (MAX-WIDTH: 768PX)
+   ============================================================ */
+
+@media (max-width: 768px) {
+    .files-header-row {
+        display: none;
+    }
+
+    .files-list {
+        max-height: none;
+        align-items: center;
+    }
+
+    .file-row {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 6px;
+        padding: 12px;
+        width: 100%;
+    }
+
+    .file-name-cell {
+        justify-self: center;
+        text-align: center;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .file-actions-cell {
+        margin-top: 4px;
+    }
+}
+
+/* ============================================================
+   SEKCJA MODALA / POPUPU
+   ============================================================ */
+
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+}
+
+.modal-backdrop.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.modal-content {
+    background: #ffffff;
+    width: 90%;
+    max-width: 750px;
+    max-height: 85vh;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+.modal-header h3 {
+    margin: 0;
+    font-size: 18px;
+    color: #222;
+}
+
+.modal-close {
+    background: transparent;
+    border: none;
+    font-size: 28px;
+    cursor: pointer;
+    color: #666;
+}
+
+.modal-body {
+    overflow-y: auto;
+    flex: 1;
+}
+
+.folders-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+@media (max-width: 992px) {
+    .folders-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 576px) {
+    .folders-grid {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+.folder-card {
+    cursor: pointer;
+}

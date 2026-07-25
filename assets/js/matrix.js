@@ -464,3 +464,21 @@ function initHeaderClickHighlights() {
         });
     });
 }
+
+// ===============================
+// LAST UPDATE — zawsze bieżąca data
+// ===============================
+
+document.addEventListener("DOMContentLoaded", () => {
+    const el = document.getElementById("matrix-last-update");
+    if (!el) return;
+
+    const today = new Date();
+    const formatted = today.toLocaleDateString("en-GB", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric"
+    });
+
+    el.textContent = `LAST UPDATE ${formatted}`;
+});

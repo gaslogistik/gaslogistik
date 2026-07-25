@@ -1,0 +1,540 @@
+/* ============================================================
+   ADDRESSES MODULE — PREMIUM LAYOUT
+   ============================================================ */
+
+/* SEKCJA 1 — COUNTERS */
+
+.addresses-counters {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-bottom: 18px;
+    margin-top: 24px;
+}
+
+@media (min-width: 992px) {
+    .addresses-counters {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+.addr-tile {
+    background: linear-gradient(145deg, #f7f9fc, #e0e0e0);
+    border-radius: 18px;
+    padding: 18px 16px;
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    box-shadow:
+        0 6px 14px rgba(0, 0, 0, 0.12),
+        inset 1px 1px 2px rgba(255, 255, 255, 0.9),
+        0 0 10px rgba(255, 42, 109, 0.25);
+
+    /* 🔥 KLUCZOWA ZMIANA — UKŁAD PIONOWY */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    text-align: center;
+}
+
+.addr-title {
+    font-size: 11px;
+    font-weight: 700;
+    color: #555;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+
+    /* 🔥 ZAWSZE NAD WARTOŚCIĄ */
+    margin-bottom: 6px;
+}
+
+.addr-value {
+    font-size: 22px;
+    font-weight: 800;
+    color: #222;
+
+    /* 🔥 WARTOŚĆ W OSOBNYM WIERSZU */
+    display: block;
+    margin-top: 2px;
+}
+
+/* SEKCJA 2 — ADDRESS SEARCH (80/20) */
+
+.addresses-search-bar {
+    display: grid;
+    grid-template-columns: 4fr 1fr;
+    gap: 10px;
+    margin: 16px 0 18px;
+    align-items: center;
+}
+
+@media (max-width: 768px) {
+    .addresses-search-bar {
+        grid-template-columns: 1fr;
+    }
+}
+
+.addresses-search-main {
+    width: 100%;
+}
+
+.addresses-search-type {
+    width: 100%;
+}
+
+/* MAIN SEARCH */
+
+.adr-search-inner {
+    position: relative;
+    width: 100%;
+    padding: 10px 14px;
+    border-radius: 24px;
+    background: linear-gradient(145deg, #f0f0f0, #d8d8d8);
+    outline: 1px solid #ff2a6d;
+    box-shadow:
+        0 0 12px rgba(255, 42, 109, 0.35),
+        0 10px 25px rgba(0, 0, 0, 0.18),
+        inset 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+
+.adr-search-input {
+    width: 100%;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 13px;
+    color: #333;
+    padding: 6px 4px;
+}
+
+.adr-search-input::placeholder {
+    color: #888;
+}
+
+/* SUGGESTIONS */
+
+.adr-search-suggestions {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    margin-top: 6px;
+    background: #f5f5f5;
+    border-radius: 18px;
+    box-shadow:
+        0 12px 24px rgba(0, 0, 0, 0.18),
+        inset 0 1px 0 rgba(255, 255, 255, 0.7);
+    max-height: 220px;
+    overflow-y: auto;
+    padding: 6px 0;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-4px);
+    transition: opacity 0.18s ease, transform 0.18s ease;
+    z-index: 50;
+}
+
+.adr-search-suggestions-visible {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+}
+
+.adr-search-suggestion-item {
+    display: grid;
+    grid-template-columns: auto auto 1fr;
+    gap: 6px;
+    align-items: center;
+    padding: 6px 12px;
+    font-size: 11px;
+    color: #333;
+    cursor: pointer;
+    border-radius: 14px;
+    margin: 2px 8px;
+    background: rgba(255, 255, 255, 0.9);
+    transition: background 0.15s ease, transform 0.15s ease;
+}
+
+.adr-search-suggestion-item:hover {
+    background: #e0e0e0;
+    transform: translateY(-1px);
+}
+
+.adr-search-suggestion-type {
+    font-weight: 700;
+    color: #ff2a6d;
+    font-size: 10px;
+}
+
+.adr-search-suggestion-main {
+    font-weight: 600;
+}
+
+.adr-search-suggestion-sub {
+    font-size: 10px;
+    color: #666;
+    text-align: right;
+}
+
+/* TYPE FILTER (20%) */
+
+.adr-type-inner {
+    width: 100%;
+    padding: 8px 12px;
+    border-radius: 20px;
+    background: linear-gradient(145deg, #f7f9fc, #e0e0e0);
+    box-shadow:
+        0 6px 14px rgba(0, 0, 0, 0.12),
+        inset 1px 1px 2px rgba(255, 255, 255, 0.9),
+        0 0 10px rgba(255, 42, 109, 0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: box-shadow 0.25s ease, transform 0.25s ease;
+    position: relative;
+    z-index: 9999;
+}
+
+.adr-type-inner:hover {
+    box-shadow:
+        0 0 18px rgba(255, 42, 109, 0.45),
+        0 10px 25px rgba(0, 0, 0, 0.18);
+    transform: translateY(-1px);
+}
+
+/* CUSTOM PREMIUM DROPDOWN */
+
+.adr-type-select-wrapper {
+    position: relative;
+    width: 100%;
+    z-index: 99999;
+}
+
+.adr-type-button {
+    width: 100%;
+    padding: 8px 12px;
+    border-radius: 20px;
+    background: linear-gradient(145deg, #f7f9fc, #e0e0e0);
+    border: none;
+    font-size: 13px;
+    font-weight: 700;
+    color: #333;
+    cursor: pointer;
+    box-shadow:
+        0 6px 14px rgba(0, 0, 0, 0.12),
+        inset 1px 1px 2px rgba(255, 255, 255, 0.9),
+        0 0 10px rgba(255, 42, 109, 0.25);
+    transition: box-shadow 0.25s ease, transform 0.25s ease;
+    text-align: center;
+}
+
+.adr-type-button:hover {
+    box-shadow:
+        0 0 18px rgba(255, 42, 109, 0.45),
+        0 10px 25px rgba(0, 0, 0, 0.18);
+    transform: translateY(-1px);
+}
+
+.adr-type-dropdown {
+    position: absolute;
+    top: 110%;
+    left: 0;
+    right: 0;
+    background: #ffffff;
+    border-radius: 20px;
+    list-style: none;
+    margin: 0;
+    padding: 6px 0;
+
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-6px);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+
+    z-index: 999999;
+
+    box-shadow:
+        0 20px 40px rgba(0, 0, 0, 0.25),
+        0 10px 25px rgba(0, 0, 0, 0.25),
+        inset 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+
+.adr-type-dropdown.visible {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+}
+
+/* ANIMACJA FADE + SLIDE */
+
+.adr-type-dropdown li {
+    padding: 8px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #333;
+    text-align: center;
+    border-radius: 16px;
+    cursor: pointer;
+
+    opacity: 0;
+    transform: translateY(6px);
+
+    transition:
+        background 0.25s ease,
+        transform 0.25s ease,
+        color 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+/* 🔥 animacja aktywowana przez JS */
+.adr-type-dropdown li.animate {
+    animation: dropdownFadeSlide 0.35s ease forwards;
+    animation-delay: calc(var(--i) * 60ms);
+}
+
+/* 🔥 PREMIUM CIEMNY SZARY + METALICZNY EFEKT + GLOW + MICRO SHADOW */
+.adr-type-dropdown li:hover {
+    background: linear-gradient(145deg, #9a9898, #b1b0b0);
+    /* subtelny grafitowy gradient */
+    color: #ffffff;
+
+    /* metaliczny efekt */
+    box-shadow:
+        inset 0 0 6px rgba(255, 255, 255, 0.35),
+        /* wewnętrzny glow */
+        0 2px 6px rgba(0, 0, 0, 0.25);
+    /* micro-shadow pod opcją */
+
+    transform: translateY(-1px) scale(1.05);
+    /* premium scale */
+}
+
+/* 🔥 RIPPLE EFFECT PRZY KLIKNIĘCIU */
+.adr-type-dropdown li:active {
+    transform: scale(0.97);
+    background: linear-gradient(145deg, #8c8a8a, #a7a6a6);
+    box-shadow:
+        inset 0 0 12px rgba(255, 255, 255, 0.45),
+        0 2px 6px rgba(0, 0, 0, 0.25);
+}
+
+@keyframes dropdownFadeSlide {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* SEKCJA 3 — ALL ADDRESSES LIST */
+
+.addresses-list-wrapper {
+    margin-top: 10px;
+    background: #ffffff;
+    border-radius: 18px;
+    padding: 16px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}
+
+/* HEADER */
+
+.addresses-header-row {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 0.8fr 1.6fr 1.2fr;
+    align-items: center;
+    padding: 6px 12px;
+    font-size: 12px;
+    font-weight: 700;
+    background: #e6f3ff;
+    border-radius: 10px;
+    margin-bottom: 8px;
+    border: 1px solid #b8c7d9;
+}
+
+/* ROWS */
+
+.addresses-list {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    max-height: 460px;
+    overflow-y: auto;
+}
+
+.address-row {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 0.8fr 1.6fr 1.2fr;
+    align-items: center;
+    padding: 8px 12px;
+    font-size: 12px;
+    border-radius: 12px;
+
+    /* 🔥 CIEMNIEJSZY PREMIUM KONTUR */
+    border: 1px solid #4a4848;
+
+    /* 🔥 PREMIUM TŁO + METALICZNY EFEKT */
+    background: linear-gradient(145deg, #fdfdfd, #f1f1f1);
+    box-shadow:
+        3px 3px 8px rgba(0, 0, 0, 0.08),
+        -3px -3px 8px rgba(255, 255, 255, 0.9);
+
+    transition: 0.2s ease;
+}
+
+.address-row:nth-child(odd) {
+    background: linear-gradient(145deg, #fdfdfd, #f1f1f1);
+}
+
+.address-row:nth-child(even) {
+    background: linear-gradient(145deg, #f7f7f7, #ebebeb);
+}
+
+.address-row:hover {
+    transform: translateY(-4px);
+    /* 🔥 większe poruszenie */
+    background: linear-gradient(145deg, #f0f0f0, #e6e6e6);
+    /* 🔥 subtelny jasnoszary kolor */
+    box-shadow:
+        0 8px 18px rgba(0, 0, 0, 0.18),
+        -3px -3px 8px rgba(255, 255, 255, 0.9);
+    border-color: #ff9500;
+}
+
+/* COORDINATES CELL */
+
+.address-coords-cell {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.addr-coord-btn {
+    padding: 4px 8px;
+    border-radius: 12px;
+    border: none;
+    font-size: 10px;
+    font-weight: 700;
+    cursor: pointer;
+    background: linear-gradient(145deg, #ffffff, #e8e8e8);
+    color: #333;
+    box-shadow:
+        2px 2px 6px rgba(0, 0, 0, 0.12),
+        -2px -2px 6px rgba(255, 255, 255, 0.9);
+    transition: 0.15s ease;
+}
+
+.addr-coord-btn:hover {
+    transform: translateY(-1px);
+    box-shadow:
+        3px 3px 8px rgba(0, 0, 0, 0.18),
+        -2px -2px 6px rgba(255, 255, 255, 0.9);
+    background: linear-gradient(145deg, #ffe8d0, #fff3e0);
+}
+
+/* MOBILE */
+
+@media (max-width: 768px) {
+
+    .addresses-header-row {
+        display: none;
+    }
+
+    .addresses-list {
+        max-height: none;
+        align-items: center; /* 🔥 wyśrodkowanie całej listy */
+    }
+
+    .address-row {
+        display: flex;
+        flex-direction: column;
+        align-items: center; /* 🔥 wyśrodkowanie poziome */
+        text-align: center; /* 🔥 wyśrodkowanie tekstu */
+        gap: 4px;
+        }
+
+}
+
+/* HIGHLIGHT */
+
+.address-highlight {
+    animation: addressBreath 1.6s ease-in-out 0s 3;
+    border-color: #ff2a6d !important;
+    box-shadow:
+        0 0 0 2px rgba(255, 42, 109, 0.35),
+        0 10px 25px rgba(0, 0, 0, 0.18),
+        inset 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+
+@keyframes addressBreath {
+    0% {
+        box-shadow:
+            0 10px 25px rgba(0, 0, 0, 0.18),
+            inset 0 1px 0 rgba(255, 255, 255, 0.7);
+        border-color: #d0d0d0;
+    }
+
+    50% {
+        box-shadow:
+            0 0 0 10px rgba(255, 42, 109, 0.18),
+            0 16px 32px rgba(0, 0, 0, 0.35);
+        border-color: #ff2a6d;
+    }
+
+    100% {
+        box-shadow:
+            0 10px 25px rgba(0, 0, 0, 0.18),
+            inset 0 1px 0 rgba(255, 255, 255, 0.7);
+        border-color: #d0d0d0;
+    }
+}
+
+/* ANIMACJA WCZYTYWANIA PREMIUM */
+.loading-glow {
+    opacity: 0.6;
+    filter: blur(1px);
+    animation: glowPulse 1.2s ease-in-out infinite alternate;
+}
+
+@keyframes glowPulse {
+    0% {
+        box-shadow: 0 0 6px rgba(255, 42, 109, 0.25);
+    }
+
+    100% {
+        box-shadow: 0 0 18px rgba(255, 42, 109, 0.45);
+    }
+}
+
+.fade-in {
+    animation: fadeInSmooth 0.8s ease forwards;
+}
+
+@keyframes fadeInSmooth {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 🔥 WYŚRODKOWANIE TEKSTU W NAGŁÓWKACH I WIERSZACH */
+.addresses-header-row,
+.address-row {
+    text-align: center;
+    /* wyśrodkowanie poziome */
+}
+
+/* 🔥 Dodatkowo dla komórek, jeśli używasz gridu */
+.addresses-header-row>*,
+.address-row>* {
+    justify-self: center;
+    /* wyśrodkowanie w kolumnie */
+}

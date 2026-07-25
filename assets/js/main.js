@@ -222,12 +222,12 @@ window.addEventListener('DOMContentLoaded', () => {
     const modalImg = document.getElementById('map-modal-img');
     const closeBtn = document.getElementById('map-close');
 
+    // Jeśli elementy modala nie istnieją na danej stronie (np. na files.html), po prostu pomijamy ten fragment bez rzucania błędów
     if (!modal || !modalImg || !closeBtn) {
-        console.warn('Modal elements not found');
         return;
     }
 
-    // otwieranie po kliknięciu na 4 kafelki
+    // otwieranie po kliknięciu na kafelki mapy
     document.querySelectorAll('.modern-3d-tile img').forEach(img => {
         img.addEventListener('click', () => {
             modalImg.src = img.src;
@@ -248,4 +248,3 @@ window.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
-
