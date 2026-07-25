@@ -22,6 +22,34 @@
 
 <body>
 
+    <!-- SPINNER OVERLAY -->
+    <div id="loading-spinner"
+        style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); z-index: 999999; display: flex; justify-content: center; align-items: center; transition: opacity 0.3s ease;">
+        <div
+            style="text-align: center; background: #e0e0e0; padding: 40px; border-radius: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); border: 1px solid #ccc;">
+            <div
+                style="width: 50px; height: 50px; border: 5px solid #ccc; border-top: 5px solid #e91e63; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 20px auto;">
+            </div>
+            <div
+                style="font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; color: #e91e63; font-size: 16px; letter-spacing: 1px;">
+                KP GASLOGISTIK</div>
+            <div
+                style="font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 700; color: #333; font-size: 14px; margin-top: 5px;">
+                LOADING VEHICLES...</div>
+        </div>
+    </div>
+    <style>
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+
     <div class="base-root-tile">
 
         <header class="header-container">
@@ -150,7 +178,7 @@
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                                 <circle cx="12" cy="12" r="3" />
                                 <path
-                                    d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06-.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
+                                    d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06-.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06-.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
                             </svg>
                         </span>
                         <span class="menu-tile-main">Admin</span>
@@ -212,223 +240,227 @@
 
                             </div>
                         </section>
-<!-- ⭐ SEKCJA 2 — ADR TERMIN ⭐ -->
-<section class="inner-command-center">
-    <h3 class="weather-watch-title">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ff2a6d" stroke-width="2"
-            stroke-linecap="round" stroke-linejoin="round">
-            <path d="M3 3h18v18H3z"></path>
-            <path d="M3 9h18"></path>
-            <path d="M9 21V9"></path>
-        </svg>
-        ADR TERMIN — Fleet Status
-    </h3>
+                        <!-- ⭐ SEKCJA 2 — ADR TERMIN ⭐ -->
+                        <section class="inner-command-center">
+                            <h3 class="weather-watch-title">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ff2a6d"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M3 3h18v18H3z"></path>
+                                    <path d="M3 9h18"></path>
+                                    <path d="M9 21V9"></path>
+                                </svg>
+                                ADR TERMIN — Fleet Status
+                            </h3>
 
-    <div class="adr-section">
+                            <div class="adr-section">
 
-        <!-- LEWA KOLUMNA — 4 KAFELKI -->
-        <div class="adr-summary">
+                                <!-- LEWA KOLUMNA — 4 KAFELKI -->
+                                <div class="adr-summary">
 
-            <div class="adr-box">
-                <h3>ADR 21 DAYS</h3>
-                <div id="adr-21" class="adr-value">--</div>
-            </div>
+                                    <div class="adr-box">
+                                        <h3>ADR 21 DAYS</h3>
+                                        <div id="adr-21" class="adr-value">--</div>
+                                    </div>
 
-            <div class="adr-box">
-                <h3>ADR 7 DAYS</h3>
-                <div id="adr-7" class="adr-value">--</div>
-            </div>
+                                    <div class="adr-box">
+                                        <h3>ADR 7 DAYS</h3>
+                                        <div id="adr-7" class="adr-value">--</div>
+                                    </div>
 
-            <div class="adr-box">
-                <h3>ADR DOCUMENT MISSING</h3>
-                <div id="adr-doc-missing" class="adr-value">--</div>
-            </div>
+                                    <div class="adr-box">
+                                        <h3>ADR DOCUMENT MISSING</h3>
+                                        <div id="adr-doc-missing" class="adr-value">--</div>
+                                    </div>
 
-            <div class="adr-box">
-                <h3>ADR ALERTS ACTIVE</h3>
-                <div id="adr-alerts-active" class="adr-value">ON</div>
-            </div>
+                                    <div class="adr-box">
+                                        <h3>ADR ALERTS ACTIVE</h3>
+                                        <div id="adr-alerts-active" class="adr-value">ON</div>
+                                    </div>
 
-        </div>
+                                </div>
 
-        <!-- PRAWA KOLUMNA — LISTA EXPIRATIONS -->
-        <div class="adr-list equal-height">
-            <h4 class="adr-list-title">Upcoming Expirations</h4>
-            <div id="adr-list-container"></div>
-        </div>
+                                <!-- PRAWA KOLUMNA — LISTA EXPIRATIONS -->
+                                <div class="adr-list equal-height">
+                                    <h4 class="adr-list-title">Upcoming Expirations</h4>
+                                    <div id="adr-list-container"></div>
+                                </div>
 
-    </div>
-</section>
+                            </div>
+                        </section>
 
-<!-- ⭐ SEKCJA 3 — ADR REMINDER CENTER ⭐ -->
-<section class="inner-command-center">
-    <h3 class="weather-watch-title">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ff2a6d" stroke-width="2"
-            stroke-linecap="round" stroke-linejoin="round">
-            <path d="M3 3h18v18H3z"></path>
-        </svg>
-        ADR REMINDER CENTER - Sent Reminders
-    </h3>
+                        <!-- ⭐ SEKCJA 3 — ADR REMINDER CENTER ⭐ -->
+                        <section class="inner-command-center">
+                            <h3 class="weather-watch-title">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ff2a6d"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M3 3h18v18H3z"></path>
+                                </svg>
+                                ADR REMINDER CENTER - Sent Reminders
+                            </h3>
 
-    <div class="adr-reminder-center">
-        <div id="adr-reminder-container"></div>
-    </div>
-</section>
-        <!-- ⭐ SEKCJA 4 — ADR VEHICLES CENTER ⭐ -->
-        <section class="inner-command-center adr-vehicles-center">
-            <h3 class="weather-watch-title">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ff2a6d" stroke-width="2"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="3" y="3" width="18" height="18"></rect>
-                    <path d="M3 9h18"></path>
-                </svg>
-                ADR VEHICLES CENTER
-            </h3>
-        
-            <!-- ⭐ WYSZUKIWARKA POJAZDÓW ⭐ -->
-            <div class="adr-search-bar">
-                <div class="adr-search-inner">
-                    <input type="text" id="adr-search-input" class="adr-search-input"
-                        placeholder="Search vehicle by plate / internal nr / model..." autocomplete="off" />
-                    <div id="adr-search-suggestions" class="adr-search-suggestions"></div>
-                </div>
-            </div>
-        
-            <div class="adr-vehicles-grid">
-                <!-- LEWA KOLUMNA — TRUCKS -->
-                <div class="adr-vehicles-column adr-vehicles-trucks">
-                    <div class="adr-vehicles-header">
-                        <span class="adr-vehicles-label">TRUCKS</span>
-                        <span class="adr-vehicles-counter" id="adr-trucks-count">-- VEHICLES</span>
+                            <div class="adr-reminder-center">
+                                <div id="adr-reminder-container"></div>
+                            </div>
+                        </section>
+                        <!-- ⭐ SEKCJA 4 — ADR VEHICLES CENTER ⭐ -->
+                        <section class="inner-command-center adr-vehicles-center">
+                            <h3 class="weather-watch-title">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ff2a6d"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="3" y="3" width="18" height="18"></rect>
+                                    <path d="M3 9h18"></path>
+                                </svg>
+                                ADR VEHICLES CENTER
+                            </h3>
+
+                            <!-- ⭐ WYSZUKIWARKA POJAZDÓW ⭐ -->
+                            <div class="adr-search-bar">
+                                <div class="adr-search-inner">
+                                    <input type="text" id="adr-search-input" class="adr-search-input"
+                                        placeholder="Search vehicle by plate / internal nr / model..."
+                                        autocomplete="off" />
+                                    <div id="adr-search-suggestions" class="adr-search-suggestions"></div>
+                                </div>
+                            </div>
+
+                            <div class="adr-vehicles-grid">
+                                <!-- LEWA KOLUMNA — TRUCKS -->
+                                <div class="adr-vehicles-column adr-vehicles-trucks">
+                                    <div class="adr-vehicles-header">
+                                        <span class="adr-vehicles-label">TRUCKS</span>
+                                        <span class="adr-vehicles-counter" id="adr-trucks-count">-- VEHICLES</span>
+                                    </div>
+
+                                    <div class="adr-vehicles-subtitle">
+                                        All trucks with upcoming ADR expirations
+                                    </div>
+
+                                    <div class="adr-vehicles-list" id="adr-trucks-list"></div>
+                                </div>
+
+                                <!-- PRAWA KOLUMNA — TANKTRAILERS -->
+                                <div class="adr-vehicles-column adr-vehicles-trailers">
+                                    <div class="adr-vehicles-header">
+                                        <span class="adr-vehicles-label">TANKTRAILERS</span>
+                                        <span class="adr-vehicles-counter" id="adr-trailers-count">-- VEHICLES</span>
+                                    </div>
+
+                                    <div class="adr-vehicles-subtitle">
+                                        All tanktrailers with upcoming ADR expirations
+                                    </div>
+
+                                    <div class="adr-vehicles-list" id="adr-trailers-list"></div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- ⭐ SEKCJA 5 — ALL VEHICLES ⭐ -->
+                        <section class="inner-command-center adr-all-vehicles-center">
+
+                            <h3 class="weather-watch-title">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ff2a6d"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="3" y="3" width="18" height="18"></rect>
+                                    <path d="M3 9h18"></path>
+                                </svg>
+                                ALL VEHICLES — FULL FLEET SUMMARY
+                            </h3>
+
+                            <!-- ⭐ IDENTYCZNA WYSZUKIWARKA JAK W SEKCJI 4 ⭐ -->
+                            <div class="adr-search-bar">
+                                <div class="adr-search-inner">
+                                    <input type="text" id="adr-search-input-all" class="adr-search-input"
+                                        placeholder="Search vehicle by plate / internal nr / model..."
+                                        autocomplete="off" />
+                                    <div id="adr-search-suggestions-all" class="adr-search-suggestions"></div>
+                                </div>
+                            </div>
+
+                            <div class="adr-all-vehicles-wrapper">
+
+                                <div class="adr-all-column">
+                                    <h4 class="adr-all-title">TRUCKS</h4>
+
+                                    <div class="adr-all-header-row">
+                                        <span>PLATES</span>
+                                        <span>INTERNAL NR</span>
+                                        <span>MODEL</span>
+                                        <span>ADR VALID</span>
+                                    </div>
+
+                                    <div class="adr-all-vehicles-list" id="adr-all-trucks-list"></div>
+                                </div>
+
+                                <div class="adr-all-column">
+                                    <h4 class="adr-all-title">TANKTRAILERS</h4>
+
+                                    <div class="adr-all-header-row">
+                                        <span>PLATES</span>
+                                        <span>INTERNAL NR</span>
+                                        <span>MODEL</span>
+                                        <span>ADR VALID</span>
+                                    </div>
+
+                                    <div class="adr-all-vehicles-list" id="adr-all-trailers-list"></div>
+                                </div>
+
+                            </div>
+
+                        </section>
+
                     </div>
-        
-                    <div class="adr-vehicles-subtitle">
-                        All trucks with upcoming ADR expirations
-                    </div>
-        
-                    <div class="adr-vehicles-list" id="adr-trucks-list"></div>
                 </div>
-        
-                <!-- PRAWA KOLUMNA — TANKTRAILERS -->
-                <div class="adr-vehicles-column adr-vehicles-trailers">
-                    <div class="adr-vehicles-header">
-                        <span class="adr-vehicles-label">TANKTRAILERS</span>
-                        <span class="adr-vehicles-counter" id="adr-trailers-count">-- VEHICLES</span>
-                    </div>
-        
-                    <div class="adr-vehicles-subtitle">
-                        All tanktrailers with upcoming ADR expirations
-                    </div>
-        
-                    <div class="adr-vehicles-list" id="adr-trailers-list"></div>
-                </div>
-            </div>
-        </section>
-        
-        <!-- ⭐ SEKCJA 5 — ALL VEHICLES ⭐ -->
-        <section class="inner-command-center adr-all-vehicles-center">
-        
-            <h3 class="weather-watch-title">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ff2a6d" stroke-width="2"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="3" y="3" width="18" height="18"></rect>
-                    <path d="M3 9h18"></path>
-                </svg>
-                ALL VEHICLES — FULL FLEET SUMMARY
-            </h3>
-        
-            <!-- ⭐ IDENTYCZNA WYSZUKIWARKA JAK W SEKCJI 4 ⭐ -->
-            <div class="adr-search-bar">
-                <div class="adr-search-inner">
-                    <input type="text" id="adr-search-input-all" class="adr-search-input"
-                        placeholder="Search vehicle by plate / internal nr / model..." autocomplete="off" />
-                    <div id="adr-search-suggestions-all" class="adr-search-suggestions"></div>
-                </div>
-            </div>
-        
-            <div class="adr-all-vehicles-wrapper">
-        
-                <div class="adr-all-column">
-                    <h4 class="adr-all-title">TRUCKS</h4>
-        
-                    <div class="adr-all-header-row">
-                        <span>PLATES</span>
-                        <span>INTERNAL NR</span>
-                        <span>MODEL</span>
-                        <span>ADR VALID</span>
-                    </div>
-        
-                    <div class="adr-all-vehicles-list" id="adr-all-trucks-list"></div>
-                </div>
-        
-                <div class="adr-all-column">
-                    <h4 class="adr-all-title">TANKTRAILERS</h4>
-        
-                    <div class="adr-all-header-row">
-                        <span>PLATES</span>
-                        <span>INTERNAL NR</span>
-                        <span>MODEL</span>
-                        <span>ADR VALID</span>
-                    </div>
-        
-                    <div class="adr-all-vehicles-list" id="adr-all-trailers-list"></div>
-                </div>
-        
-            </div>
-        
-        </section>
-    
-    </div>
-    </div>
-    
-    </main>
 
-</div> <!-- content-wrapper -->
+            </main>
 
-</div> <!-- base-root-tile -->
+        </div> <!-- content-wrapper -->
 
-<!-- AUTH POPUP -->
-<div id="auth-popup" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%;
+    </div> <!-- base-root-tile -->
+
+    <!-- AUTH POPUP -->
+    <div id="auth-popup" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%;
            background:rgba(0,0,0,0.5); backdrop-filter:blur(5px);
            z-index:99999; justify-content:center; align-items:center;">
 
-    <div style="background:#e0e0e0; padding:30px; border-radius:40px; width:400px;
-                    text-align:center; border:1px solid #bbb; box-shadow:0 10px 25px rgba(0,0,0,0.3);">
+        <form style="background:#e0e0e0; padding:30px; border-radius:40px; width:400px;
+                    text-align:center; border:1px solid #bbb; box-shadow:0 10px 25px rgba(0,0,0,0.3);"
+            onsubmit="return false;">
 
-        <h2 style="color:#e91e63; font-size:18px; margin:0; font-weight:800;">KP GASLOGISTIK</h2>
-        <p style="font-size:20px; color:#333; margin:10px 0; font-weight:700;">ENTERPRISE SECURITY GATE</p>
-        <p style="font-size:12px; color:#555; margin-bottom:20px;">Premium Command Center Access</p>
+            <h2 style="color:#e91e63; font-size:18px; margin:0; font-weight:800;">KP GASLOGISTIK</h2>
+            <p style="font-size:20px; color:#333; margin:10px 0; font-weight:700;">ENTERPRISE SECURITY GATE</p>
+            <p style="font-size:12px; color:#555; margin-bottom:20px;">Premium Command Center Access</p>
 
-        <div style="text-align:left; font-size:11px; font-weight:bold; margin-bottom:5px; color:#333;">LOGIN</div>
-        <input type="text" id="user-login" style="width:100%; padding:12px; margin-bottom:15px; border:1px solid #999;
+            <div style="text-align:left; font-size:11px; font-weight:bold; margin-bottom:5px; color:#333;">LOGIN</div>
+            <input type="text" id="user-login" autocomplete="username" style="width:100%; padding:12px; margin-bottom:15px; border:1px solid #999;
                    border-radius:25px; background:white;">
 
-        <div style="text-align:left; font-size:11px; font-weight:bold; margin-bottom:5px; color:#333;">PASSWORD</div>
-        <input type="password" id="user-pass" style="width:100%; padding:12px; margin-bottom:15px; border:1px solid #999;
+            <div style="text-align:left; font-size:11px; font-weight:bold; margin-bottom:5px; color:#333;">PASSWORD
+            </div>
+            <input type="password" id="user-pass" autocomplete="current-password" style="width:100%; padding:12px; margin-bottom:15px; border:1px solid #999;
                    border-radius:25px; background:white;">
 
-        <div style="display:flex; gap:10px; margin-top:10px;">
-            <button onclick="handleLogin()" style="flex:1; padding:12px; border:none; border-radius:20px;
+            <div style="display:flex; gap:10px; margin-top:10px;">
+                <button type="button" onclick="handleLogin()" style="flex:1; padding:12px; border:none; border-radius:20px;
                        color:white; font-weight:bold; cursor:pointer; background:#e91e63;">LOGIN</button>
 
-            <button onclick="closeAuthPopup()" style="flex:1; padding:12px; border:none; border-radius:20px;
+                <button type="button" onclick="closeAuthPopup()" style="flex:1; padding:12px; border:none; border-radius:20px;
                        color:white; font-weight:bold; cursor:pointer; background:#e91e63;">CANCEL</button>
-        </div>
+            </div>
 
+        </form>
     </div>
-</div>
 
-<script src="assets/js/main.js"></script>
-<script src="assets/js/auth.js"></script>
-<script src="assets/js/vehicles.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/vehicles.js"></script>
 
-<div id="map-modal" class="map-modal" style="display:none;">
-    <span id="map-close" class="map-close">&times;</span>
-    <img id="map-modal-img" class="map-modal-img" src="" alt="">
-</div>
+    <div id="map-modal" class="map-modal" style="display:none;">
+        <span id="map-close" class="map-close">&times;</span>
+        <img id="map-modal-img" class="map-modal-img" src="" alt="">
+    </div>
 
-<!-- ⭐ PREMIUM TOOLTIP ELEMENT -->
-<div id="adr-premium-tooltip"></div>
+    <!-- ⭐ PREMIUM TOOLTIP ELEMENT -->
+    <div id="adr-premium-tooltip"></div>
 
 </body>
 

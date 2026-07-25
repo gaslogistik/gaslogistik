@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KP GASLOGISTIK - Matrix</title>
+    <title>KP GASLOGISTIK - Documents</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
         rel="stylesheet">
@@ -15,7 +15,6 @@
     <link rel="stylesheet" href="assets/css/components.css">
     <link rel="stylesheet" href="assets/css/dashboard-widgets.css">
     <link rel="stylesheet" href="assets/css/dashboard-content.css">
-    <link rel="stylesheet" href="assets/css/matrix.css">
 
     <link rel="icon" type="image/x-icon" href="assets/favicon/favicon.ico">
 </head>
@@ -83,7 +82,7 @@
                         <span class="menu-tile-main">Dashboard</span>
                     </a>
 
-                    <a href="matrix.html" class="sidebar-tile active">
+                    <a href="matrix.html" class="sidebar-tile">
                         <span class="menu-tile-icon-svg">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                                 <rect x="3" y="3" width="18" height="18" rx="2" />
@@ -115,16 +114,6 @@
                         <span class="menu-tile-main">Vehicles</span>
                     </a>
 
-                    <a href="addresses.html" class="sidebar-tile">
-                        <span class="menu-tile-icon-svg">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-                                <circle cx="12" cy="10" r="3" />
-                            </svg>
-                        </span>
-                        <span class="menu-tile-main">Addresses</span>
-                    </a>
-
                     <a href="drivers.html" class="sidebar-tile">
                         <span class="menu-tile-icon-svg">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
@@ -135,7 +124,7 @@
                         <span class="menu-tile-main">Drivers</span>
                     </a>
 
-                    <a href="files.html" class="sidebar-tile">
+                    <a href="files.html" class="sidebar-tile active">
                         <span class="menu-tile-icon-svg">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                                 <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
@@ -164,7 +153,6 @@
     </span>
     <span class="menu-tile-main">Contact</span>
 </a>
-
 </div>
 </div>
 
@@ -172,61 +160,25 @@
 
     <div class="command-center">
         <div class="master-container-tile">
+<!-- ⭐ SEKCJA DOKUMENTÓW ⭐ -->
 
-            <section class="inner-command-center">
-            
-                <h3 class="weather-watch-title">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ff2a6d" stroke-width="2"
-                        stroke-linecap="round" stroke-linejoin="round">
-                        <rect x="3" y="3" width="18" height="18" rx="2"></rect>
-                        <path d="M21 12H3M12 3v18"></path>
-                    </svg>
-                    MATRIX OVERVIEW
-                </h3>
-            
-                <div id="matrix-stats-row">
-                    <div class="matrix-stat-tile">-> LOCATIONS</div>
-                    <div class="matrix-stat-tile">-> ROUTES</div>
-            
-                    <!-- ⭐ POPRAWKA: dodane ID dla licznika -->
-                    <div class="matrix-stat-tile" id="matrix-last-update">
-                        LAST UPDATE —
-                    </div>
-                </div>
-            
-                <div id="matrix-stats-separator"></div>
-            
-                <!-- ⭐ KROK 1 + KROK 2 + KROK 3 ⭐ -->
-                <div id="matrix-tools">
-            
-                    <div class="input-wrapper from-wrapper">
-                        <input id="fromCity" placeholder="FROM">
-                        <div id="fromDropdown"></div>
-                    </div>
-            
-                    <div class="input-wrapper to-wrapper">
-                        <input id="toCity" placeholder="TO">
-                        <div id="toDropdown"></div>
-                    </div>
-            
-                    <div id="distanceBox">— km</div>
-            
-                </div>
-            
-                <div class="matrix-content-area">
-                    <!-- Tylko macierz się przewija -->
-                    <div id="matrix-scroll-wrapper">
-                        <div id="matrix-container" class="matrix-grid">
-                            <!-- JS wstawi tutaj macierz -->
-                        </div>
-                    </div>
-                </div>
-            
-            </section>
+<section class="inner-command-center">
 
-        </div>
-    </div>
+    <h3 class="weather-watch-title">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ff2a6d" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+        </svg>
+        DOCUMENTS OVERVIEW
+    </h3>
+    
+</section>
 
+<!-- ⭐ USUNIĘTO WSZYSTKIE SEKCJE DASHBOARDOWE ⭐ -->
+
+</div>
+</div>
 </main>
 
 </div> <!-- content-wrapper -->
@@ -266,7 +218,6 @@
 
 <script src="assets/js/main.js"></script>
 <script src="assets/js/auth.js"></script>
-<script src="assets/js/matrix.js"></script>
 
 <div id="map-modal" class="map-modal" style="display:none;">
     <span id="map-close" class="map-close">&times;</span>
