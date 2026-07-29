@@ -165,25 +165,22 @@ function updateADRStatus(trucks, tanktrailers) {
     listContainer.innerHTML = "";
 
     unique.forEach((item) => {
-        const urgencyClass =
-            item.diff <= 7 ? "badge-7" : item.diff <= 21 ? "badge-21" : "";
-        const urgencyText = item.diff <= 7 ? "7 days" : "21 days";
+        const urgencyClass = item.diff <= 7 ? "badge-7" : item.diff <= 21 ? "badge-21" : "";
+
+        // POPRAWIONO: Dynamiczne obliczanie pozostałych dni
+        const urgencyText = item.diff === 1 ? "1 day" : `${item.diff} days`;
 
         const row = document.createElement("div");
         row.className = "adr-item";
         row.innerHTML = `
-            <div class="adr-line-top">
-                <span class="adr-plates">${item.plates}</span>
-                <span class="adr-internal">${item.internal}</span>
-                <span class="adr-model">${item.model}</span>
-            </div>
-            <div class="adr-line-bottom">
-                <span class="adr-date">
-                    ${fmtDate(item.adrDate)}
-                    <span class="adr-badge ${urgencyClass}"></span>
-                    <span class="adr-badge-text">${urgencyText}</span>
-                </span>
-            </div>
+            <span class="adr-plates">${item.plates}</span>
+            <span class="adr-internal">${item.internal}</span>
+            <span class="adr-model">${item.model}</span>
+            <span class="adr-date">${fmtDate(item.adrDate)}</span>
+            <span class="adr-days-col">
+                <span class="adr-badge ${urgencyClass}"></span>
+                <span class="adr-badge-text">${urgencyText}</span>
+            </span>
         `;
         listContainer.appendChild(row);
     });
@@ -280,17 +277,42 @@ function fmtDate(d) {
 function updateADRExtraCounters(trucks, tanktrailers) {
     const allVehicles = [...trucks, ...tanktrailers];
 
-    const adrDocMissing = allVehicles.filter((v) => {
+    // 1. Filtrujemy pojazdy z brakiem dokumentu ADR
+    const missingVehicles = allVehicles.filter((v) => {
         const key = Object.keys(v).find(
             (k) => k.replace(/\s+/g, " ").trim().toUpperCase() === "ADR DOCUMENT MISSING"
         );
-        const val = key ? (v[key] || "").trim().toUpperCase() : "";
+        const val = key ? (v[key] || "").toString().trim().toUpperCase() : "";
         return val === "YES";
-    }).length;
+    });
 
+    // 2. Aktualizacja głównego licznika liczbowego
     const docMissingEl = document.getElementById("adr-doc-missing");
-    if (docMissingEl) docMissingEl.textContent = adrDocMissing;
+    if (docMissingEl) {
+        docMissingEl.textContent = missingVehicles.length;
+    }
 
+    // 3. Budujemy listę pojazdów w formacie: PLATES (INTERNAL NR.)
+    const docMissingListEl = document.getElementById("adr-doc-missing-list");
+    if (docMissingListEl) {
+        if (missingVehicles.length === 0) {
+            docMissingListEl.textContent = "NONE";
+            docMissingListEl.style.color = "#0f9d58";
+        } else {
+            const formattedList = missingVehicles
+                .map((v) => {
+                    const plate = v["PLATES"] || v["REG"] || "N/A";
+                    const internal = v["INTERNAL NR."] || "N/A";
+                    return `${plate} (${internal})`;
+                })
+                .join(", ");
+
+            docMissingListEl.textContent = formattedList;
+            docMissingListEl.style.color = "#ff2a3f";
+        }
+    }
+
+    // 4. Status dla alertów
     const alertsEl = document.getElementById("adr-alerts-active");
     if (alertsEl) {
         alertsEl.textContent = "ON";

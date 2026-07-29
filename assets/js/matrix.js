@@ -3,18 +3,20 @@
 const MATRIX_API_URL =
     "https://script.google.com/macros/s/AKfycbwbZ_KSjyTTDM2iONJC87-jgVZysubMfKChDxDs8l1RKJgjUJ6Q2_7oA_RhuDna39Ra/exec?action=getMatrixData";
 
+const SYSTEM_DATA_URL =
+    "https://script.google.com/macros/s/AKfycbwbZ_KSjyTTDM2iONJC87-jgVZysubMfKChDxDs8l1RKJgjUJ6Q2_7oA_RhuDna39Ra/exec?action=getSystemData";
+
 document.addEventListener("DOMContentLoaded", () => {
     loadMatrix();
 });
 
-// 🔥 Normalizacja nazw — klucz do pełnej macierzy
+// 🔥 Normalizacja nazw
 function normalize(name) {
+    if (!name) return "";
     return String(name)
         .trim()
         .replace(/\s+/g, " ")
         .replace(/\u00A0/g, " ")
-        .normalize("NFKD")
-        .replace(/[^\w\s-]/g, "")
         .toUpperCase();
 }
 
@@ -25,40 +27,53 @@ async function loadMatrix() {
     container.innerHTML = "Loading matrix...";
     container.classList.remove("matrix-grid");
 
-    // 🔥 Pobieramy liczniki CITIES i RELATIONS z Excela
+    let systemCities = [];
+    let systemRelations = [];
+
+    // 1. Pobieramy dane z getSystemData (arkusze CITIES i RELATIONS)
     try {
-        const systemRes = await fetch(
-            "https://script.google.com/macros/s/AKfycbwbZ_KSjyTTDM2iONJC87-jgVZysubMfKChDxDs8l1RKJgjUJ6Q2_7oA_RhuDna39Ra/exec?action=getSystemData"
-        );
+        const systemRes = await fetch(SYSTEM_DATA_URL);
         const systemData = await systemRes.json();
 
-        const citiesCount = systemData.cities?.length || 0;
-        const relationsCount = systemData.relations?.length || 0;
+        // Wyciąganie nazw miast bez względu na format zwracany przez Apps Script
+        if (Array.isArray(systemData.cities)) {
+            systemCities = systemData.cities.map(item => {
+                if (typeof item === 'string') return item;
+                if (Array.isArray(item)) return item[1] || item[0]; // Kolumna B w arkuszu
+                if (typeof item === 'object' && item !== null) {
+                    return item.CITY || item.City || item.city || item.NAME || item.Name || Object.values(item)[1] || Object.values(item)[0];
+                }
+                return String(item);
+            }).filter(Boolean);
+        }
 
-        document.querySelector("#matrix-stats-row .matrix-stat-tile:nth-child(1)").textContent =
-            `${citiesCount} CITIES`;
-
-        document.querySelector("#matrix-stats-row .matrix-stat-tile:nth-child(2)").textContent =
-            `${relationsCount} RELATIONS`;
+        if (Array.isArray(systemData.relations)) {
+            systemRelations = systemData.relations;
+        }
 
     } catch (err) {
-        console.error("Counters load error:", err);
+        console.error("System data load error:", err);
     }
 
-    // 🔥 Ładowanie macierzy
+    // 2. Ładowanie macierzy
     try {
         const res = await fetch(MATRIX_API_URL);
         const data = await res.json();
 
-        const relations = data.relations || [];
+        const relations = (data.relations && data.relations.length > 0) ? data.relations : systemRelations;
 
-        const locations = getLocations(relations);
+        // Łączymy miasta z arkusza CITIES i z RELATIONS
+        const locations = getAllLocations(systemCities, relations);
         const matrix = buildMatrixObject(locations, relations);
+
+        // Liczba miast dokładnie wg wpisów z arkusza CITIES (lub wygenerowanych brakujących)
+        const totalCitiesCount = Math.max(systemCities.length, locations.length);
+        const totalRelationsCount = relations.length;
+
+        updateUIStats(totalCitiesCount, totalRelationsCount);
 
         renderMatrix(locations, matrix);
         initDropdownCities(locations);
-
-        // po wyrenderowaniu podpinamy kliknięcia w nagłówki
         initHeaderClickHighlights();
 
     } catch (err) {
@@ -67,14 +82,56 @@ async function loadMatrix() {
     }
 }
 
-// 🔥 Zbieranie lokalizacji z relations
-function getLocations(relations) {
+// 🔥 Zbieranie PEŁNEJ listy lokalizacji
+function getAllLocations(citiesList, relations) {
     const set = new Set();
-    relations.forEach(r => {
-        if (r.FROM) set.add(normalize(r.FROM));
-        if (r.TO) set.add(normalize(r.TO));
-    });
+
+    if (Array.isArray(citiesList)) {
+        citiesList.forEach(c => {
+            const norm = normalize(c);
+            if (norm) set.add(norm);
+        });
+    }
+
+    if (Array.isArray(relations)) {
+        relations.forEach(r => {
+            if (r.FROM) set.add(normalize(r.FROM));
+            if (r.TO) set.add(normalize(r.TO));
+        });
+    }
+
     return Array.from(set).sort();
+}
+
+// 🔥 Wpisywanie wartości do liczników
+function updateUIStats(citiesCount, relationsCount) {
+    const locText = `${citiesCount} LOCATIONS`;
+    const routeText = `${relationsCount} ROUTES`;
+
+    const locById = document.getElementById("locations-count") ||
+        document.getElementById("btn-locations") ||
+        document.getElementById("locations-btn");
+
+    const routeById = document.getElementById("routes-count") ||
+        document.getElementById("btn-routes") ||
+        document.getElementById("routes-btn");
+
+    if (locById) locById.textContent = locText;
+    if (routeById) routeById.textContent = routeText;
+
+    // Szukanie przycisków w DOM
+    const allElements = document.querySelectorAll("button, div, a, span");
+    allElements.forEach(el => {
+        if (el.children.length > 0) return;
+
+        const txt = el.textContent.trim();
+        if (txt.includes("LOCATIONS") || txt.includes("CITIES")) {
+            el.textContent = locText;
+        }
+        if (txt.includes("ROUTES") || txt.includes("RELATIONS")) {
+            el.textContent = routeText;
+        }
+    });
 }
 
 // 🔥 Budowa macierzy — DWUKIERUNKOWO
@@ -114,13 +171,10 @@ function renderMatrix(locations, matrix) {
     const cols = locations.length + 1;
     container.style.setProperty("--cols", cols);
 
-    // 🔥 JEDEN KROK — MOBILE MA SZTYWNĄ SZEROKOŚĆ - 
-    // TU USTAWIAM SZEROKOSC komorek z miastami PIERWSZEJ KOLUMNY W MACIERZY
     if (window.innerWidth <= 768) {
         container.style.setProperty("--firstColWidth", `85px`);
         container.style.setProperty("--firstColFont", `9px`);
     } else {
-        // DESKTOP — liczymy normalnie
         const longestName = locations.reduce((a, b) => a.length > b.length ? a : b, "");
         const width = longestName.length * 8 + 6;
         const fontSize = 12;
@@ -129,17 +183,8 @@ function renderMatrix(locations, matrix) {
         container.style.setProperty("--firstColFont", `${fontSize}px`);
     }
 
-    // lewy górny róg
     container.appendChild(makeCell("", "matrix-header"));
 
-    // 🔥 MOBILE — SZTYWNA WYSOKOŚĆ NAGŁÓWKÓW (bo są obrócone o 90°)
-    let headerHeight = "120px"; // desktop default
-
-    if (window.innerWidth <= 768) {
-        headerHeight = "85px";   // tu regulujesz wysokość nagłówków na mobile
-    }
-
-    // nagłówki górne
     locations.forEach(loc => {
         const header = makeCell("", "matrix-header");
         const span = document.createElement("span");
@@ -147,18 +192,15 @@ function renderMatrix(locations, matrix) {
         header.appendChild(span);
         header.setAttribute("data-city", loc);
 
-        // 🔥 MOBILE — zmniejszamy wysokość nagłówków
         if (window.innerWidth <= 768) {
             header.style.height = "85px";
             header.style.minHeight = "85px";
             header.style.maxHeight = "85px";
         }
 
-        // 🔥 DESKTOP — NIE USTAWIAMY NIC, wraca pełna wysokość
         container.appendChild(header);
     });
 
-    // wiersze
     locations.forEach((rowLoc, rowIndex) => {
         const rowHeader = makeCell(rowLoc, "matrix-col-header");
         rowHeader.style.height = "24px";
@@ -250,10 +292,6 @@ function showDropdown(inputElement, dropdownElement) {
     dropdownElement.style.top = `${inputElement.offsetHeight}px`;
 }
 
-// ===============================
-// EVENTY DROPDOWNÓW
-// ===============================
-
 if (fromInput && fromDropdown) {
     fromInput.addEventListener("input", () => {
         showDropdown(fromInput, fromDropdown);
@@ -266,7 +304,6 @@ if (toInput && toDropdown) {
     });
 }
 
-// Ukrywanie dropdownów po kliknięciu poza nimi
 document.addEventListener("click", (e) => {
     if (fromDropdown && !fromDropdown.contains(e.target) && !fromInput.contains(e.target)) {
         fromDropdown.style.display = "none";
@@ -305,7 +342,6 @@ function updateDistanceBox() {
     box.textContent = km ? `${km} km` : "— km";
 }
 
-// Aktualizacja po zmianie inputów
 if (fromInput) {
     fromInput.addEventListener("change", updateDistanceBox);
 }
@@ -314,7 +350,7 @@ if (toInput) {
 }
 
 // ===============================
-// AUTO-CLEAR: kliknięcie poza matrix = reset
+// AUTO-CLEAR
 // ===============================
 
 document.addEventListener("pointerup", (e) => {
@@ -343,13 +379,12 @@ document.addEventListener("pointerup", (e) => {
         return;
     }
 
-    document.getElementById("fromCity").value = "";
-    document.getElementById("toCity").value = "";
-    document.getElementById("distanceBox").textContent = "— km";
+    if (document.getElementById("fromCity")) document.getElementById("fromCity").value = "";
+    if (document.getElementById("toCity")) document.getElementById("toCity").value = "";
+    if (document.getElementById("distanceBox")) document.getElementById("distanceBox").textContent = "— km";
 
     clearMatrixHighlights();
 });
-
 
 // ===============================
 // HIGHLIGHT — wiersz, kolumna, komórka + AUTO SCROLL
@@ -367,7 +402,6 @@ function clearMatrixHighlights() {
     });
 }
 
-// 🔥 Podświetlanie na podstawie FROM / TO (z inputów)
 function highlightMatrix(fromCity, toCity) {
     if (!fromCity || !toCity) return;
 
@@ -409,7 +443,6 @@ function highlightMatrix(fromCity, toCity) {
     }
 }
 
-// 🔥 Podpinamy pod updateDistanceBox (zachowujemy puls + auto-scroll)
 const _oldUpdateDistanceBox = updateDistanceBox;
 updateDistanceBox = function () {
     _oldUpdateDistanceBox();
@@ -421,7 +454,7 @@ updateDistanceBox = function () {
 };
 
 // ===============================
-// NOWE: KLIK W MIASTO / NAGŁÓWEK = HIGHLIGHT
+// KLIK W MIASTO / NAGŁÓWEK = HIGHLIGHT
 // ===============================
 
 function initHeaderClickHighlights() {

@@ -9,20 +9,31 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
         rel="stylesheet">
 
-    <!-- WSZYSTKE ORYGINALNE STYLE CSS Z PLIKU FILES.HTML -->
+    <!-- BAZOWE STYLE APLIKACJI -->
     <link rel="stylesheet" href="assets/css/base.css">
     <link rel="stylesheet" href="assets/css/header.css">
     <link rel="stylesheet" href="assets/css/sidebar.css">
     <link rel="stylesheet" href="assets/css/components.css">
     <link rel="stylesheet" href="assets/css/dashboard-widgets.css">
     <link rel="stylesheet" href="assets/css/dashboard-content.css">
-    <link rel="stylesheet" href="assets/css/files.css">
+    <link rel="stylesheet" href="assets/css/admin.css">
 
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="assets/favicon/favicon.ico">
 </head>
 
 <body>
+
+    <!-- REPOSITORY SYNC LOADER OVERLAY -->
+    <div id="repo-sync-loader-overlay" class="repo-sync-loader-overlay">
+        <div class="sync-loader-box">
+            <div class="sync-spinner"></div>
+            <div class="sync-loader-text">
+                <span class="sync-title">SYNCING REPOSITORY DATA...</span>
+                <span class="sync-sub">PLEASE WAIT FOR SYSTEM COUNTERS</span>
+            </div>
+        </div>
+    </div>
 
     <div class="base-root-tile">
 
@@ -70,7 +81,7 @@
             <div class="sidebar-container">
                 <div class="logo-tile logo-tile-3d">
                     <span class="logo-text-main">KP GASLOGISTIK</span>
-                    <span class="logo-text-hover">GAS: LNG CNG H2</span>
+                    <span class="logo-text-hover">LNG CNG H2</span>
                 </div>
 
                 <div class="menu-grid">
@@ -149,13 +160,12 @@
                         <span class="menu-tile-main">Documents</span>
                     </a>
 
-                    <!-- ZAKTUALIZOWANY ACTIVE NA ADMIN -->
                     <a href="admin.html" class="sidebar-tile active">
                         <span class="menu-tile-icon-svg">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                                 <circle cx="12" cy="12" r="3" />
                                 <path
-                                    d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06-.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06-.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
+                                    d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l-.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06-.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06-.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
                             </svg>
                         </span>
                         <span class="menu-tile-main">Admin</span>
@@ -175,9 +185,46 @@
             </div>
 
             <!-- MAIN CONTENT AREA -->
-            <main class="main-window-area">
+            <main class="main-window-area admin-main">
 
                 <div class="command-center">
+
+                    <!-- SEKCJA 1: KALENDARZE DE & PL -->
+                    <section class="section-container calendar-section">
+                        <div class="main-section-card">
+                            <div class="main-section-header">
+                                <h2>Calendar DE &amp; PL</h2>
+                            </div>
+
+                            <div class="calendars-wrapper">
+                                <!-- KALENDARZ NIEMCY -->
+                                <div class="calendar-subcard">
+                                    <div class="calendar-card-header">
+                                        <h3>Deutschland / Germany</h3>
+                                        <div class="calendar-controls">
+                                            <button id="de-prev-month" class="btn-cal-nav">&larr;</button>
+                                            <span id="de-current-month" class="month-display"></span>
+                                            <button id="de-next-month" class="btn-cal-nav">&rarr;</button>
+                                        </div>
+                                    </div>
+                                    <div id="calendar-de"></div>
+                                </div>
+
+                                <!-- KALENDARZ POLSKA -->
+                                <div class="calendar-subcard">
+                                    <div class="calendar-card-header">
+                                        <h3>Polska / Poland</h3>
+                                        <div class="calendar-controls">
+                                            <button id="pl-prev-month" class="btn-cal-nav">&larr;</button>
+                                            <span id="pl-current-month" class="month-display"></span>
+                                            <button id="pl-next-month" class="btn-cal-nav">&rarr;</button>
+                                        </div>
+                                    </div>
+                                    <div id="calendar-pl"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
 
                     <!-- GŁÓWNY, BAZOWY, NADRZĘDNY KAFEL -->
                     <div class="master-container-tile">
@@ -188,34 +235,160 @@
                                 stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                                 <circle cx="12" cy="12" r="3" />
                                 <path
-                                    d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06-.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06-.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
+                                    d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l-.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06-.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06-.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
                             </svg>
                             ADMIN PANEL & REPOSITORY MANAGEMENT
                         </h2>
 
-                        <!-- SEKCJA 1 — STATUS OVERVIEW -->
+                        <!-- SEKCJA STATUS OVERVIEW -->
                         <section class="repository-panel">
                             <div class="panel-dot-texture"></div>
 
                             <header class="panel-header">
-                                <h1>ADMIN REPOSITORY OVERVIEW</h1>
+                                <h1>Admin - counters and statistics</h1>
                                 <div class="header-divider">
                                     <div class="divider-glow"></div>
                                 </div>
                             </header>
 
                             <div class="tiles-grid">
+                                <!-- 1. TRUCKS -->
+                                <div class="tile">
+                                    <div class="icon-wrapper">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <rect x="1" y="3" width="15" height="13" />
+                                            <polygon points="16 8 20 8 23 11 23 16 16 16 16 8" />
+                                            <circle cx="5.5" cy="18.5" r="2.5" />
+                                            <circle cx="18.5" cy="18.5" r="2.5" />
+                                        </svg>
+                                    </div>
+                                    <div class="tile-number" id="cnt-trucks">--</div>
+                                    <div class="tile-label">TRUCKS</div>
+                                </div>
+
+                                <!-- 2. TANKTRAILERS -->
+                                <div class="tile">
+                                    <div class="icon-wrapper">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <rect x="2" y="6" width="20" height="10" rx="3" />
+                                            <circle cx="7" cy="18.5" r="2.5" />
+                                            <circle cx="17" cy="18.5" r="2.5" />
+                                        </svg>
+                                    </div>
+                                    <div class="tile-number" id="cnt-tanktrailers">--</div>
+                                    <div class="tile-label">TANKTRAILERS</div>
+                                </div>
+
+                                <!-- 3. ADR EXPIRED -->
+                                <div class="tile">
+                                    <div class="icon-wrapper">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <circle cx="12" cy="12" r="10" />
+                                            <line x1="12" y1="8" x2="12" y2="12" />
+                                            <line x1="12" y1="16" x2="12.01" y2="16" />
+                                        </svg>
+                                    </div>
+                                    <div class="tile-number" id="cnt-adr-expired">--</div>
+                                    <div class="tile-label">ADR EXPIRED</div>
+                                </div>
+
+                                <!-- 4. ADR DOCUMENT MISSING -->
+                                <div class="tile">
+                                    <div class="icon-wrapper">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                                            <line x1="9" y1="15" x2="15" y2="15" />
+                                        </svg>
+                                    </div>
+                                    <div class="tile-number" id="cnt-adr-missing">--</div>
+                                    <div class="tile-label">ADR DOC. MISSING</div>
+                                </div>
+
+                                <!-- 5. ADR ALERTS ACTIVE -->
                                 <div class="tile">
                                     <div class="icon-wrapper">
                                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                             <path
-                                                d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
+                                                d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0" />
                                         </svg>
                                     </div>
-                                    <div class="tile-number" id="cnt-folders">10</div>
-                                    <div class="tile-label">FOLDERS</div>
+                                    <div class="tile-number" id="cnt-adr-alerts">--</div>
+                                    <div class="tile-label">Sent Reminders</div>
                                 </div>
 
+                                <!-- 6. DRIVERS -->
+                                <div class="tile">
+                                    <div class="icon-wrapper">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                                            <circle cx="12" cy="7" r="4" />
+                                        </svg>
+                                    </div>
+                                    <div class="tile-number" id="cnt-drivers">--</div>
+                                    <div class="tile-label">DRIVERS</div>
+                                </div>
+
+                                <!-- 7. CITIES -->
+                                <div class="tile">
+                                    <div class="icon-wrapper">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M3 21h18M3 7v14M8 3v18M13 11v10M18 7v14" />
+                                        </svg>
+                                    </div>
+                                    <div class="tile-number" id="cnt-cities">--</div>
+                                    <div class="tile-label">CITIES</div>
+                                </div>
+
+                                <!-- 8. COUNTRIES -->
+                                <div class="tile">
+                                    <div class="icon-wrapper">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <circle cx="12" cy="12" r="10" />
+                                            <path
+                                                d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                                        </svg>
+                                    </div>
+                                    <div class="tile-number" id="cnt-countries">--</div>
+                                    <div class="tile-label">COUNTRIES</div>
+                                </div>
+
+                                <!-- 9. RELATIONS / ROUTES -->
+                                <div class="tile">
+                                    <div class="icon-wrapper">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6" />
+                                            <path d="M8 2v16M16 6v16" />
+                                        </svg>
+                                    </div>
+                                    <div class="tile-number" id="cnt-relations">--</div>
+                                    <div class="tile-label">RELATIONS / ROUTES</div>
+                                </div>
+
+                                <!-- 10. VIGO STATIONS (DE) -->
+                                <div class="tile">
+                                    <div class="icon-wrapper">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                                            <circle cx="12" cy="10" r="3" />
+                                        </svg>
+                                    </div>
+                                    <div class="tile-number" id="cnt-vigo">--</div>
+                                    <div class="tile-label">VIGO STATIONS (DE)</div>
+                                </div>
+
+                                <!-- 11. HUBS (ALL) -->
+                                <div class="tile">
+                                    <div class="icon-wrapper">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <rect x="2" y="2" width="20" height="8" rx="2" />
+                                            <rect x="2" y="14" width="20" height="8" rx="2" />
+                                        </svg>
+                                    </div>
+                                    <div class="tile-number" id="cnt-hubs">--</div>
+                                    <div class="tile-label">HUBS (ALL)</div>
+                                </div>
+
+                                <!-- 12. WUSTERMARK TIME -->
                                 <div class="tile">
                                     <div class="icon-wrapper">
                                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -223,21 +396,47 @@
                                             <polyline points="12 6 12 12 16 14" />
                                         </svg>
                                     </div>
-                                    <div class="tile-number" id="cnt-access">24/7</div>
-                                    <div class="tile-label">ACCESS</div>
+                                    <div class="tile-number text-small" id="cnt-wustermark-time">--:--:--</div>
+                                    <div class="tile-label">WUSTERMARK TIME</div>
                                 </div>
 
+                                <!-- 13. KW - WEEK NUMBER -->
                                 <div class="tile">
                                     <div class="icon-wrapper">
                                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                                            <polyline points="14 2 14 8 20 8" />
+                                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                                            <line x1="16" y1="2" x2="16" y2="6" />
+                                            <line x1="8" y1="2" x2="8" y2="6" />
+                                            <line x1="3" y1="10" x2="21" y2="10" />
                                         </svg>
                                     </div>
-                                    <div class="tile-number text-small" id="cnt-downloads">479</div>
-                                    <div class="tile-label">DOWNLOADS</div>
+                                    <div class="tile-number" id="cnt-kw-week">KW --</div>
+                                    <div class="tile-label">KW - WEEK NUMBER</div>
                                 </div>
 
+                                <!-- 14. LAST UPDATE -->
+                                <div class="tile">
+                                    <div class="icon-wrapper">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67" />
+                                        </svg>
+                                    </div>
+                                    <div class="tile-number text-small-sub" id="cnt-last-update">--:--:--</div>
+                                    <div class="tile-label">LAST UPDATE</div>
+                                </div>
+
+                                <!-- 15. STATUS MONITOR -->
+                                <div class="tile">
+                                    <div class="icon-wrapper">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+                                        </svg>
+                                    </div>
+                                    <div class="tile-number text-small" id="cnt-status-monitor">CHECKING</div>
+                                    <div class="tile-label">STATUS MONITOR</div>
+                                </div>
+
+                                <!-- 16. API ONLINE -->
                                 <div class="tile">
                                     <div class="icon-wrapper">
                                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -246,253 +445,212 @@
                                             <circle cx="12" cy="12" r="1" />
                                         </svg>
                                     </div>
-                                    <div class="tile-number text-small" id="cnt-live-repo">LIVE</div>
-                                    <div class="tile-label">REPOSITORY</div>
-                                </div>
-
-                                <div class="tile">
-                                    <div class="icon-wrapper">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                                            <polyline points="14 2 14 8 20 8" />
-                                        </svg>
-                                    </div>
-                                    <div class="tile-number text-small" id="cnt-new-files">NEW</div>
-                                    <div class="tile-label">NEW FILES</div>
-                                </div>
-
-                                <div class="tile">
-                                    <div class="icon-wrapper">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67" />
-                                        </svg>
-                                    </div>
-                                    <div class="tile-number text-small-sub" id="cnt-updated-act">UPDATED</div>
-                                    <div class="tile-label">FOLDER ACTIVITY</div>
-                                </div>
-
-                                <div class="tile">
-                                    <div class="icon-wrapper">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <path
-                                                d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
-                                        </svg>
-                                    </div>
-                                    <div class="tile-number" id="cnt-repo-folders">ON</div>
-                                    <div class="tile-label">REPOSITORY<br>FOLDERS</div>
-                                </div>
-
-                                <div class="tile">
-                                    <div class="icon-wrapper">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
-                                        </svg>
-                                    </div>
-                                    <div class="tile-number text-small" id="cnt-status-mon">LIVE</div>
-                                    <div class="tile-label">STATUS MONITOR</div>
+                                    <div class="tile-number text-small" id="cnt-api-online">OFFLINE</div>
+                                    <div class="tile-label">API ONLINE</div>
                                 </div>
                             </div>
                         </section>
 
-                        <!-- SEKCJA 2 — SEARCH -->
-                        <section class="inner-command-center">
-                            <h3 class="weather-watch-title">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff2a6d"
-                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <circle cx="11" cy="11" r="8"></circle>
-                                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                                </svg>
-                                ADMIN FILE SEARCH
-                            </h3>
-
-                            <div class="files-search-bar" style="max-width: 50%; margin: 0 auto;">
-                                <div class="files-search-main">
-                                    <div class="file-search-inner">
-                                        <input type="text" id="global-search-input" class="file-search-input"
-                                            placeholder="Szukaj pliku w panelu admina..." autocomplete="off" />
-                                        <div id="global-search-suggestions" class="file-search-suggestions"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </section>
-
-                        <!-- SEKCJA 3 — FOLDERS / FTP -->
+                        <!-- SEKCJA DATA CENTER -->
                         <main class="repository-panel files-section-panel">
                             <div class="panel-dot-texture"></div>
 
                             <header class="panel-header">
-                                <h1>FOLDERS / FTP (ADMIN)</h1>
+                                <h1>Admin - data center</h1>
                                 <div class="header-divider">
                                     <div class="divider-glow"></div>
                                 </div>
                             </header>
 
                             <div class="tiles-grid">
-                                <div class="tile folder-card" id="folder-card-kp">
-                                    <div class="icon-wrapper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                            stroke-width="2">
+                                <!-- Kafel 1: LOGIN HISTORY -->
+                                <div class="tile">
+                                    <div class="icon-wrapper">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M12 8v4l3 3m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0z" />
+                                        </svg>
+                                    </div>
+                                    <div class="tile-number" id="cnt-login-history">--</div>
+                                    <div class="tile-label">LOGIN HISTORY</div>
+                                </div>
+
+                                <!-- Kafel 2: EVENTS / REMINDERS -->
+                                <div class="tile">
+                                    <div class="icon-wrapper">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path
+                                                d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0" />
+                                        </svg>
+                                    </div>
+                                    <div class="tile-number" id="cnt-reminders">--</div>
+                                    <div class="tile-label">EVENTS / REMINDERS</div>
+                                </div>
+
+                                <!-- Kafel 3: USERS -->
+                                <div class="tile">
+                                    <div class="icon-wrapper">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                                            <circle cx="9" cy="7" r="4" />
+                                            <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                                            <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                                        </svg>
+                                    </div>
+                                    <div class="tile-number" id="cnt-users">--</div>
+                                    <div class="tile-label">USERS</div>
+                                </div>
+
+                                <!-- Kafel 4: ACCESS -->
+                                <div class="tile">
+                                    <div class="icon-wrapper">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                                            <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                                        </svg>
+                                    </div>
+                                    <div class="tile-number text-small" id="cnt-access-status">24/7</div>
+                                    <div class="tile-label">ACCESS</div>
+                                </div>
+
+                                <!-- Kafel 5: REPOSITORY ACTIVE -->
+                                <div class="tile">
+                                    <div class="icon-wrapper">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                             <path
                                                 d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
-                                        </svg></div>
-                                    <div class="tile-number file-tile-value" id="folder-count-kp">--</div>
-                                    <div class="tile-label file-tile-title">KP</div>
+                                        </svg>
+                                    </div>
+                                    <div class="tile-number text-small" id="cnt-repo-active">ACTIVE</div>
+                                    <div class="tile-label">REPOSITORY ACTIVE</div>
                                 </div>
-                                <div class="tile folder-card" id="folder-card-vigo">
-                                    <div class="icon-wrapper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                            stroke-width="2">
-                                            <path
-                                                d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
-                                        </svg></div>
-                                    <div class="tile-number file-tile-value" id="folder-count-vigo">--</div>
-                                    <div class="tile-label file-tile-title">VIGO</div>
+
+                                <!-- Kafel 6: GOOGLE DRIVE -->
+                                <div class="tile">
+                                    <div class="icon-wrapper">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z" />
+                                        </svg>
+                                    </div>
+                                    <div class="tile-number text-small" id="cnt-gdrive-status">ONLINE</div>
+                                    <div class="tile-label">GOOGLE DRIVE</div>
                                 </div>
-                                <div class="tile folder-card" id="folder-card-mhp">
-                                    <div class="icon-wrapper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                            stroke-width="2">
-                                            <path
-                                                d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
-                                        </svg></div>
-                                    <div class="tile-number file-tile-value" id="folder-count-mhp">--</div>
-                                    <div class="tile-label file-tile-title">MHP</div>
+
+                                <!-- Kafel 7: REPOSITORY ONLINE -->
+                                <div class="tile">
+                                    <div class="icon-wrapper">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+                                        </svg>
+                                    </div>
+                                    <div class="tile-number text-small" id="cnt-repo-online">ONLINE</div>
+                                    <div class="tile-label">REPOSITORY ONLINE</div>
                                 </div>
-                                <div class="tile folder-card" id="folder-card-ym">
-                                    <div class="icon-wrapper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                            stroke-width="2">
-                                            <path
-                                                d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
-                                        </svg></div>
-                                    <div class="tile-number file-tile-value" id="folder-count-ym">--</div>
-                                    <div class="tile-label file-tile-title">YM</div>
-                                </div>
-                                <div class="tile folder-card" id="folder-card-word">
-                                    <div class="icon-wrapper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                            stroke-width="2">
-                                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                                            <polyline points="14 2 14 8 20 8" />
-                                        </svg></div>
-                                    <div class="tile-number file-tile-value" id="folder-count-word">--</div>
-                                    <div class="tile-label file-tile-title">WORD</div>
-                                </div>
-                                <div class="tile folder-card" id="folder-card-excel">
-                                    <div class="icon-wrapper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                            stroke-width="2">
-                                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                                            <polyline points="14 2 14 8 20 8" />
-                                        </svg></div>
-                                    <div class="tile-number file-tile-value" id="folder-count-excel">--</div>
-                                    <div class="tile-label file-tile-title">EXCEL</div>
-                                </div>
-                                <div class="tile folder-card" id="folder-card-pdf">
-                                    <div class="icon-wrapper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                            stroke-width="2">
-                                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                                            <polyline points="14 2 14 8 20 8" />
-                                        </svg></div>
-                                    <div class="tile-number file-tile-value" id="folder-count-pdf">--</div>
-                                    <div class="tile-label file-tile-title">PDF</div>
-                                </div>
-                                <div class="tile folder-card" id="folder-card-txt">
-                                    <div class="icon-wrapper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                            stroke-width="2">
-                                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                                            <polyline points="14 2 14 8 20 8" />
-                                        </svg></div>
-                                    <div class="tile-number file-tile-value" id="folder-count-txt">--</div>
-                                    <div class="tile-label file-tile-title">TXT</div>
-                                </div>
-                                <div class="tile folder-card" id="folder-card-pictures">
-                                    <div class="icon-wrapper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                            stroke-width="2">
-                                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
-                                            <circle cx="8.5" cy="8.5" r="1.5" />
-                                            <polyline points="21 15 16 10 5 21" />
-                                        </svg></div>
-                                    <div class="tile-number file-tile-value" id="folder-count-pictures">--</div>
-                                    <div class="tile-label file-tile-title">PICTURES</div>
-                                </div>
-                                <div class="tile folder-card" id="folder-card-video">
-                                    <div class="icon-wrapper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                            stroke-width="2">
-                                            <polygon points="23 7 16 12 23 17 23 7" />
-                                            <rect x="1" y="5" width="15" height="14" rx="2" ry="2" />
-                                        </svg></div>
-                                    <div class="tile-number file-tile-value" id="folder-count-video">--</div>
-                                    <div class="tile-label file-tile-title">VIDEO</div>
+
+                                <!-- Kafel 8: MAP STATUS -->
+                                <div class="tile">
+                                    <div class="icon-wrapper">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6" />
+                                            <path d="M8 2v16M16 6v16" />
+                                        </svg>
+                                    </div>
+                                    <div class="tile-number text-small" id="cnt-map-status">READY</div>
+                                    <div class="tile-label">MAP STATUS</div>
                                 </div>
                             </div>
                         </main>
 
-                        <!-- SEKCJA 4 — CLOUD STATUS -->
-                        <main class="repository-panel cloud-status-panel">
+                        <!-- SEKCJA WORLD TIME -->
+                        <div class="repository-panel cloud-status-panel">
                             <div class="panel-dot-texture"></div>
 
-                            <header class="panel-header">
-                                <h1>REPOSITORY & CLOUD STATUS</h1>
+                            <div class="panel-header">
+                                <h1>WORLD TIME</h1>
                                 <div class="header-divider">
                                     <div class="divider-glow"></div>
                                 </div>
-                            </header>
+                            </div>
 
-                            <div class="tiles-grid cloud-grid">
-                                <div class="tile">
-                                    <div class="icon-wrapper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                            stroke-width="2">
-                                            <rect x="2" y="2" width="20" height="8" rx="2" ry="2" />
-                                            <rect x="2" y="14" width="20" height="8" rx="2" ry="2" />
-                                            <line x1="6" y1="6" x2="6.01" y2="6" />
-                                            <line x1="6" y1="18" x2="6.01" y2="18" />
-                                        </svg></div>
-                                    <div class="tile-number file-tile-value" id="cnt-repo-online">--</div>
-                                    <div class="tile-label file-tile-title">Repository ONLINE</div>
+                            <div class="cloud-grid world-time-grid">
+                                <!-- GERMANY - BERLIN -->
+                                <div class="tile time-tile" data-timezone="Europe/Berlin">
+                                    <div class="icon-wrapper">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <circle cx="12" cy="12" r="10"></circle>
+                                            <polyline points="12 6 12 12 16 14"></polyline>
+                                        </svg>
+                                    </div>
+                                    <div class="tile-number text-small time-val">--:--:--</div>
+                                    <div class="time-date">--.--.----</div>
+                                    <div class="tile-label">GERMANY - BERLIN</div>
                                 </div>
-                                <div class="tile">
-                                    <div class="icon-wrapper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                            stroke-width="2">
-                                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                                            <polyline points="14 2 14 8 20 8" />
-                                            <line x1="16" y1="13" x2="8" y2="13" />
-                                            <line x1="16" y1="17" x2="8" y2="17" />
-                                        </svg></div>
-                                    <div class="tile-number file-tile-value" id="cnt-files-total">--</div>
-                                    <div class="tile-label file-tile-title">All Files</div>
+
+                                <!-- UKRAINE - KYIV -->
+                                <div class="tile time-tile" data-timezone="Europe/Kyiv">
+                                    <div class="icon-wrapper">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <circle cx="12" cy="12" r="10"></circle>
+                                            <polyline points="12 6 12 12 16 14"></polyline>
+                                        </svg>
+                                    </div>
+                                    <div class="tile-number text-small time-val">--:--:--</div>
+                                    <div class="time-date">--.--.----</div>
+                                    <div class="tile-label">UKRAINE - KYIV</div>
                                 </div>
-                                <div class="tile">
-                                    <div class="icon-wrapper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                            stroke-width="2">
-                                            <polyline points="23 4 23 10 17 10" />
-                                            <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
-                                        </svg></div>
-                                    <div class="tile-number text-small file-tile-value" id="cnt-last-sync">--</div>
-                                    <div class="tile-label file-tile-title">Last Sync</div>
+
+                                <!-- ENGLAND - LONDON -->
+                                <div class="tile time-tile" data-timezone="Europe/London">
+                                    <div class="icon-wrapper">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <circle cx="12" cy="12" r="10"></circle>
+                                            <polyline points="12 6 12 12 16 14"></polyline>
+                                        </svg>
+                                    </div>
+                                    <div class="tile-number text-small time-val">--:--:--</div>
+                                    <div class="time-date">--.--.----</div>
+                                    <div class="tile-label">ENGLAND - LONDON</div>
                                 </div>
-                                <div class="tile">
-                                    <div class="icon-wrapper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                            stroke-width="2">
-                                            <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z" />
-                                        </svg></div>
-                                    <div class="tile-number file-tile-value" id="cnt-gdrive-status">--</div>
-                                    <div class="tile-label file-tile-title">Google Drive CONNECTED</div>
+
+                                <!-- TURKEY -->
+                                <div class="tile time-tile" data-timezone="Europe/Istanbul">
+                                    <div class="icon-wrapper">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <circle cx="12" cy="12" r="10"></circle>
+                                            <polyline points="12 6 12 12 16 14"></polyline>
+                                        </svg>
+                                    </div>
+                                    <div class="tile-number text-small time-val">--:--:--</div>
+                                    <div class="time-date">--.--.----</div>
+                                    <div class="tile-label">TURKEY</div>
                                 </div>
-                                <div class="tile">
-                                    <div class="icon-wrapper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                            stroke-width="2">
-                                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                                            <circle cx="12" cy="7" r="4" />
-                                        </svg></div>
-                                    <div class="tile-number text-small-sub file-tile-value" id="cnt-driver-id">Driver
-                                        ---</div>
-                                    <div class="tile-label file-tile-title">Drivers</div>
+
+                                <!-- NEW YORK -->
+                                <div class="tile time-tile" data-timezone="America/New_York">
+                                    <div class="icon-wrapper">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <circle cx="12" cy="12" r="10"></circle>
+                                            <polyline points="12 6 12 12 16 14"></polyline>
+                                        </svg>
+                                    </div>
+                                    <div class="tile-number text-small time-val">--:--:--</div>
+                                    <div class="time-date">--.--.----</div>
+                                    <div class="tile-label">NEW YORK</div>
                                 </div>
-                                <div class="tile">
-                                    <div class="icon-wrapper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                            stroke-width="2">
-                                            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
-                                        </svg></div>
-                                    <div class="tile-number file-tile-value" id="cnt-api-status">--</div>
-                                    <div class="tile-label file-tile-title">API ONLINE</div>
+
+                                <!-- AUSTRALIA -->
+                                <div class="tile time-tile" data-timezone="Australia/Sydney">
+                                    <div class="icon-wrapper">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <circle cx="12" cy="12" r="10"></circle>
+                                            <polyline points="12 6 12 12 16 14"></polyline>
+                                        </svg>
+                                    </div>
+                                    <div class="tile-number text-small time-val">--:--:--</div>
+                                    <div class="time-date">--.--.----</div>
+                                    <div class="tile-label">AUSTRALIA</div>
                                 </div>
                             </div>
-                        </main>
+                        </div>
 
                     </div>
                 </div>
@@ -560,10 +718,10 @@
         </form>
     </div>
 
-    <!-- SKRYPTY JS (W TYM DEDYKOWANY ADMIN.JS) -->
+    <!-- SKRYPTY JS -->
     <script src="assets/js/main.js"></script>
     <script src="assets/js/auth.js"></script>
-    <script src="assets/js/admin.js"></script>
+    <script type="module" src="assets/js/admin/admin.js"></script>
 
 </body>
 

@@ -1,14 +1,29 @@
 /* ==========================================================================
-   AUTH.JS — AUDYT + OPTYMALIZACJA
+   AUTH.JS — AUDYT + LOGOUT & PREVENT DOUBLE LOGIN
    ========================================================================== */
 
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwbZ_KSjyTTDM2iONJC87-jgVZysubMfKChDxDs8l1RKJgjUJ6Q2_7oA_RhuDna39Ra/exec";
 
 /* ==========================================================================
-   POPUP OPEN / CLOSE
+   POPUP OPEN / CLOSE / LOGOUT CHECK
    ========================================================================== */
 
+/**
+ * Otwiera popup logowania lub proponuje wylogowanie, jeśli użytkownik jest już zalogowany.
+ */
 function openAuthPopup() {
+    const currentUser = localStorage.getItem('currentUser');
+
+    // Jeśli użytkownik jest już zalogowany, pytamy o wylogowanie
+    if (currentUser) {
+        const confirmLogout = confirm(`Zalogowano jako: ${currentUser.toUpperCase()}\n\nCzy chcesz się wylogować?`);
+        if (confirmLogout) {
+            logoutUser();
+        }
+        return; // Nie otwieramy modala logowania!
+    }
+
+    // Jeśli nie jest zalogowany, otwieramy modal z formularzem
     const popup = document.getElementById('auth-popup');
     if (popup) popup.style.display = 'flex';
 }
@@ -19,12 +34,11 @@ function closeAuthPopup() {
 }
 
 /* ==========================================================================
-   OPERATOR ICONS → OPEN POPUP (DODANE)
+   OPERATOR ICONS → OPEN POPUP / LOGOUT
    ========================================================================== */
 
 function openLoginPopup() {
-    const popup = document.getElementById('auth-popup');
-    if (popup) popup.style.display = 'flex';
+    openAuthPopup();
 }
 
 /* ==========================================================================
@@ -70,11 +84,12 @@ function handleLogin() {
 
                 closeAuthPopup();
                 alert("Login Successful\n\nWelcome to the Command Center.");
-                updateOperatorDisplay();
 
-                /* ==========================================================================
-                   REDIRECT TO CLOUD.HTML (DODANE)
-                   ========================================================================== */
+                if (typeof updateOperatorDisplay === 'function') {
+                    updateOperatorDisplay();
+                }
+
+                /* Redirect do odpowiedniej strony po logowaniu */
                 window.location.href = "cloud.html";
 
             } else {
@@ -100,10 +115,13 @@ function logoutUser() {
     }
 
     alert("Logged Out\n\nSession has been closed.");
+
+    // Przekierowanie na stronę główną/admin po wylogowaniu
+    window.location.href = "admin.html";
 }
 
 /* ==========================================================================
    DEBUG
    ========================================================================== */
 
-console.log("AUTH.JS LOADED");
+console.log("AUTH.JS LOADED WITH LOGOUT & PREVENT RE-LOGIN");
