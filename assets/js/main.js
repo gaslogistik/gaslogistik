@@ -232,19 +232,19 @@ window.addEventListener('DOMContentLoaded', () => {
         img.addEventListener('click', () => {
             modalImg.src = img.src;
             modal.style.display = 'flex';
-        });
+        }, { passive: true });
     });
 
     // zamykanie krzyżykiem
     closeBtn.addEventListener('click', (e) => {
         e.stopPropagation();
         modal.style.display = 'none';
-    });
+    }, { passive: true });
 
     // zamykanie kliknięciem poza obrazkiem
     modal.addEventListener('click', (e) => {
         if (e.target === modal) {
             modal.style.display = 'none';
         }
-    });
+    }, { passive: true });
 });

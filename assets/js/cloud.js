@@ -14,7 +14,6 @@ const FOLDER_KEYS = ['KP', 'VIGO', 'MHP', 'YM', 'WORD', 'EXCEL', 'PDF', 'TXT', '
 
 document.addEventListener('DOMContentLoaded', () => {
     injectHighlightStyles();
-    setInitialLoadingState(true);
     initGlobalSearch();
     initModalEvents();
     fetchDriveData();
@@ -22,7 +21,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 async function fetchDriveData() {
     updateApiStatus('SYNCING...');
-    setInitialLoadingState(true);
     try {
         const response = await fetch(API_URL);
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
@@ -37,48 +35,12 @@ async function fetchDriveData() {
         console.error('Error fetching data from Google Drive:', error);
         updateApiStatus('OFFLINE');
         updateCloudStatus('ERROR');
-    } finally {
-        setInitialLoadingState(false);
     }
 }
 
 /* ============================================================
-   2. COUNTERS MANAGEMENT & CLEAN SPINNER LOADING STATE
+   2. COUNTERS MANAGEMENT
    ============================================================ */
-
-function setInitialLoadingState(isLoading) {
-    const targetElements = document.querySelectorAll('.folder-card, .counter-card, .stat-card, .file-card-item, [id^="folder-card-"], [id^="cnt-"]');
-    let loaderOverlay = document.getElementById('repo-sync-loader-overlay');
-
-    if (isLoading) {
-        targetElements.forEach(el => {
-            el.style.pointerEvents = 'none';
-        });
-
-        if (!loaderOverlay) {
-            loaderOverlay = document.createElement('div');
-            loaderOverlay.id = 'repo-sync-loader-overlay';
-            loaderOverlay.innerHTML = `
-                <div class="sync-loader-box">
-                    <div class="sync-spinner"></div>
-                    <div class="sync-loader-text">
-                        <strong>File Synchronization</strong>
-                        <span>Wait a Moment...</span>
-                    </div>
-                </div>
-            `;
-            document.body.appendChild(loaderOverlay);
-        }
-    } else {
-        targetElements.forEach(el => {
-            el.style.pointerEvents = 'auto';
-        });
-
-        if (loaderOverlay) {
-            loaderOverlay.remove();
-        }
-    }
-}
 
 function updateCounters(data) {
     if (!data) return;
@@ -379,7 +341,7 @@ function initGlobalSearch() {
 }
 
 /* ============================================================
-   6. ISOLATED CSS STRUCTURE & LOADER STYLES
+   6. ISOLATED CSS STRUCTURE & STYLES
    ============================================================ */
 
 function injectHighlightStyles() {
@@ -403,60 +365,6 @@ function injectHighlightStyles() {
     const style = document.createElement('style');
     style.id = 'custom-modal-fixes-style';
     style.innerHTML = `
-        /* SYNC LOADER OVERLAY */
-        #repo-sync-loader-overlay {
-            position: fixed;
-            top: 50%;
-            left: 57%;
-            transform: translate(-50%, -50%);
-            z-index: 9999;
-            pointer-events: none;
-        }
-
-        .sync-loader-box {
-            display: flex;
-            align-items: center;
-            gap: 24px;
-            background: rgba(255, 255, 255, 0.95);
-            padding: 28px 42px;
-            border-radius: 24px;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
-            border: 2px solid rgba(255, 45, 85, 0.25);
-            backdrop-filter: blur(8px);
-        }
-
-        .sync-spinner {
-            width: 56px;
-            height: 56px;
-            border: 5px solid rgba(255, 45, 85, 0.2);
-            border-top-color: #ff2d55;
-            border-radius: 50%;
-            animation: syncSpin 0.8s linear infinite;
-        }
-
-        @keyframes syncSpin {
-            to { transform: rotate(360deg); }
-        }
-
-        .sync-loader-text {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .sync-loader-text strong {
-            font-size: 20px;
-            color: #1a202c;
-            font-weight: 700;
-            letter-spacing: 0.4px;
-        }
-
-        .sync-loader-text span {
-            font-size: 16px;
-            color: #718096;
-            font-weight: 500;
-        }
-
         /* GLOBAL SEARCH BAR (SECTION 2) */
         .files-search-bar:not(#files-modal .files-search-bar) {
             width: 80% !important;
@@ -473,9 +381,6 @@ function injectHighlightStyles() {
                 max-width: 100% !important;
                 margin-left: 0 !important;
                 margin-right: 0 !important;
-            }
-            #repo-sync-loader-overlay {
-                left: 50% !important;
             }
         }
 

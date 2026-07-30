@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KP GASLOGISTIK - Drivers</title>
+    <title>KP GASLOGISTIK - Cloud</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
         rel="stylesheet">
@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="assets/css/components.css">
     <link rel="stylesheet" href="assets/css/dashboard-widgets.css">
     <link rel="stylesheet" href="assets/css/dashboard-content.css">
-    <link rel="stylesheet" href="assets/css/drivers.css">
+    <link rel="stylesheet" href="assets/css/cloud.css">
 
     <!-- Poprawiona ścieżka do favicon w folderze assets/favicon -->
     <link rel="icon" type="image/x-icon" href="assets/favicon/favicon.ico">
@@ -128,7 +128,7 @@
                         <span class="menu-tile-main">Addresses</span>
                     </a>
 
-                    <a href="drivers.html" class="sidebar-tile active">
+                    <a href="drivers.html" class="sidebar-tile">
                         <span class="menu-tile-icon-svg">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
@@ -146,6 +146,16 @@
                             </svg>
                         </span>
                         <span class="menu-tile-main">Documents</span>
+                    </a>
+
+                    <!-- Zaktualizowany active oraz ikona dla zakładki Cloud -->
+                    <a href="cloud.html" class="sidebar-tile active">
+                        <span class="menu-tile-icon-svg">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z" />
+                            </svg>
+                        </span>
+                        <span class="menu-tile-main">Cloud</span>
                     </a>
 
                     <a href="admin.html" class="sidebar-tile">
@@ -177,26 +187,25 @@
 
                 <div class="command-center">
 
-                    <!-- GŁÓWNY, BAZOWY, NADRZĘDNY KAFEL (DOCUMENTS & FILE REPOSITORY) -->
+                    <!-- GŁÓWNY, BAZOWY, NADRZĘDNY KAFEL -->
                     <div class="master-container-tile">
 
-                        <!-- NADRZĘDNY NAGŁÓWEK DLA CAŁEGO KONTENERA -->
+                        <!-- NADRZĘDNY NAGłÓWEK DLA CAŁEGO KONTENERA -->
                         <h2 class="weather-watch-title"
                             style="font-size: 18px; margin-bottom: 20px; border-bottom: 2px solid rgba(255, 42, 109, 0.3); padding-bottom: 10px;">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ff2a6d"
                                 stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z">
-                                </path>
+                                <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path>
                             </svg>
-                            DOCUMENTS & FILE REPOSITORY
+                            CLOUD STORAGE & REPOSITORY
                         </h2>
 
-                        <!-- SEKCJA 1 — STATUS OVERVIEW (WZÓR DRIVER DOWNLOAD CENTER) -->
+                        <!-- SEKCJA 1 — STATUS OVERVIEW -->
                         <section class="repository-panel">
                             <div class="panel-dot-texture"></div>
 
                             <header class="panel-header">
-                                <h1>FILES REPOSITORY - DRIVER DOWNLOAD CENTER</h1>
+                                <h1>CLOUD REPOSITORY - CENTER - (under construction... soon...)</h1>
                                 <div class="header-divider">
                                     <div class="divider-glow"></div>
                                 </div>
@@ -204,7 +213,6 @@
 
                             <div class="tiles-grid">
 
-                                <!-- KAFEL 1 -->
                                 <div class="tile">
                                     <div class="icon-wrapper">
                                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -216,7 +224,6 @@
                                     <div class="tile-label">FOLDERS</div>
                                 </div>
 
-                                <!-- KAFEL 2 -->
                                 <div class="tile">
                                     <div class="icon-wrapper">
                                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -228,7 +235,6 @@
                                     <div class="tile-label">ACCESS</div>
                                 </div>
 
-                                <!-- KAFEL 3 (Zmieniony na stałą wartość 479) -->
                                 <div class="tile">
                                     <div class="icon-wrapper">
                                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -240,7 +246,6 @@
                                     <div class="tile-label">DOWNLOADS</div>
                                 </div>
 
-                                <!-- KAFEL 4 -->
                                 <div class="tile">
                                     <div class="icon-wrapper">
                                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -253,7 +258,6 @@
                                     <div class="tile-label">REPOSITORY</div>
                                 </div>
 
-                                <!-- KAFEL 5 -->
                                 <div class="tile">
                                     <div class="icon-wrapper">
                                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -265,7 +269,6 @@
                                     <div class="tile-label">NEW FILES</div>
                                 </div>
 
-                                <!-- KAFEL 6 -->
                                 <div class="tile">
                                     <div class="icon-wrapper">
                                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -276,7 +279,6 @@
                                     <div class="tile-label">FOLDER ACTIVITY</div>
                                 </div>
 
-                                <!-- KAFEL 7 (Zmieniony na stały napis ON) -->
                                 <div class="tile">
                                     <div class="icon-wrapper">
                                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -288,7 +290,6 @@
                                     <div class="tile-label">REPOSITORY<br>FOLDERS</div>
                                 </div>
 
-                                <!-- KAFEL 8 -->
                                 <div class="tile">
                                     <div class="icon-wrapper">
                                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -302,7 +303,7 @@
                             </div>
                         </section>
 
-                        <!-- SEKCJA 2 — ADDRESS SEARCH (GLOBAL FILE SEARCH - 50% SZEROKOŚCI) -->
+                        <!-- SEKCJA 2 — ADDRESS SEARCH -->
                         <section class="inner-command-center">
                             <h3 class="weather-watch-title">
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff2a6d"
@@ -310,7 +311,7 @@
                                     <circle cx="11" cy="11" r="8"></circle>
                                     <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                                 </svg>
-                                ADDRESS SEARCH
+                                ADDRESS SEARCH - (under construction... soon...)
                             </h3>
 
                             <div class="files-search-bar" style="max-width: 50%; margin: 0 auto;">
@@ -325,14 +326,12 @@
                             </div>
                         </section>
 
-                        <!-- ============================================================
-                                                   SEKCJA 3 — FOLDERS / FTP (10 FOLDERÓW W STYLU 3D GLASS)
-                                                   ============================================================ -->
+                        <!-- SEKCJA 3 — FOLDERS / FTP -->
                         <main class="repository-panel files-section-panel">
                             <div class="panel-dot-texture"></div>
 
                             <header class="panel-header">
-                                <h1>FOLDERS / FTP</h1>
+                                <h1>FOLDERS / FTP- (under construction... soon...)</h1>
                                 <div class="header-divider">
                                     <div class="divider-glow"></div>
                                 </div>
@@ -340,7 +339,6 @@
 
                             <div class="tiles-grid">
 
-                                <!-- 1. KP -->
                                 <div class="tile folder-card" id="folder-card-kp">
                                     <div class="icon-wrapper">
                                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -352,7 +350,6 @@
                                     <div class="tile-label file-tile-title">KP</div>
                                 </div>
 
-                                <!-- 2. VIGO -->
                                 <div class="tile folder-card" id="folder-card-vigo">
                                     <div class="icon-wrapper">
                                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -364,7 +361,6 @@
                                     <div class="tile-label file-tile-title">VIGO</div>
                                 </div>
 
-                                <!-- 3. MHP -->
                                 <div class="tile folder-card" id="folder-card-mhp">
                                     <div class="icon-wrapper">
                                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -376,7 +372,6 @@
                                     <div class="tile-label file-tile-title">MHP</div>
                                 </div>
 
-                                <!-- 4. YM -->
                                 <div class="tile folder-card" id="folder-card-ym">
                                     <div class="icon-wrapper">
                                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -388,7 +383,6 @@
                                     <div class="tile-label file-tile-title">YM</div>
                                 </div>
 
-                                <!-- 5. WORD -->
                                 <div class="tile folder-card" id="folder-card-word">
                                     <div class="icon-wrapper">
                                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -400,7 +394,6 @@
                                     <div class="tile-label file-tile-title">WORD</div>
                                 </div>
 
-                                <!-- 6. EXCEL -->
                                 <div class="tile folder-card" id="folder-card-excel">
                                     <div class="icon-wrapper">
                                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -412,7 +405,6 @@
                                     <div class="tile-label file-tile-title">EXCEL</div>
                                 </div>
 
-                                <!-- 7. PDF -->
                                 <div class="tile folder-card" id="folder-card-pdf">
                                     <div class="icon-wrapper">
                                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -424,7 +416,6 @@
                                     <div class="tile-label file-tile-title">PDF</div>
                                 </div>
 
-                                <!-- 8. TXT -->
                                 <div class="tile folder-card" id="folder-card-txt">
                                     <div class="icon-wrapper">
                                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -436,7 +427,6 @@
                                     <div class="tile-label file-tile-title">TXT</div>
                                 </div>
 
-                                <!-- 9. PICTURES -->
                                 <div class="tile folder-card" id="folder-card-pictures">
                                     <div class="icon-wrapper">
                                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -449,7 +439,6 @@
                                     <div class="tile-label file-tile-title">PICTURES</div>
                                 </div>
 
-                                <!-- 10. VIDEO -->
                                 <div class="tile folder-card" id="folder-card-video">
                                     <div class="icon-wrapper">
                                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -464,14 +453,12 @@
                             </div>
                         </main>
 
-                        <!-- ============================================================
-                                                   SEKCJA 4 — REPOSITORY & CLOUD STATUS (6 LICZNIKÓW)
-                                                   ============================================================ -->
+                        <!-- SEKCJA 4 — REPOSITORY & CLOUD STATUS -->
                         <main class="repository-panel cloud-status-panel">
                             <div class="panel-dot-texture"></div>
 
                             <header class="panel-header">
-                                <h1>REPOSITORY & CLOUD STATUS</h1>
+                                <h1>REPOSITORY & CLOUD STATUS- (under construction... soon...)</h1>
                                 <div class="header-divider">
                                     <div class="divider-glow"></div>
                                 </div>
@@ -479,7 +466,6 @@
 
                             <div class="tiles-grid cloud-grid">
 
-                                <!-- 1. Repository ONLINE -->
                                 <div class="tile">
                                     <div class="icon-wrapper">
                                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -493,7 +479,6 @@
                                     <div class="tile-label file-tile-title">Repository ONLINE</div>
                                 </div>
 
-                                <!-- 2. Files -->
                                 <div class="tile">
                                     <div class="icon-wrapper">
                                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -507,7 +492,6 @@
                                     <div class="tile-label file-tile-title">All Files</div>
                                 </div>
 
-                                <!-- 3. Last Sync -->
                                 <div class="tile">
                                     <div class="icon-wrapper">
                                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -519,7 +503,6 @@
                                     <div class="tile-label file-tile-title">Last Sync</div>
                                 </div>
 
-                                <!-- 4. Google Drive CONNECTED -->
                                 <div class="tile">
                                     <div class="icon-wrapper">
                                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -530,7 +513,6 @@
                                     <div class="tile-label file-tile-title">Google Drive CONNECTED</div>
                                 </div>
 
-                                <!-- 5. Driver ID -->
                                 <div class="tile">
                                     <div class="icon-wrapper">
                                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -543,7 +525,6 @@
                                     <div class="tile-label file-tile-title">Drivers</div>
                                 </div>
 
-                                <!-- 6. API ONLINE -->
                                 <div class="tile">
                                     <div class="icon-wrapper">
                                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -562,9 +543,9 @@
 
             </main>
 
-        </div> <!-- content-wrapper -->
+        </div>
 
-    </div> <!-- base-root-tile -->
+    </div>
 
     <!-- POPUP MODAL DLA LISTY PLIKÓW W FOLDERZE -->
     <div id="files-modal" class="modal-backdrop">
@@ -574,29 +555,25 @@
                 <button id="modal-close-btn" class="modal-close">&times;</button>
             </div>
             <div class="modal-body">
-                <!-- Wyszukiwarka wewnątrz otwartego folderu -->
                 <div class="file-search-inner" style="margin-bottom: 15px;">
                     <input type="text" id="modal-search-input" class="file-search-input"
                         placeholder="Szukaj pliku w tym folderze..." autocomplete="off">
                     <div id="modal-search-suggestions" class="file-search-suggestions"></div>
                 </div>
 
-                <!-- Tabela i lista plików -->
                 <div class="files-list-wrapper">
                     <div class="files-header-row">
                         <span>Nazwa pliku</span>
                         <span>Ostatnia modyfikacja</span>
                         <span>Akcja</span>
                     </div>
-                    <div id="modal-files-list" class="files-list">
-                        <!-- Pliki będą się tutaj wczytywać dynamicznie z JS -->
-                    </div>
+                    <div id="modal-files-list" class="files-list"></div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- AUTH POPUP (Z dodanym atrybutem autocomplete="current-password", aby usunąć ostrzeżenie konsoli) -->
+    <!-- AUTH POPUP -->
     <div id="auth-popup" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%;
                background:rgba(0,0,0,0.5); backdrop-filter:blur(5px);
                z-index:99999; justify-content:center; align-items:center;">
@@ -632,7 +609,7 @@
     <!-- SCRIPTS -->
     <script src="assets/js/main.js"></script>
     <script src="assets/js/auth.js"></script>
-    <script src="assets/js/drivers.js"></script>
+    <script src="assets/js/cloud.js"></script>
 
 </body>
 

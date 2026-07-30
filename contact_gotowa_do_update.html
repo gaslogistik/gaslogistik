@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KP GASLOGISTIK - Cloud</title>
+    <title>KP GASLOGISTIK - Contact</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
         rel="stylesheet">
@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="assets/css/components.css">
     <link rel="stylesheet" href="assets/css/dashboard-widgets.css">
     <link rel="stylesheet" href="assets/css/dashboard-content.css">
-    <link rel="stylesheet" href="assets/css/cloud.css">
+    <link rel="stylesheet" href="assets/css/contact.css">
 
     <!-- Poprawiona ścieżka do favicon w folderze assets/favicon -->
     <link rel="icon" type="image/x-icon" href="assets/favicon/favicon.ico">
@@ -141,7 +141,7 @@
                         </span>
                         <span class="menu-tile-main">Admin</span>
                     </a>
-                    <a href="contact.html" class="sidebar-tile">
+                    <a href="contact.html" class="sidebar-tile active">
                         <span class="menu-tile-icon-svg">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                                 <path d="M4 4h16v16H4z" />
@@ -150,7 +150,7 @@
                         </span>
                         <span class="menu-tile-main">Contact</span>
                     </a>
-                    <a href="cloud.html" class="sidebar-tile active" onclick="handleCloudClick(event)">
+                    <a href="cloud.html" class="sidebar-tile" onclick="handleCloudClick(event)">
                         <span class="menu-tile-icon-svg">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                                 <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z" />
@@ -166,17 +166,18 @@
 
                 <div class="command-center">
 
-                    <!-- GŁÓWNY, BAZOWY, NADRZĘDNY KAFEL -->
+                    <!-- GŁÓWNY, BAZOWY, NADRZĘDNY KAFEL (CONTACT & COMMUNICATIONS) -->
                     <div class="master-container-tile">
 
-                        <!-- NADRZĘDNY NAGŁÓWEK DLA CAŁEGO KONTENERA -->
+                        <!-- NADRZĘDNY NAGŁÓWEK DLA CAŁEĞO KONTENERA -->
                         <h2 class="weather-watch-title"
                             style="font-size: 18px; margin-bottom: 20px; border-bottom: 2px solid rgba(255, 42, 109, 0.3); padding-bottom: 10px;">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ff2a6d"
                                 stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path>
+                                <path d="M4 4h16v16H4z"></path>
+                                <polyline points="4 4 12 12 20 4"></polyline>
                             </svg>
-                            CLOUD STORAGE & REPOSITORY
+                            CONTACT & COMMUNICATIONS
                         </h2>
 
                         <!-- SEKCJA 1 — STATUS OVERVIEW -->
@@ -184,7 +185,7 @@
                             <div class="panel-dot-texture"></div>
 
                             <header class="panel-header">
-                                <h1>CLOUD REPOSITORY - CENTER - (under construction... soon...)</h1>
+                                <h1>CONTACT CENTER - OPERATIONAL SUPPORT - (under construction... soon...)</h1>
                                 <div class="header-divider">
                                     <div class="divider-glow"></div>
                                 </div>
@@ -192,35 +193,12 @@
 
                         </section>
 
-                        <!-- SEKCJA 2 — ADDRESS SEARCH -->
-                        <section class="inner-command-center">
-                            <h3 class="weather-watch-title">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff2a6d"
-                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <circle cx="11" cy="11" r="8"></circle>
-                                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                                </svg>
-                                ADDRESS SEARCH
-                            </h3>
-
-                            <div class="files-search-bar" style="max-width: 50%; margin: 0 auto;">
-                                <div class="files-search-main">
-                                    <div class="file-search-inner">
-                                        <input type="text" id="global-search-input" class="file-search-input"
-                                            placeholder="Szukaj pliku po nazwie lub rozszerzeniu..."
-                                            autocomplete="off" />
-                                        <div id="global-search-suggestions" class="file-search-suggestions"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </section>
-
-                        <!-- SEKCJA 3 — FOLDERS / FTP -->
+                        <!-- SEKCJA 3 — FOLDERS / FTP (ZASTĄPIONE SEKTORAMI KONTAKTOWYMI) -->
                         <main class="repository-panel files-section-panel">
                             <div class="panel-dot-texture"></div>
 
                             <header class="panel-header">
-                                <h1>FOLDERS / FTP - (under construction... soon...)</h1>
+                                <h1>CONTACT MAP - (under construction... soon...)</h1>
                                 <div class="header-divider">
                                     <div class="divider-glow"></div>
                                 </div>
@@ -233,7 +211,7 @@
                             <div class="panel-dot-texture"></div>
 
                             <header class="panel-header">
-                                <h1>REPOSITORY & CLOUD STATUS- (under construction... soon...)</h1>
+                                <h1>CONTACT INFO - (under construction... soon...)</h1>
                                 <div class="header-divider">
                                     <div class="divider-glow"></div>
                                 </div>
@@ -246,31 +224,33 @@
 
             </main>
 
-        </div>
+        </div> <!-- content-wrapper -->
 
-    </div>
+    </div> <!-- base-root-tile -->
 
-    <!-- POPUP MODAL DLA LISTY PLIKÓW W FOLDERZE -->
+    <!-- POPUP MODAL -->
     <div id="files-modal" class="modal-backdrop">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 id="modal-folder-title">Folder: ---</h3>
+                <h3 id="modal-folder-title">Department: ---</h3>
                 <button id="modal-close-btn" class="modal-close">&times;</button>
             </div>
             <div class="modal-body">
                 <div class="file-search-inner" style="margin-bottom: 15px;">
                     <input type="text" id="modal-search-input" class="file-search-input"
-                        placeholder="Szukaj pliku w tym folderze..." autocomplete="off">
+                        placeholder="Szukaj elementu w tym dziale..." autocomplete="off">
                     <div id="modal-search-suggestions" class="file-search-suggestions"></div>
                 </div>
 
                 <div class="files-list-wrapper">
                     <div class="files-header-row">
-                        <span>Nazwa pliku</span>
+                        <span>Nazwa pozycji</span>
                         <span>Ostatnia modyfikacja</span>
                         <span>Akcja</span>
                     </div>
-                    <div id="modal-files-list" class="files-list"></div>
+                    <div id="modal-files-list" class="files-list">
+                        <!-- Elementy wczytywane dynamicznie z JS -->
+                    </div>
                 </div>
             </div>
         </div>
@@ -312,7 +292,7 @@
     <!-- SCRIPTS -->
     <script src="assets/js/main.js"></script>
     <script src="assets/js/auth.js"></script>
-    <script src="assets/js/cloud.js"></script>
+    <script src="assets/js/contact.js"></script>
 
 </body>
 

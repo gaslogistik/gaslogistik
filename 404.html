@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KP GASLOGISTIK - 404 Not Found</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="assets/css/base.css">
+    <link rel="stylesheet" href="assets/css/header.css">
+    <link rel="stylesheet" href="assets/css/sidebar.css">
+    <link rel="stylesheet" href="assets/css/components.css">
+    <link rel="stylesheet" href="assets/css/dashboard-widgets.css">
+    <link rel="stylesheet" href="assets/css/dashboard-content.css">
+
+    <link rel="icon" type="image/x-icon" href="assets/favicon/favicon.ico">
+</head>
+
+<body>
+
+    <div class="base-root-tile">
+
+        <!-- HEADER / OPERATOR TOOLBAR -->
+        <header class="header-container">
+            <div class="title-tile">
+                <h1 class="title-main">ENTERPRISE LOGISTICS & INTELLIGENCE PLATFORM</h1>
+                <span class="title-sub">Premium Command Center</span>
+            </div>
+
+            <div class="operator-tile" id="operator-container">
+                <div class="operator-icons">
+                    <a href="#" class="icon-btn tooltip-container" data-tooltip="LOGIN" onclick="openLoginPopup()">
+                        <svg class="op-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                            <circle cx="12" cy="7" r="4" />
+                        </svg>
+                    </a>
+                </div>
+                <div class="operator-info">
+                    <span id="operator-name">OPERATOR</span>
+                    <span id="session-timer">--:--</span>
+                </div>
+            </div>
+        </header>
+
+        <div class="content-wrapper">
+
+            <!-- SIDEBAR NAVIGATION -->
+            <div class="sidebar-container">
+                <div class="logo-tile logo-tile-3d">
+                    <span class="logo-text-main">KP GASLOGISTIK</span>
+                    <span class="logo-text-hover">LNG CNG H2</span>
+                </div>
+
+                <div class="menu-grid">
+                    <a href="index.html" class="sidebar-tile">
+                        <span class="menu-tile-icon-svg">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                <rect x="3" y="3" width="7" height="9" />
+                                <rect x="14" y="3" width="7" height="5" />
+                                <rect x="14" y="12" width="7" height="9" />
+                                <rect x="3" y="16" width="7" height="5" />
+                            </svg>
+                        </span>
+                        <span class="menu-tile-main">Dashboard</span>
+                    </a>
+                    <a href="contact.html" class="sidebar-tile">
+                        <span class="menu-tile-icon-svg">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                <path d="M4 4h16v16H4z" />
+                                <polyline points="4 4 12 12 20 4" />
+                            </svg>
+                        </span>
+                        <span class="menu-tile-main">Contact</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- MAIN CONTENT AREA -->
+            <main class="main-window-area">
+                <div class="command-center">
+                    <div class="master-container-tile"
+                        style="display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 60vh; text-align: center; padding: 40px;">
+
+                        <div
+                            style="width: 80px; height: 80px; background: rgba(233, 30, 99, 0.1); border: 2px solid #e91e63; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; box-shadow: 0 0 20px rgba(233, 30, 99, 0.2);">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#e91e63"
+                                stroke-width="2.5">
+                                <circle cx="12" cy="12" r="10" />
+                                <line x1="12" y1="8" x2="12" y2="12" />
+                                <line x1="12" y1="16" x2="12.01" y2="16" />
+                            </svg>
+                        </div>
+
+                        <span
+                            style="font-size: 14px; font-weight: 800; color: #e91e63; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 5px;">HTTP
+                            ERROR 404</span>
+                        <h2 style="font-size: 32px; font-weight: 800; color: #111; margin-bottom: 15px;">Sector Not
+                            Found</h2>
+                        <p
+                            style="font-size: 15px; color: #555; max-width: 500px; line-height: 1.6; margin-bottom: 30px;">
+                            The requested logistics sector, route, or resource does not exist in the active repository
+                            repository or has been relocated.
+                        </p>
+
+                        <div style="display: flex; gap: 15px; flex-wrap: wrap; justify-content: center;">
+                            <a href="index.html"
+                                style="background: #e91e63; color: white; padding: 12px 25px; border-radius: 25px; font-weight: 700; text-decoration: none; font-size: 14px; box-shadow: 0 4px 15px rgba(233, 30, 99, 0.3);">
+                                RETURN TO DASHBOARD
+                            </a>
+                            <a href="contact.html"
+                                style="background: #e0e0e0; color: #333; border: 1px solid #999; padding: 12px 25px; border-radius: 25px; font-weight: 700; text-decoration: none; font-size: 14px;">
+                                CONTACT SUPPORT
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            </main>
+
+        </div>
+    </div>
+
+    <!-- AUTH POPUP -->
+    <div id="auth-popup"
+        style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); backdrop-filter:blur(5px); z-index:99999; justify-content:center; align-items:center;">
+        <form
+            style="background:#e0e0e0; padding:30px; border-radius:40px; width:400px; text-align:center; border:1px solid #bbb; box-shadow:0 10px 25px rgba(0,0,0,0.3);"
+            onsubmit="return false;">
+            <h2 style="color:#e91e63; font-size:18px; margin:0; font-weight:800;">KP GASLOGISTIK</h2>
+            <p style="font-size:20px; color:#333; margin:10px 0; font-weight:700;">ENTERPRISE SECURITY GATE</p>
+            <p style="font-size:12px; color:#555; margin-bottom:20px;">Premium Command Center Access</p>
+            <div style="text-align:left; font-size:11px; font-weight:bold; margin-bottom:5px; color:#333;">LOGIN</div>
+            <input type="text" id="user-login" autocomplete="username"
+                style="width:100%; padding:12px; margin-bottom:15px; border:1px solid #999; border-radius:25px; background:white;">
+            <div style="text-align:left; font-size:11px; font-weight:bold; margin-bottom:5px; color:#333;">PASSWORD
+            </div>
+            <input type="password" id="user-pass" autocomplete="current-password"
+                style="width:100%; padding:12px; margin-bottom:15px; border:1px solid #999; border-radius:25px; background:white;">
+            <div style="display:flex; gap:10px; margin-top:10px;">
+                <button type="button" onclick="handleLogin()"
+                    style="flex:1; padding:12px; border:none; border-radius:20px; color:white; font-weight:bold; cursor:pointer; background:#e91e63;">LOGIN</button>
+                <button type="button" onclick="closeAuthPopup()"
+                    style="flex:1; padding:12px; border:none; border-radius:20px; color:white; font-weight:bold; cursor:pointer; background:#e91e63;">CANCEL</button>
+            </div>
+        </form>
+    </div>
+
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/auth.js"></script>
+</body>
+
+</html>

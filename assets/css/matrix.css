@@ -2,6 +2,7 @@
 
 .matrix-content-area {
     margin-top: 20px;
+    width: 100%;
 }
 
 /* Wrapper przewijania tylko dla macierzy */
@@ -18,6 +19,79 @@
         inset 0 0 20px rgba(0, 0, 0, 0.06),
         0 18px 40px rgba(0, 0, 0, 0.18);
     padding: 10px;
+    position: relative;
+    box-sizing: border-box;
+}
+
+/* ============================================================
+   SPINNER ŁADOWANIA DANYCH MATRIX — POPRAWIONY POZYCJONER MOBILE
+   ============================================================ */
+
+.matrix-spinner-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px 12px;
+    min-height: 200px;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0 auto;
+}
+
+.matrix-spinner-card {
+    background: linear-gradient(145deg, #f7f9fc, #e8ecef);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    border-radius: 20px;
+    padding: 20px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    box-shadow:
+        0 12px 30px rgba(0, 0, 0, 0.15),
+        0 0 20px rgba(255, 42, 109, 0.2),
+        inset 1px 1px 2px rgba(255, 255, 255, 0.9);
+    width: 100%;
+    max-width: 280px;
+    text-align: center;
+    box-sizing: border-box;
+    margin: 0 auto;
+}
+
+.matrix-spinner-circle {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #dcdcdc;
+    border-top: 4px solid #ff2a6d;
+    border-right: 4px solid #ff2a6d;
+    border-radius: 50%;
+    animation: matrixSpin 0.9s linear infinite;
+    box-shadow: 0 0 10px rgba(255, 42, 109, 0.3);
+    flex-shrink: 0;
+}
+
+.matrix-spinner-text {
+    font-family: "Plus Jakarta Sans", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: #2b2b2b;
+    letter-spacing: 0.2px;
+    line-height: 1.35;
+    margin: 0;
+    white-space: normal;
+    word-break: break-word;
+    max-width: 100%;
+}
+
+@keyframes matrixSpin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 /* ========================= */
@@ -32,7 +106,6 @@
     border-radius: 18px;
     overflow: visible;
     gap: 2px;
-    /* odstęp między wszystkimi komórkami */
 }
 
 /* Komórki bazowe (środek + pierwsza kolumna) */
@@ -50,7 +123,7 @@
     transition: background 0.18s ease, color 0.18s ease, transform 0.12s ease;
 }
 
-/* Pierwsza kolumna — miasta */
+/* Pierwsza kolumna — miasta (DESKTOP): wielkość czcionki sterowana zmienną --firstColFont */
 .matrix-col-header {
     justify-content: flex-end;
     position: sticky;
@@ -68,12 +141,16 @@
         0 2px 4px rgba(0, 0, 0, 0.15);
     color: #000000;
     text-transform: uppercase;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.02em;
     height: 24px !important;
     min-height: 24px !important;
     max-height: 24px !important;
     font-size: var(--firstColFont) !important;
-    padding: 2px !important;
+    /* <--- TUTAJ regulujesz wielkość czcionki miast w 1. kolumnie na DESKTOPIE (zmienna JS) */
+    padding: 0 4px !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 /* Górny lewy róg — pełny panel MATRIX */
@@ -109,6 +186,7 @@
     text-transform: uppercase;
     color: #000;
     line-height: 1.2;
+    text-align: center;
 }
 
 /* zaokrąglenie rogów */
@@ -134,16 +212,50 @@
     #matrix-container.matrix-grid {
         grid-template-columns: var(--firstColWidth) repeat(calc(var(--cols) - 1), 28px);
         gap: 1px;
-        /* mniejszy odstęp na mobile */
     }
 
     #matrix-container.matrix-grid> :first-child {
-        height: 85px !important;
-        min-height: 85px !important;
-        max-height: 85px !important;
+        height: 110px !important;
+        min-height: 110px !important;
+        max-height: 110px !important;
         width: var(--firstColWidth) !important;
         min-width: var(--firstColWidth) !important;
         max-width: var(--firstColWidth) !important;
+    }
+
+    /* TUTAJ regulujesz wielkość czcionki miast w 1. kolumnie w widoku MOBILE */
+    .matrix-col-header {
+        font-size: 8px !important;
+        /* <--- Zmień tę wartość, aby dopasować czcionkę miast 1. kolumny na telefonie */
+        letter-spacing: -0.03em !important;
+        padding: 0 2px !important;
+        white-space: normal !important;
+        word-break: break-word !important;
+        line-height: 1.05 !important;
+        overflow: hidden !important;
+        text-overflow: clip !important;
+        text-align: right !important;
+    }
+
+    /* TUTAJ regulujesz wielkość czcionki NAGŁÓWKÓW (pionowych miast u góry) w widoku MOBILE */
+    .matrix-header {
+        width: 28px !important;
+        min-width: 28px !important;
+        max-width: 28px !important;
+        height: 110px !important;
+        min-height: 110px !important;
+        max-height: 110px !important;
+        font-size: 8px !important;
+        /* <--- Zmień tę wartość, aby dopasować czcionkę nagłówków górnych na telefonie */
+        letter-spacing: -0.03em !important;
+        padding: 2px 0 !important;
+        white-space: normal !important;
+        word-break: break-word !important;
+        line-height: 1.05 !important;
+        overflow: hidden !important;
+        text-overflow: clip !important;
+        writing-mode: vertical-rl;
+        text-orientation: mixed;
     }
 }
 
@@ -196,7 +308,7 @@
         0 1px 2px rgba(0, 0, 0, 0.25);
 }
 
-/* Pionowe nagłówki — premium */
+/* Pionowe nagłówki — premium (DESKTOP) */
 .matrix-header {
     position: sticky;
     top: 0;
@@ -207,7 +319,7 @@
             #c4c5c7 100%);
     color: #000000;
     text-transform: uppercase;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.02em;
     width: 32px;
     min-width: 32px;
     max-width: 32px;
@@ -215,11 +327,13 @@
     min-height: 160px;
     max-height: 160px;
     font-weight: 500;
-    font-size: 11px;
-    padding: 2px;
+    font-size: 11.5px;
+    /* <--- TUTAJ regulujesz wielkość czcionki NAGŁÓWKÓW (pionowych miast u góry) w widoku DESKTOP */
+    padding: 2px 0;
     writing-mode: vertical-rl;
     text-orientation: mixed;
     white-space: nowrap;
+    overflow: visible;
     display: flex;
     justify-content: flex-end;
     align-items: center;
@@ -253,7 +367,7 @@
 }
 
 /* ========================= */
-/* 5 KAFELKÓW STATYSTYK */
+/* STATYSTYKI */
 /* ========================= */
 
 #matrix-stats-row {
@@ -320,7 +434,6 @@
     position: relative;
 }
 
-/* 🔥 INPUTY — gradient 3D + glassmorphism + animacja + ikona lupy */
 #matrix-tools input {
     width: 100%;
     max-width: 240px;
@@ -358,7 +471,6 @@
     font-weight: 500;
 }
 
-/* 🔥 KM — dopasowany do inputów */
 #distanceBox {
     width: 100%;
     max-width: 240px;
@@ -378,35 +490,30 @@
     transition: all 0.25s ease;
 }
 
-/* 🔥 Dropdown — dopasowany do inputów */
 #fromDropdown,
 #toDropdown {
     position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
     margin-top: 4px;
-
     width: 100%;
     max-width: 240px;
-
     background: linear-gradient(135deg,
             rgba(255, 255, 255, 0.95),
             rgba(240, 240, 240, 0.85));
     backdrop-filter: blur(14px);
-
     border-radius: 14px;
     border: 1px solid rgba(0, 0, 0, 0.45);
-
     box-shadow:
         0 8px 20px rgba(0, 0, 0, 0.15),
         inset 0 0 10px rgba(255, 255, 255, 0.4);
-
     max-height: 200px;
     overflow-y: auto;
     display: none;
-
     z-index: 9999 !important;
 }
 
-/* 🔥 Dropdown item */
 .dropdown-item {
     padding: 10px 14px;
     cursor: pointer;
@@ -420,19 +527,12 @@
     border-radius: 10px;
 }
 
-/* 🌈 Neonowy highlight całego wiersza */
-.matrix-highlight-row {
-    background: rgba(255, 200, 120, 0.28) !important;
-    transition: background 0.25s ease;
-}
-
-/* 🌈 Neonowy highlight całej kolumny */
+.matrix-highlight-row,
 .matrix-highlight-col {
     background: rgba(255, 200, 120, 0.28) !important;
     transition: background 0.25s ease;
 }
 
-/* 🔥 Pulsująca komórka — neon pomarańczowy */
 .matrix-pulse {
     animation: pulseCell 1.2s infinite ease-in-out;
     z-index: 9999 !important;
@@ -458,17 +558,12 @@
     }
 }
 
-/* 🔥 Nagłówki muszą być w pełni widoczne podczas highlightu */
 .matrix-col-header.matrix-highlight-row,
 .matrix-header.matrix-highlight-col {
     background: rgba(255, 200, 120, 0.85) !important;
     color: #000 !important;
     z-index: 9999 !important;
 }
-
-/* ========================= */
-/* MOBILE LAYOUT — MATRIX AREA */
-/* ========================= */
 
 @media (max-width: 768px) {
 
@@ -496,17 +591,18 @@
     }
 
     #matrix-tools {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 10px;
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 12px;
         padding: 10px 0;
         margin-bottom: 12px;
-        position: relative;
     }
 
+    #matrix-tools .input-wrapper,
     #matrix-tools input,
     #distanceBox {
-        max-width: 100%;
+        width: 100% !important;
+        max-width: 100% !important;
     }
 
     #fromDropdown,
@@ -518,185 +614,28 @@
         margin-top: 2px !important;
         border-radius: 12px !important;
         max-height: 180px !important;
-        overflow-y: auto !important;
-    }
-
-    #fromDropdown .dropdown-item,
-    #toDropdown .dropdown-item {
-        font-size: 13px !important;
-        padding: 8px 12px !important;
-        white-space: normal !important;
     }
 
     #matrix-scroll-wrapper {
-        max-height: calc(100vh - 260px);
+        max-height: none;
+        min-height: 220px;
         padding: 6px;
     }
-}
 
-/* ========================= */
-/* GLOBALNY WRAPPER DLA INPUTÓW */
-/* ========================= */
+    .matrix-spinner-wrapper {
+        padding: 20px 8px;
+        min-height: 180px;
+    }
 
-#fromBox,
-#toBox {
-    position: relative;
+    :root {
+        --firstColWidth: 105px !important;
+        --firstColFont: 7.5px !important;
+    }
 }
 
 .input-wrapper {
     position: relative;
-    width: 100%;
-}
-
-#matrix-tools {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    gap: 18px;
-}
-
-#matrix-tools .input-wrapper {
-    position: relative;
     width: 240px;
     display: flex;
     flex-direction: column;
-}
-
-#matrix-tools input {
-    width: 100%;
-}
-
-#fromDropdown,
-#toDropdown {
-    position: absolute;
-    top: calc(100% + 4px);
-    left: 0;
-    right: 0;
-}
-
-/* ========================= */
-/* MOBILE FIX — TRZY ELEMENTY POD SOBĄ */
-/* ========================= */
-
-@media (max-width: 768px) {
-    #matrix-tools {
-        flex-direction: column !important;
-        align-items: stretch !important;
-        gap: 12px;
-    }
-
-    #matrix-tools .input-wrapper {
-        width: 100% !important;
-    }
-
-    #distanceBox {
-        width: 100% !important;
-        text-align: left;
-    }
-}
-
-/* ========================= */
-/* MOBILE — WĘŻSZA PIERWSZA KOLUMNA */
-/* ========================= */
-
-@media (max-width: 768px) {
-    :root {
-        --firstColWidth: 70px !important;
-        --firstColFont: 9px !important;
-    }
-}
-
-/* ========================= */
-/* DODATKOWE KLASY (opcjonalne) */
-/* ========================= */
-
-.row-start {
-    font-weight: 700;
-    white-space: normal !important;
-    word-break: break-word !important;
-    font-size: 10px !important;
-    width: var(--firstColWidth) !important;
-    min-width: var(--firstColWidth) !important;
-    max-width: var(--firstColWidth) !important;
-    background: #f0f0f0;
-    line-height: 1.1;
-}
-
-.row-cell {
-    font-size: 10px !important;
-    padding: 2px !important;
-    text-align: center;
-}
-
-.col-header {
-    background: #f0f0f0;
-    font-weight: 700;
-    font-size: 10px;
-    height: 40px;
-    line-height: 40px;
-}
-
-.highlight-row {
-    background: #fff7c2 !important;
-}
-
-.highlight-col {
-    background: #e3f2fd !important;
-}
-
-/* ===========================
-   HIGHLIGHT WIERSZA / KOLUMNY
-   =========================== */
-
-.matrix-highlight-row {
-    background: rgba(255, 247, 194, 0.85);
-}
-
-.matrix-highlight-col {
-    background: rgba(227, 242, 253, 0.9);
-}
-
-/* delikatnie mocniej dla komórki przecięcia */
-.matrix-cell.matrix-highlight-row.matrix-highlight-col {
-    background: rgba(255, 236, 179, 1);
-}
-
-/* ===========================
-   MOBILE — PIERWSZA KOLUMNA
-   =========================== */
-
-@media (max-width: 768px) {
-
-    .matrix-header {
-        font-size: 9px !important;
-        letter-spacing: 0.02em;
-    }
-
-    /* zawijanie nazw miast w pierwszej kolumnie */
-    .matrix-col-header {
-        white-space: normal !important;
-        word-break: break-word !important;
-        line-height: 1.1 !important;
-        padding: 4px 3px !important;
-    }
-
-    #matrix-scroll-wrapper {
-        padding: 4px 0;
-    }
-}
-
-/* ===========================
-   MOBILE — PIERWSZA KOLUMNA
-   =========================== */
-
-@media (max-width: 768px) {
-
-    .matrix-header {
-        white-space: normal !important;
-        word-break: break-all !important;
-        overflow-wrap: break-word !important;
-        line-height: 1.1 !important;
-        padding: 4px 2px !important;
-    }
 }

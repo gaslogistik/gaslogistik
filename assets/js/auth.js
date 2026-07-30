@@ -1,29 +1,58 @@
 /* ==========================================================================
-   AUTH.JS — AUDYT + LOGOUT & PREVENT DOUBLE LOGIN
+   AUTH.JS — LOGOUT, DYNAMIC CLOUD NAVIGATION & PREVENT DOUBLE LOGIN
    ========================================================================== */
 
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwbZ_KSjyTTDM2iONJC87-jgVZysubMfKChDxDs8l1RKJgjUJ6Q2_7oA_RhuDna39Ra/exec";
+
+/* ==========================================================================
+   SIDEBAR CLOUD NAVIGATION HANDLER
+   ========================================================================== */
+
+/**
+ * Obsługa kliknięcia kafelka Cloud w nawigacji bocznej (Sidebar)
+ */
+function handleCloudClick(event) {
+    const currentUser = localStorage.getItem('currentUser');
+    const isCloudPage = window.location.pathname.endsWith('cloud.html');
+
+    if (currentUser) {
+        // Użytkownik jest zalogowany
+        if (isCloudPage) {
+            // Jeśli jest już na stronie cloud.html i klika ponownie w Cloud -> pytamy o wylogowanie
+            if (event) event.preventDefault();
+            const confirmLogout = confirm(`Zalogowano jako: ${currentUser.toUpperCase()}\n\nCzy chcesz się wylogować?`);
+            if (confirmLogout) {
+                logoutUser();
+            }
+        } else {
+            // Jeśli jest na innej podstronie -> przechodzi do cloud.html
+            window.location.href = "cloud.html";
+        }
+    } else {
+        // Użytkownik NIE jest zalogowany -> otwieramy okno logowania
+        if (event) event.preventDefault();
+        openAuthPopup();
+    }
+}
 
 /* ==========================================================================
    POPUP OPEN / CLOSE / LOGOUT CHECK
    ========================================================================== */
 
 /**
- * Otwiera popup logowania lub proponuje wylogowanie, jeśli użytkownik jest już zalogowany.
+ * Otwiera popup logowania lub proponuje wylogowanie (dla ikon w nagłówku)
  */
 function openAuthPopup() {
     const currentUser = localStorage.getItem('currentUser');
 
-    // Jeśli użytkownik jest już zalogowany, pytamy o wylogowanie
     if (currentUser) {
         const confirmLogout = confirm(`Zalogowano jako: ${currentUser.toUpperCase()}\n\nCzy chcesz się wylogować?`);
         if (confirmLogout) {
             logoutUser();
         }
-        return; // Nie otwieramy modala logowania!
+        return;
     }
 
-    // Jeśli nie jest zalogowany, otwieramy modal z formularzem
     const popup = document.getElementById('auth-popup');
     if (popup) popup.style.display = 'flex';
 }
@@ -32,10 +61,6 @@ function closeAuthPopup() {
     const popup = document.getElementById('auth-popup');
     if (popup) popup.style.display = 'none';
 }
-
-/* ==========================================================================
-   OPERATOR ICONS → OPEN POPUP / LOGOUT
-   ========================================================================== */
 
 function openLoginPopup() {
     openAuthPopup();
@@ -65,8 +90,6 @@ function handleLogin() {
     fetch(`${SCRIPT_URL}?action=login&user=${encodeURIComponent(user)}&pass=${encodeURIComponent(pass)}`)
         .then(async response => {
             const raw = await response.text();
-            console.log("RAW:", raw);
-
             let data = null;
 
             try {
@@ -75,8 +98,6 @@ function handleLogin() {
                 alert("Login Error\n\nInvalid server response.");
                 return;
             }
-
-            console.log("JSON:", data);
 
             if (data.success === true) {
                 localStorage.setItem('currentUser', user);
@@ -89,7 +110,7 @@ function handleLogin() {
                     updateOperatorDisplay();
                 }
 
-                /* Redirect do odpowiedniej strony po logowaniu */
+                /* Redirect do strony cloud po zalogowaniu */
                 window.location.href = "cloud.html";
 
             } else {
@@ -116,12 +137,8 @@ function logoutUser() {
 
     alert("Logged Out\n\nSession has been closed.");
 
-    // Przekierowanie na stronę główną/admin po wylogowaniu
-    window.location.href = "admin.html";
+    /* Przekierowanie na stronę główną po wylogowaniu */
+    window.location.href = "index.html";
 }
 
-/* ==========================================================================
-   DEBUG
-   ========================================================================== */
-
-console.log("AUTH.JS LOADED WITH LOGOUT & PREVENT RE-LOGIN");
+console.log("AUTH.JS LOADED WITH SMART CLOUD NAVIGATION & INDEX REDIRECT ON LOGOUT");

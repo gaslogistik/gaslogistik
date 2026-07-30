@@ -22,6 +22,14 @@
 
 <body>
 
+    <!-- 🔥 SPINNER ŁADOWANIA DANYCH (Overlay z wyśrodkowaną kartą) -->
+    <div id="addresses-loading-spinner" class="addresses-spinner-wrapper">
+        <div class="addresses-spinner-card">
+            <div class="addresses-spinner-circle"></div>
+            <div class="addresses-spinner-text">Gaslogistik DATA Synchronization - Wait a moment please...</div>
+        </div>
+    </div>
+
     <div class="base-root-tile">
 
         <header class="header-container">
@@ -66,11 +74,10 @@
             <div class="sidebar-container">
                 <div class="logo-tile logo-tile-3d">
                     <span class="logo-text-main">KP GASLOGISTIK</span>
-                    <span class="logo-text-hover">GAS: LNG CNG H2</span>
+                    <span class="logo-text-hover">LNG CNG H2</span>
                 </div>
 
                 <div class="menu-grid">
-
                     <a href="index.html" class="sidebar-tile">
                         <span class="menu-tile-icon-svg">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
@@ -82,7 +89,6 @@
                         </span>
                         <span class="menu-tile-main">Dashboard</span>
                     </a>
-
                     <a href="matrix.html" class="sidebar-tile">
                         <span class="menu-tile-icon-svg">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
@@ -92,7 +98,6 @@
                         </span>
                         <span class="menu-tile-main">Matrix</span>
                     </a>
-
                     <a href="map.html" class="sidebar-tile">
                         <span class="menu-tile-icon-svg">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
@@ -102,7 +107,6 @@
                         </span>
                         <span class="menu-tile-main">Live Map</span>
                     </a>
-
                     <a href="vehicles.html" class="sidebar-tile">
                         <span class="menu-tile-icon-svg">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
@@ -114,7 +118,6 @@
                         </span>
                         <span class="menu-tile-main">Vehicles</span>
                     </a>
-
                     <a href="addresses.html" class="sidebar-tile active">
                         <span class="menu-tile-icon-svg">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
@@ -124,17 +127,6 @@
                         </span>
                         <span class="menu-tile-main">Addresses</span>
                     </a>
-
-                    <a href="drivers.html" class="sidebar-tile">
-                        <span class="menu-tile-icon-svg">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                                <circle cx="12" cy="7" r="4" />
-                            </svg>
-                        </span>
-                        <span class="menu-tile-main">Drivers</span>
-                    </a>
-
                     <a href="files.html" class="sidebar-tile">
                         <span class="menu-tile-icon-svg">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
@@ -144,18 +136,16 @@
                         </span>
                         <span class="menu-tile-main">Documents</span>
                     </a>
-
                     <a href="admin.html" class="sidebar-tile">
                         <span class="menu-tile-icon-svg">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                                 <circle cx="12" cy="12" r="3" />
                                 <path
-                                    d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06-.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
+                                    d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06-.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06-.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
                             </svg>
                         </span>
                         <span class="menu-tile-main">Admin</span>
                     </a>
-
                     <a href="contact.html" class="sidebar-tile">
                         <span class="menu-tile-icon-svg">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
@@ -165,7 +155,14 @@
                         </span>
                         <span class="menu-tile-main">Contact</span>
                     </a>
-
+                    <a href="cloud.html" class="sidebar-tile" onclick="handleCloudClick(event)">
+                        <span class="menu-tile-icon-svg">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z" />
+                            </svg>
+                        </span>
+                        <span class="menu-tile-main">Cloud</span>
+                    </a>
                 </div>
             </div>
 
@@ -210,11 +207,12 @@
                                 <div class="addresses-search-main">
                                     <div class="adr-search-inner">
                                         <input type="text" id="addresses-search-input" class="adr-search-input"
-                                            placeholder="Search location / city / country / address..." autocomplete="off" />
+                                            placeholder="Search location / city / country / address..."
+                                            autocomplete="off" />
                                         <div id="addresses-search-suggestions" class="adr-search-suggestions"></div>
                                     </div>
                                 </div>
-                            
+
                                 <div class="addresses-search-type">
                                     <div class="adr-type-inner">
                                         <div class="adr-type-select-wrapper">
@@ -258,6 +256,39 @@
         </div> <!-- content-wrapper -->
 
     </div> <!-- base-root-tile -->
+
+    <!-- AUTH POPUP -->
+    <div id="auth-popup" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%;
+           background:rgba(0,0,0,0.5); backdrop-filter:blur(5px);
+           z-index:99999; justify-content:center; align-items:center;">
+
+        <form style="background:#e0e0e0; padding:30px; border-radius:40px; width:400px;
+                    text-align:center; border:1px solid #bbb; box-shadow:0 10px 25px rgba(0,0,0,0.3);"
+            onsubmit="return false;">
+
+            <h2 style="color:#e91e63; font-size:18px; margin:0; font-weight:800;">KP GASLOGISTIK</h2>
+            <p style="font-size:20px; color:#333; margin:10px 0; font-weight:700;">ENTERPRISE SECURITY GATE</p>
+            <p style="font-size:12px; color:#555; margin-bottom:20px;">Premium Command Center Access</p>
+
+            <div style="text-align:left; font-size:11px; font-weight:bold; margin-bottom:5px; color:#333;">LOGIN</div>
+            <input type="text" id="user-login" autocomplete="username" style="width:100%; padding:12px; margin-bottom:15px; border:1px solid #999;
+                   border-radius:25px; background:white;">
+
+            <div style="text-align:left; font-size:11px; font-weight:bold; margin-bottom:5px; color:#333;">PASSWORD
+            </div>
+            <input type="password" id="user-pass" autocomplete="current-password" style="width:100%; padding:12px; margin-bottom:15px; border:1px solid #999;
+                   border-radius:25px; background:white;">
+
+            <div style="display:flex; gap:10px; margin-top:10px;">
+                <button type="button" onclick="handleLogin()" style="flex:1; padding:12px; border:none; border-radius:20px;
+                       color:white; font-weight:bold; cursor:pointer; background:#e91e63;">LOGIN</button>
+
+                <button type="button" onclick="closeAuthPopup()" style="flex:1; padding:12px; border:none; border-radius:20px;
+                       color:white; font-weight:bold; cursor:pointer; background:#e91e63;">CANCEL</button>
+            </div>
+
+        </form>
+    </div>
 
     <script src="assets/js/main.js"></script>
     <script src="assets/js/auth.js"></script>

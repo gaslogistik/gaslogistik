@@ -1,4 +1,4 @@
-// MATRIX — FINALNA WERSJA (bez starego projektu, pełne KM, jedno API)
+// MATRIX — FINALNA WERSJA (z wycentrowaną obsługą spinnera mobilnego)
 
 const MATRIX_API_URL =
     "https://script.google.com/macros/s/AKfycbwbZ_KSjyTTDM2iONJC87-jgVZysubMfKChDxDs8l1RKJgjUJ6Q2_7oA_RhuDna39Ra/exec?action=getMatrixData";
@@ -20,12 +20,30 @@ function normalize(name) {
         .toUpperCase();
 }
 
+// Zarządzanie widocznością spinnera
+function showSpinner() {
+    const spinner = document.getElementById("matrix-loading-spinner");
+    const container = document.getElementById("matrix-container");
+    if (spinner) {
+        spinner.classList.add("matrix-spinner-wrapper");
+        spinner.style.display = "flex";
+    }
+    if (container) container.style.display = "none";
+}
+
+function hideSpinner() {
+    const spinner = document.getElementById("matrix-loading-spinner");
+    const container = document.getElementById("matrix-container");
+    if (spinner) spinner.style.display = "none";
+    if (container) container.style.display = "inline-grid";
+}
+
 async function loadMatrix() {
     const container = document.getElementById("matrix-container");
     if (!container) return;
 
-    container.innerHTML = "Loading matrix...";
-    container.classList.remove("matrix-grid");
+    // Pokaż spinner na starcie ładowania
+    showSpinner();
 
     let systemCities = [];
     let systemRelations = [];
@@ -35,11 +53,10 @@ async function loadMatrix() {
         const systemRes = await fetch(SYSTEM_DATA_URL);
         const systemData = await systemRes.json();
 
-        // Wyciąganie nazw miast bez względu na format zwracany przez Apps Script
         if (Array.isArray(systemData.cities)) {
             systemCities = systemData.cities.map(item => {
                 if (typeof item === 'string') return item;
-                if (Array.isArray(item)) return item[1] || item[0]; // Kolumna B w arkuszu
+                if (Array.isArray(item)) return item[1] || item[0];
                 if (typeof item === 'object' && item !== null) {
                     return item.CITY || item.City || item.city || item.NAME || item.Name || Object.values(item)[1] || Object.values(item)[0];
                 }
@@ -62,11 +79,9 @@ async function loadMatrix() {
 
         const relations = (data.relations && data.relations.length > 0) ? data.relations : systemRelations;
 
-        // Łączymy miasta z arkusza CITIES i z RELATIONS
         const locations = getAllLocations(systemCities, relations);
         const matrix = buildMatrixObject(locations, relations);
 
-        // Liczba miast dokładnie wg wpisów z arkusza CITIES (lub wygenerowanych brakujących)
         const totalCitiesCount = Math.max(systemCities.length, locations.length);
         const totalRelationsCount = relations.length;
 
@@ -76,8 +91,13 @@ async function loadMatrix() {
         initDropdownCities(locations);
         initHeaderClickHighlights();
 
+        // Ukryj spinner po pomyślnym załadowaniu
+        hideSpinner();
+
     } catch (err) {
+        hideSpinner();
         container.innerHTML = "Error loading matrix data.";
+        container.style.display = "block";
         console.error("Matrix load error:", err);
     }
 }
@@ -119,7 +139,6 @@ function updateUIStats(citiesCount, relationsCount) {
     if (locById) locById.textContent = locText;
     if (routeById) routeById.textContent = routeText;
 
-    // Szukanie przycisków w DOM
     const allElements = document.querySelectorAll("button, div, a, span");
     allElements.forEach(el => {
         if (el.children.length > 0) return;
@@ -246,7 +265,7 @@ function makeCell(content, cls) {
 }
 
 // ===============================
-// KROK 5 — Autocomplete dropdowns
+// Autocomplete dropdowns
 // ===============================
 
 let allCities = [];
@@ -314,7 +333,7 @@ document.addEventListener("click", (e) => {
 });
 
 // ===============================
-// KROK 6 — Obliczanie dystansu KM
+// Obliczanie dystansu KM
 // ===============================
 
 function calculateDistance(fromCity, toCity) {

@@ -13,6 +13,7 @@ const ADDRESSES_API_URL =
    ============================================================ */
 
 document.addEventListener("DOMContentLoaded", () => {
+    initAddressLoader();
     loadCitiesData();
 });
 
@@ -21,6 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
    ============================================================ */
 
 async function loadCitiesData() {
+    showAddressesSpinner("Gaslogistik DATA Synchronization - Wait a moment please...");
 
     /* ⭐ DODAJEMY ANIMACJĘ GLOW NA START ⭐ */
     document.querySelectorAll(".addr-tile, .address-row").forEach(el => {
@@ -49,7 +51,42 @@ async function loadCitiesData() {
     } catch (err) {
         console.error("CITIES API ERROR:", err);
         showAddressesErrorState();
+    } finally {
+        hideAddressesSpinner();
     }
+}
+
+/* ============================================================
+   SPINNER LOADER LOGIC
+   ============================================================ */
+
+function initAddressLoader() {
+    window.showAddressesSpinner = function (message = "Gaslogistik DATA Synchronization - Wait a moment please...") {
+        let spinner = document.getElementById("addresses-loading-spinner");
+        if (!spinner) {
+            spinner = document.createElement("div");
+            spinner.id = "addresses-loading-spinner";
+            spinner.className = "addresses-spinner-wrapper";
+            spinner.innerHTML = `
+                <div class="addresses-spinner-card">
+                    <div class="addresses-spinner-circle"></div>
+                    <p class="addresses-spinner-text" id="addresses-spinner-msg">${escapeHtml(message)}</p>
+                </div>
+            `;
+            document.body.appendChild(spinner);
+        } else {
+            const msgEl = document.getElementById("addresses-spinner-msg");
+            if (msgEl) msgEl.textContent = message;
+            spinner.style.display = "flex";
+        }
+    };
+
+    window.hideAddressesSpinner = function () {
+        const spinner = document.getElementById("addresses-loading-spinner");
+        if (spinner) {
+            spinner.style.display = "none";
+        }
+    };
 }
 
 /* ============================================================
@@ -303,16 +340,13 @@ function initTypeFilter(cities) {
     typeButton.addEventListener("click", (e) => {
         e.stopPropagation();
 
-        // reset animacji
         typeDropdown.querySelectorAll("li").forEach(li => {
             li.classList.remove("animate");
         });
 
-        // pokaż dropdown
         typeDropdown.classList.toggle("visible");
 
         if (typeDropdown.classList.contains("visible")) {
-            // 🔥 aktywuj animację z opóźnieniem
             typeDropdown.querySelectorAll("li").forEach(li => {
                 setTimeout(() => {
                     li.classList.add("animate");
@@ -375,6 +409,17 @@ function showAddressesErrorState() {
         row.innerHTML = `<span>API ERROR</span><span>—</span><span>—</span><span>—</span><span>—</span>`;
         listEl.appendChild(row);
     }
+}
+
+/* POMOCNICZE FUNKCJE UTILS */
+function escapeHtml(str) {
+    if (!str) return "";
+    return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
 }
 
 /* ============================================================

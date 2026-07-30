@@ -62,7 +62,7 @@ function setInitialLoadingState(isLoading) {
                 <div class="sync-loader-box">
                     <div class="sync-spinner"></div>
                     <div class="sync-loader-text">
-                        <strong>File Synchronization</strong>
+                        <strong>Gaslogistik File Synchronization</strong>
                         <span>Wait a Moment...</span>
                     </div>
                 </div>

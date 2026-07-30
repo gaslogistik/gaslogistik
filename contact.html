@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pl">
+<html lang="en">
 
 <head>
     <meta charset="utf-8">
@@ -17,7 +17,6 @@
     <link rel="stylesheet" href="assets/css/dashboard-content.css">
     <link rel="stylesheet" href="assets/css/contact.css">
 
-    <!-- Poprawiona ścieżka do favicon w folderze assets/favicon -->
     <link rel="icon" type="image/x-icon" href="assets/favicon/favicon.ico">
 </head>
 
@@ -69,11 +68,10 @@
             <div class="sidebar-container">
                 <div class="logo-tile logo-tile-3d">
                     <span class="logo-text-main">KP GASLOGISTIK</span>
-                    <span class="logo-text-hover">GAS: LNG CNG H2</span>
+                    <span class="logo-text-hover">LNG CNG H2</span>
                 </div>
 
                 <div class="menu-grid">
-
                     <a href="index.html" class="sidebar-tile">
                         <span class="menu-tile-icon-svg">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
@@ -85,7 +83,6 @@
                         </span>
                         <span class="menu-tile-main">Dashboard</span>
                     </a>
-
                     <a href="matrix.html" class="sidebar-tile">
                         <span class="menu-tile-icon-svg">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
@@ -95,7 +92,6 @@
                         </span>
                         <span class="menu-tile-main">Matrix</span>
                     </a>
-
                     <a href="map.html" class="sidebar-tile">
                         <span class="menu-tile-icon-svg">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
@@ -105,7 +101,6 @@
                         </span>
                         <span class="menu-tile-main">Live Map</span>
                     </a>
-
                     <a href="vehicles.html" class="sidebar-tile">
                         <span class="menu-tile-icon-svg">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
@@ -117,7 +112,6 @@
                         </span>
                         <span class="menu-tile-main">Vehicles</span>
                     </a>
-
                     <a href="addresses.html" class="sidebar-tile">
                         <span class="menu-tile-icon-svg">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
@@ -127,17 +121,6 @@
                         </span>
                         <span class="menu-tile-main">Addresses</span>
                     </a>
-
-                    <a href="drivers.html" class="sidebar-tile">
-                        <span class="menu-tile-icon-svg">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                                <circle cx="12" cy="7" r="4" />
-                            </svg>
-                        </span>
-                        <span class="menu-tile-main">Drivers</span>
-                    </a>
-
                     <a href="files.html" class="sidebar-tile">
                         <span class="menu-tile-icon-svg">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
@@ -147,7 +130,6 @@
                         </span>
                         <span class="menu-tile-main">Documents</span>
                     </a>
-
                     <a href="admin.html" class="sidebar-tile">
                         <span class="menu-tile-icon-svg">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
@@ -158,7 +140,6 @@
                         </span>
                         <span class="menu-tile-main">Admin</span>
                     </a>
-
                     <a href="contact.html" class="sidebar-tile active">
                         <span class="menu-tile-icon-svg">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
@@ -168,7 +149,14 @@
                         </span>
                         <span class="menu-tile-main">Contact</span>
                     </a>
-
+                    <a href="cloud.html" class="sidebar-tile" onclick="handleCloudClick(event)">
+                        <span class="menu-tile-icon-svg">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z" />
+                            </svg>
+                        </span>
+                        <span class="menu-tile-main">Cloud</span>
+                    </a>
                 </div>
             </div>
 
@@ -180,7 +168,7 @@
                     <!-- GŁÓWNY, BAZOWY, NADRZĘDNY KAFEL (CONTACT & COMMUNICATIONS) -->
                     <div class="master-container-tile">
 
-                        <!-- NADRZĘDNY NAGŁÓWEK DLA CAŁEĞO KONTENERA -->
+                        <!-- NADRZĘDNY NAGŁÓWEK DLA CAŁEGO KONTENERA -->
                         <h2 class="weather-watch-title"
                             style="font-size: 18px; margin-bottom: 20px; border-bottom: 2px solid rgba(255, 42, 109, 0.3); padding-bottom: 10px;">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ff2a6d"
@@ -188,370 +176,253 @@
                                 <path d="M4 4h16v16H4z"></path>
                                 <polyline points="4 4 12 12 20 4"></polyline>
                             </svg>
-                            CONTACT & COMMUNICATIONS
+                            CONTACT & COMMUNICATIONS CENTER
                         </h2>
 
-                        <!-- SEKCJA 1 — STATUS OVERVIEW -->
-                        <section class="repository-panel">
+                        <!-- SEKCJA 1 — Siedziby i Depota Logistics -->
+                        <section class="repository-panel" style="margin-bottom: 25px;">
                             <div class="panel-dot-texture"></div>
 
                             <header class="panel-header">
-                                <h1>CONTACT CENTER - OPERATIONAL SUPPORT</h1>
+                                <h1>OPERATIONAL HEADQUARTERS & LOCATIONS</h1>
                                 <div class="header-divider">
                                     <div class="divider-glow"></div>
                                 </div>
                             </header>
 
-                            <div class="tiles-grid">
+                            <div class="contact-grid"
+                                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; padding: 15px 0;">
 
-                                <!-- KAFEL 1 -->
-                                <div class="tile">
-                                    <div class="icon-wrapper">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <path d="M4 4h16v16H4z" />
-                                            <polyline points="4 4 12 12 20 4" />
-                                        </svg>
+                                <!-- LOKALIZACJA I -->
+                                <div class="contact-card"
+                                    style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 42, 109, 0.2); border-radius: 12px; padding: 20px; position: relative; backdrop-filter: blur(5px); display: flex; flex-direction: column; justify-content: space-between;">
+                                    <div>
+                                        <div
+                                            style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
+                                            <div
+                                                style="background: rgba(255, 42, 109, 0.15); border-radius: 8px; padding: 8px; display: flex; align-items: center; justify-content: center;">
+                                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                                    stroke="#ff2a6d" stroke-width="2">
+                                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                                                    <circle cx="12" cy="10" r="3" />
+                                                </svg>
+                                            </div>
+                                            <span
+                                                style="font-size: 11px; font-weight: 800; color: #ff2a6d; letter-spacing: 1px;">LOGISTICS
+                                                HUB</span>
+                                        </div>
+                                        <h3
+                                            style="font-size: 16px; font-weight: 700; color: #ffffff; margin-bottom: 8px;">
+                                            KP Gaslogistik GmbH</h3>
+                                        <p style="font-size: 13px; color: #aaa; line-height: 1.5; margin: 0;">
+                                            <strong style="color: #ddd;">Depot:</strong><br>
+                                            14641 Wustermark<br>
+                                            Germany
+                                        </p>
                                     </div>
-                                    <div class="tile-number" id="cnt-channels">24</div>
-                                    <div class="tile-label">CHANNELS</div>
+                                    <div
+                                        style="margin-top: 15px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.05); font-size: 12px; color: #888;">
+                                        Primary Logistics & Gas Operations
+                                    </div>
                                 </div>
 
-                                <!-- KAFEL 2 -->
-                                <div class="tile">
-                                    <div class="icon-wrapper">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <circle cx="12" cy="12" r="10" />
-                                            <polyline points="12 6 12 12 16 14" />
-                                        </svg>
+                                <!-- LOKALIZACJA II -->
+                                <div class="contact-card"
+                                    style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 42, 109, 0.2); border-radius: 12px; padding: 20px; position: relative; backdrop-filter: blur(5px); display: flex; flex-direction: column; justify-content: space-between;">
+                                    <div>
+                                        <div
+                                            style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
+                                            <div
+                                                style="background: rgba(255, 42, 109, 0.15); border-radius: 8px; padding: 8px; display: flex; align-items: center; justify-content: center;">
+                                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                                    stroke="#ff2a6d" stroke-width="2">
+                                                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                                                    <polyline points="9 22 9 12 15 12 15 22" />
+                                                </svg>
+                                            </div>
+                                            <span
+                                                style="font-size: 11px; font-weight: 800; color: #ff2a6d; letter-spacing: 1px;">WUSTERMARK
+                                                HQ</span>
+                                        </div>
+                                        <h3
+                                            style="font-size: 16px; font-weight: 700; color: #ffffff; margin-bottom: 8px;">
+                                            KP Logistik Wustermark GmbH</h3>
+                                        <p style="font-size: 13px; color: #aaa; line-height: 1.5; margin: 0;">
+                                            Leipziger Str. 3<br>
+                                            14641 Wustermark, Germany
+                                        </p>
                                     </div>
-                                    <div class="tile-number" id="cnt-access">24/7</div>
-                                    <div class="tile-label">ACCESS</div>
-                                </div>
-
-                                <!-- KAFEL 3 -->
-                                <div class="tile">
-                                    <div class="icon-wrapper">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <div
+                                        style="margin-top: 15px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; gap: 8px;">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ff2a6d"
+                                            stroke-width="2">
                                             <path
                                                 d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
                                         </svg>
+                                        <a href="tel:+4933234209100"
+                                            style="font-size: 13px; font-weight: 600; color: #00f0ff; text-decoration: none;">+49
+                                            33234 209100</a>
                                     </div>
-                                    <div class="tile-number text-small" id="cnt-support">100%</div>
-                                    <div class="tile-label">SUPPORT</div>
                                 </div>
 
-                                <!-- KAFEL 4 -->
-                                <div class="tile">
-                                    <div class="icon-wrapper">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <path d="M5 12a7 7 0 0 1 14 0" />
-                                            <path d="M8.5 15.5a4 4 0 0 1 7 0" />
-                                            <circle cx="12" cy="12" r="1" />
-                                        </svg>
+                                <!-- LOKALIZACJA III -->
+                                <div class="contact-card"
+                                    style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 42, 109, 0.2); border-radius: 12px; padding: 20px; position: relative; backdrop-filter: blur(5px); display: flex; flex-direction: column; justify-content: space-between;">
+                                    <div>
+                                        <div
+                                            style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
+                                            <div
+                                                style="background: rgba(255, 42, 109, 0.15); border-radius: 8px; padding: 8px; display: flex; align-items: center; justify-content: center;">
+                                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                                    stroke="#ff2a6d" stroke-width="2">
+                                                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                                                    <polyline points="9 22 9 12 15 12 15 22" />
+                                                </svg>
+                                            </div>
+                                            <span
+                                                style="font-size: 11px; font-weight: 800; color: #ff2a6d; letter-spacing: 1px;">STAVENHAGEN
+                                                HQ</span>
+                                        </div>
+                                        <h3
+                                            style="font-size: 16px; font-weight: 700; color: #ffffff; margin-bottom: 8px;">
+                                            KP Logistik Stavenhagen GmbH</h3>
+                                        <p style="font-size: 13px; color: #aaa; line-height: 1.5; margin: 0;">
+                                            Preetzer Str. 1<br>
+                                            17153 Stavenhagen, Germany
+                                        </p>
                                     </div>
-                                    <div class="tile-number text-small" id="cnt-live-net">LIVE</div>
-                                    <div class="tile-label">NETWORK</div>
-                                </div>
-
-                                <!-- KAFEL 5 -->
-                                <div class="tile">
-                                    <div class="icon-wrapper">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                                    <div
+                                        style="margin-top: 15px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; gap: 8px;">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ff2a6d"
+                                            stroke-width="2">
+                                            <path
+                                                d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
                                         </svg>
+                                        <a href="tel:+49399543760"
+                                            style="font-size: 13px; font-weight: 600; color: #00f0ff; text-decoration: none;">+49
+                                            39954 3760</a>
                                     </div>
-                                    <div class="tile-number text-small" id="cnt-messages">NEW</div>
-                                    <div class="tile-label">MESSAGES</div>
-                                </div>
-
-                                <!-- KAFEL 6 -->
-                                <div class="tile">
-                                    <div class="icon-wrapper">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67" />
-                                        </svg>
-                                    </div>
-                                    <div class="tile-number text-small-sub" id="cnt-updated-act">UPDATED</div>
-                                    <div class="tile-label">SYNC ACTIVITY</div>
-                                </div>
-
-                                <!-- KAFEL 7 -->
-                                <div class="tile">
-                                    <div class="icon-wrapper">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-                                            <circle cx="9" cy="7" r="4" />
-                                            <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
-                                            <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-                                        </svg>
-                                    </div>
-                                    <div class="tile-number" id="cnt-repo-folders">ON</div>
-                                    <div class="tile-label">DISPATCHERS</div>
-                                </div>
-
-                                <!-- KAFEL 8 -->
-                                <div class="tile">
-                                    <div class="icon-wrapper">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
-                                        </svg>
-                                    </div>
-                                    <div class="tile-number text-small" id="cnt-status-mon">LIVE</div>
-                                    <div class="tile-label">STATUS MONITOR</div>
                                 </div>
 
                             </div>
                         </section>
 
-                        <!-- SEKCJA 2 — ADDRESS SEARCH -->
-                        <section class="inner-command-center">
-                            <h3 class="weather-watch-title">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff2a6d"
-                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <circle cx="11" cy="11" r="8"></circle>
-                                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                                </svg>
-                                CONTACT SEARCH
-                            </h3>
+                        <!-- SEKCJA 2 — Bezpośrednie Kanały Kontaktowe (Email Information Card) -->
+                        <main class="repository-panel" style="margin-bottom: 25px;">
+                            <div class="panel-dot-texture"></div>
 
-                            <div class="files-search-bar" style="max-width: 50%; margin: 0 auto;">
-                                <div class="files-search-main">
-                                    <div class="file-search-inner">
-                                        <input type="text" id="global-search-input" class="file-search-input"
-                                            placeholder="Szukaj kontaktu lub działu..." autocomplete="off" />
-                                        <div id="global-search-suggestions" class="file-search-suggestions"></div>
+                            <header class="panel-header">
+                                <h1>DIRECT CONTACT & CHANNELS</h1>
+                                <div class="header-divider">
+                                    <div class="divider-glow"></div>
+                                </div>
+                            </header>
+
+                            <div style="padding: 20px 0;">
+                                <div class="direct-channel-card"
+                                    style="background: linear-gradient(135deg, rgba(255, 42, 109, 0.08) 0%, rgba(0, 0, 0, 0.3) 100%); border: 1px solid rgba(255, 42, 109, 0.3); border-radius: 12px; padding: 25px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap;">
+
+                                    <div style="display: flex; align-items: center; gap: 20px;">
+                                        <div
+                                            style="width: 54px; height: 54px; background: rgba(255, 42, 109, 0.15); border: 1px solid #ff2a6d; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 15px rgba(255, 42, 109, 0.2);">
+                                            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#ff2a6d"
+                                                stroke-width="2">
+                                                <path
+                                                    d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z">
+                                                </path>
+                                                <polyline points="22,6 12,13 2,6"></polyline>
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <span
+                                                style="font-size: 11px; font-weight: 800; color: #ff2a6d; letter-spacing: 1.5px; text-transform: uppercase;">Official
+                                                Inquiries & Support</span>
+                                            <h2 class="direct-email-address"
+                                                style="font-size: 20px; font-weight: 800; color: #ffffff; margin: 4px 0 2px 0;">
+                                                info@kp-logistik.com</h2>
+                                            <p style="font-size: 12px; color: #888; margin: 0;">Central Enterprise
+                                                Mailbox — Dispatch & Logistic Support</p>
+                                        </div>
+                                    </div>
+
+                                    <div style="display: flex; gap: 15px; align-items: center;">
+                                        <div class="status-badge-pill"
+                                            style="background: rgba(255,255,255,0.05); padding: 8px 16px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); font-size: 11px; font-weight: 700; color: #00f0ff; letter-spacing: 0.5px;">
+                                            STATUS: 24/7 MONITORING
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </main>
+
+                        <!-- SEKCJA 3 — Interaktywna Lekka Mapka 3D (Wustermark & Stavenhagen) -->
+                        <section class="repository-panel contact-map-panel">
+                            <div class="panel-dot-texture"></div>
+
+                            <header class="panel-header">
+                                <h1>INTERACTIVE LOCATION MAP</h1>
+                                <div class="header-divider">
+                                    <div class="divider-glow"></div>
+                                </div>
+                            </header>
+
+                            <div class="contact-map-wrapper">
+                                <!-- Pasek nawigacji mapy -->
+                                <div class="map-nav-toolbar">
+                                    <button class="map-tab-btn active" id="btn-map-wustermark"
+                                        onclick="switchContactMap('wustermark')">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2.5">
+                                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                                            <circle cx="12" cy="10" r="3" />
+                                        </svg>
+                                        WUSTERMARK HQ
+                                    </button>
+                                    <button class="map-tab-btn" id="btn-map-stavenhagen"
+                                        onclick="switchContactMap('stavenhagen')">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2.5">
+                                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                                            <circle cx="12" cy="10" r="3" />
+                                        </svg>
+                                        STAVENHAGEN HQ
+                                    </button>
+                                </div>
+
+                                <!-- Kontener podglądu 3D Floating Glass Map -->
+                                <div class="floating-map-card">
+                                    <div class="map-iframe-container">
+                                        <!-- Mapa Wustermark (zoptymalizowana z hl=en) -->
+                                        <iframe id="iframe-wustermark" class="location-map-iframe active"
+                                            src="https://maps.google.com/maps?q=Leipziger%20Str.%203,%2014641%20Wustermark,%20Germany&t=&z=14&ie=UTF8&iwloc=&hl=en&output=embed"
+                                            loading="lazy" allowfullscreen></iframe>
+
+                                        <!-- Mapa Stavenhagen (zoptymalizowana z hl=en) -->
+                                        <iframe id="iframe-stavenhagen" class="location-map-iframe"
+                                            src="https://maps.google.com/maps?q=Preetzer%20Str.%201,%2017153%20Stavenhagen,%20Germany&t=&z=14&ie=UTF8&iwloc=&hl=en&output=embed"
+                                            loading="lazy" allowfullscreen></iframe>
+                                    </div>
+
+                                    <!-- Nakładka informacyjna na mapie -->
+                                    <div class="map-glass-badge">
+                                        <div class="badge-icon">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00f0ff"
+                                                stroke-width="2.5">
+                                                <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6" />
+                                                <path d="M8 2v16M16 6v16" />
+                                            </svg>
+                                        </div>
+                                        <div class="badge-info">
+                                            <span class="badge-title" id="map-badge-title">Wustermark
+                                                Headquarters</span>
+                                            <span class="badge-sub" id="map-badge-sub">Leipziger Str. 3, 14641
+                                                Wustermark</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </section>
-
-                        <!-- SEKCJA 3 — FOLDERS / FTP (ZASTĄPIONE SEKTORAMI KONTAKTOWYMI) -->
-                        <main class="repository-panel files-section-panel">
-                            <div class="panel-dot-texture"></div>
-
-                            <header class="panel-header">
-                                <h1>DEPARTMENTS / CHANNELS</h1>
-                                <div class="header-divider">
-                                    <div class="divider-glow"></div>
-                                </div>
-                            </header>
-
-                            <div class="tiles-grid">
-
-                                <!-- 1. DISPATCH -->
-                                <div class="tile folder-card" id="folder-card-kp">
-                                    <div class="icon-wrapper">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <path
-                                                d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
-                                        </svg>
-                                    </div>
-                                    <div class="tile-number file-tile-value" id="folder-count-kp">--</div>
-                                    <div class="tile-label file-tile-title">DISPATCH</div>
-                                </div>
-
-                                <!-- 2. LOGISTICS -->
-                                <div class="tile folder-card" id="folder-card-vigo">
-                                    <div class="icon-wrapper">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <path
-                                                d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
-                                        </svg>
-                                    </div>
-                                    <div class="tile-number file-tile-value" id="folder-count-vigo">--</div>
-                                    <div class="tile-label file-tile-title">LOGISTICS</div>
-                                </div>
-
-                                <!-- 3. MANAGEMENT -->
-                                <div class="tile folder-card" id="folder-card-mhp">
-                                    <div class="icon-wrapper">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <path
-                                                d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
-                                        </svg>
-                                    </div>
-                                    <div class="tile-number file-tile-value" id="folder-count-mhp">--</div>
-                                    <div class="tile-label file-tile-title">MANAGEMENT</div>
-                                </div>
-
-                                <!-- 4. SECURITY -->
-                                <div class="tile folder-card" id="folder-card-ym">
-                                    <div class="icon-wrapper">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <path
-                                                d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
-                                        </svg>
-                                    </div>
-                                    <div class="tile-number file-tile-value" id="folder-count-ym">--</div>
-                                    <div class="tile-label file-tile-title">SECURITY</div>
-                                </div>
-
-                                <!-- 5. SUPPORT -->
-                                <div class="tile folder-card" id="folder-card-word">
-                                    <div class="icon-wrapper">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                                            <polyline points="14 2 14 8 20 8" />
-                                        </svg>
-                                    </div>
-                                    <div class="tile-number file-tile-value" id="folder-count-word">--</div>
-                                    <div class="tile-label file-tile-title">SUPPORT</div>
-                                </div>
-
-                                <!-- 6. FINANCE -->
-                                <div class="tile folder-card" id="folder-card-excel">
-                                    <div class="icon-wrapper">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                                            <polyline points="14 2 14 8 20 8" />
-                                        </svg>
-                                    </div>
-                                    <div class="tile-number file-tile-value" id="folder-count-excel">--</div>
-                                    <div class="tile-label file-tile-title">FINANCE</div>
-                                </div>
-
-                                <!-- 7. TECHNICAL -->
-                                <div class="tile folder-card" id="folder-card-pdf">
-                                    <div class="icon-wrapper">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                                            <polyline points="14 2 14 8 20 8" />
-                                        </svg>
-                                    </div>
-                                    <div class="tile-number file-tile-value" id="folder-count-pdf">--</div>
-                                    <div class="tile-label file-tile-title">TECHNICAL</div>
-                                </div>
-
-                                <!-- 8. GENERAL -->
-                                <div class="tile folder-card" id="folder-card-txt">
-                                    <div class="icon-wrapper">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                                            <polyline points="14 2 14 8 20 8" />
-                                        </svg>
-                                    </div>
-                                    <div class="tile-number file-tile-value" id="folder-count-txt">--</div>
-                                    <div class="tile-label file-tile-title">GENERAL</div>
-                                </div>
-
-                                <!-- 9. MEDIA -->
-                                <div class="tile folder-card" id="folder-card-pictures">
-                                    <div class="icon-wrapper">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
-                                            <circle cx="8.5" cy="8.5" r="1.5" />
-                                            <polyline points="21 15 16 10 5 21" />
-                                        </svg>
-                                    </div>
-                                    <div class="tile-number file-tile-value" id="folder-count-pictures">--</div>
-                                    <div class="tile-label file-tile-title">MEDIA</div>
-                                </div>
-
-                                <!-- 10. EMERGENCY -->
-                                <div class="tile folder-card" id="folder-card-video">
-                                    <div class="icon-wrapper">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <polygon points="23 7 16 12 23 17 23 7" />
-                                            <rect x="1" y="5" width="15" height="14" rx="2" ry="2" />
-                                        </svg>
-                                    </div>
-                                    <div class="tile-number file-tile-value" id="folder-count-video">--</div>
-                                    <div class="tile-label file-tile-title">EMERGENCY</div>
-                                </div>
-
-                            </div>
-                        </main>
-
-                        <!-- SEKCJA 4 — REPOSITORY & CLOUD STATUS -->
-                        <main class="repository-panel cloud-status-panel">
-                            <div class="panel-dot-texture"></div>
-
-                            <header class="panel-header">
-                                <h1>SYSTEM & CLOUD STATUS</h1>
-                                <div class="header-divider">
-                                    <div class="divider-glow"></div>
-                                </div>
-                            </header>
-
-                            <div class="tiles-grid cloud-grid">
-
-                                <!-- 1. System ONLINE -->
-                                <div class="tile">
-                                    <div class="icon-wrapper">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <rect x="2" y="2" width="20" height="8" rx="2" ry="2" />
-                                            <rect x="2" y="14" width="20" height="8" rx="2" ry="2" />
-                                            <line x1="6" y1="6" x2="6.01" y2="6" />
-                                            <line x1="6" y1="18" x2="6.01" y2="18" />
-                                        </svg>
-                                    </div>
-                                    <div class="tile-number file-tile-value" id="cnt-repo-online">--</div>
-                                    <div class="tile-label file-tile-title">System ONLINE</div>
-                                </div>
-
-                                <!-- 2. Messages -->
-                                <div class="tile">
-                                    <div class="icon-wrapper">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                                            <polyline points="14 2 14 8 20 8" />
-                                            <line x1="16" y1="13" x2="8" y2="13" />
-                                            <line x1="16" y1="17" x2="8" y2="17" />
-                                        </svg>
-                                    </div>
-                                    <div class="tile-number file-tile-value" id="cnt-files-total">--</div>
-                                    <div class="tile-label file-tile-title">All Messages</div>
-                                </div>
-
-                                <!-- 3. Last Sync -->
-                                <div class="tile">
-                                    <div class="icon-wrapper">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <polyline points="23 4 23 10 17 10" />
-                                            <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
-                                        </svg>
-                                    </div>
-                                    <div class="tile-number text-small file-tile-value" id="cnt-last-sync">--</div>
-                                    <div class="tile-label file-tile-title">Last Sync</div>
-                                </div>
-
-                                <!-- 4. Google Drive CONNECTED -->
-                                <div class="tile">
-                                    <div class="icon-wrapper">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z" />
-                                        </svg>
-                                    </div>
-                                    <div class="tile-number file-tile-value" id="cnt-gdrive-status">--</div>
-                                    <div class="tile-label file-tile-title">Google Drive CONNECTED</div>
-                                </div>
-
-                                <!-- 5. Operators -->
-                                <div class="tile">
-                                    <div class="icon-wrapper">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                                            <circle cx="12" cy="7" r="4" />
-                                        </svg>
-                                    </div>
-                                    <div class="tile-number text-small-sub file-tile-value" id="cnt-driver-id">Operator
-                                        ---</div>
-                                    <div class="tile-label file-tile-title">Operators</div>
-                                </div>
-
-                                <!-- 6. API ONLINE -->
-                                <div class="tile">
-                                    <div class="icon-wrapper">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
-                                        </svg>
-                                    </div>
-                                    <div class="tile-number file-tile-value" id="cnt-api-status">--</div>
-                                    <div class="tile-label file-tile-title">API ONLINE</div>
-                                </div>
-
-                            </div>
-                        </main>
 
                     </div>
                 </div>
@@ -561,34 +432,6 @@
         </div> <!-- content-wrapper -->
 
     </div> <!-- base-root-tile -->
-
-    <!-- POPUP MODAL -->
-    <div id="files-modal" class="modal-backdrop">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 id="modal-folder-title">Department: ---</h3>
-                <button id="modal-close-btn" class="modal-close">&times;</button>
-            </div>
-            <div class="modal-body">
-                <div class="file-search-inner" style="margin-bottom: 15px;">
-                    <input type="text" id="modal-search-input" class="file-search-input"
-                        placeholder="Szukaj elementu w tym dziale..." autocomplete="off">
-                    <div id="modal-search-suggestions" class="file-search-suggestions"></div>
-                </div>
-
-                <div class="files-list-wrapper">
-                    <div class="files-header-row">
-                        <span>Nazwa pozycji</span>
-                        <span>Ostatnia modyfikacja</span>
-                        <span>Akcja</span>
-                    </div>
-                    <div id="modal-files-list" class="files-list">
-                        <!-- Elementy wczytywane dynamicznie z JS -->
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <!-- AUTH POPUP -->
     <div id="auth-popup" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%;
