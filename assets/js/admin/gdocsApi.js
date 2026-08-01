@@ -1,11 +1,6 @@
 const GDOCS_API_URL = 'https://script.google.com/macros/s/AKfycbwbZ_KSjyTTDM2iONJC87-jgVZysubMfKChDxDs8l1RKJgjUJ6Q2_7oA_RhuDna39Ra/exec';
-const DEFAULT_TIMEOUT = 15000; // 15 sekund limitu na zapytanie
+const DEFAULT_TIMEOUT = 15000;
 
-/**
- * Pobiera dane z Google Sheets / Apps Script za pomocą zapytania GET
- * @param {string} action - Akcja API do wykonania (domyślnie 'getsystemdata')
- * @returns {Promise<Object>} Zwraca pobrane dane w formacie JSON
- */
 export async function fetchDocsData(action = 'getsystemdata') {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), DEFAULT_TIMEOUT);
@@ -25,8 +20,10 @@ export async function fetchDocsData(action = 'getsystemdata') {
 
         const data = await response.json();
 
-        if (data && data.status === 'error') {
-            throw new Error(`Apps Script Error (${action}): ${data.message || 'Nieznany błąd serwera'}`);
+        // 🔧 FIX: Sprawdź czy dane nie są błędem
+        if (data && data.error) {
+            console.warn(`⚠️ API zwróciło błąd dla ${action}:`, data.error);
+            return {}; // Zwróć pusty obiekt zamiast wyrzucać błąd
         }
 
         return data;
@@ -35,26 +32,58 @@ export async function fetchDocsData(action = 'getsystemdata') {
         if (error.name === 'AbortError') {
             console.error(`⏱️ Przekroczono limit czasu żądania (Timeout) dla akcji: ${action}`);
         } else {
-            console.error(`❌ Błąd podczas pobierania danych z Google Docs (${action}):`, error);
+            console.error(` Błąd podczas pobierania danych z Google Docs (${action}):`, error);
         }
-        throw error;
+        return {}; // 🔧 FIX: Zwróć pusty obiekt zamiast throw
     }
 }
 
-/**
- * Pobiera komplet zagregowanych danych systemowych dla panelu admina
- * @returns {Promise<Object>}
- */
 export async function fetchAllAdminDocsData() {
-    return await fetchDocsData('getsystemdata');
+    try {
+        console.log('📡 Pobieranie danych z Google Sheets API...');
+
+        const [systemData, vehiclesData, adminData, alertsData] = await Promise.all([
+            fetchDocsData('getsystemdata'),
+            fetchDocsData('getvehiclesdata'),
+            fetchDocsData('getadmindata'),
+            fetchDocsData('getalerts')
+        ]);
+
+        console.log('✅ systemData:', systemData);
+        console.log('✅ vehiclesData:', vehiclesData);
+        console.log('✅ adminData:', adminData);
+        console.log('✅ alertsData:', alertsData);
+
+        // 🔧 FIX: Bezpieczne wyciąganie danych z fallbackami
+        return {
+            system: {
+                cities: (systemData.cities || systemData.CITIES || []),
+                relations: (systemData.relations || systemData.RELATIONS || []),
+                drivers: (systemData.drivers || systemData.DRIVERS || [])
+            },
+            vehicles: {
+                trucks: (vehiclesData.trucks || vehiclesData.TRUCKS || []),
+                tanktrailers: (vehiclesData.tanktrailers || vehiclesData.TANKTRAILERS || [])
+            },
+            users: (adminData.users || adminData.USERS || []),
+            loginHistory: (adminData.loginHistory || adminData.LOGIN_HISTORY || []),
+            reminders: (adminData.reminders || adminData.REMINDERS || []),
+            alerts: (Array.isArray(alertsData) ? alertsData : (alertsData.alerts || alertsData.ALERTS || []))
+        };
+    } catch (error) {
+        console.error('❌ Błąd podczas pobierania danych admina:', error);
+        // 🔧 FIX: Zwróć pustą strukturę zamiast wyrzucać błąd
+        return {
+            system: { cities: [], relations: [], drivers: [] },
+            vehicles: { trucks: [], tanktrailers: [] },
+            users: [],
+            loginHistory: [],
+            reminders: [],
+            alerts: []
+        };
+    }
 }
 
-/**
- * Wysyła aktualizację lub nowe dane do Google Sheets via Apps Script (POST)
- * @param {string} action - Nazwa operacji do wykonania w Apps Script
- * @param {Object|Array} payload - Dane do zapisania / zaktualizowania
- * @returns {Promise<Object>} Zwraca odpowiedź potwierdzającą z serwera
- */
 export async function updateDocsData(action, payload = {}) {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), DEFAULT_TIMEOUT);
@@ -63,7 +92,7 @@ export async function updateDocsData(action, payload = {}) {
         const response = await fetch(GDOCS_API_URL, {
             method: 'POST',
             headers: {
-                'Content-Type': 'text/plain;charset=utf-8' // Standard dla Google Apps Script w celu uniknięcia preflight CORS
+                'Content-Type': 'text/plain;charset=utf-8'
             },
             body: JSON.stringify({ action, payload }),
             signal: controller.signal

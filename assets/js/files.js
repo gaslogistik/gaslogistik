@@ -6,6 +6,7 @@ const API_URL = 'https://script.google.com/macros/s/AKfycbxySJRg7CvMDTcLN_epiVNU
 
 let driveData = null;
 let currentModalFolder = null;
+let modalFolderHistory = [];
 const FOLDER_KEYS = ['KP', 'VIGO', 'MHP', 'YM', 'WORD', 'EXCEL', 'PDF', 'TXT', 'PICTURES', 'VIDEO'];
 
 /* ============================================================
@@ -83,8 +84,9 @@ function setInitialLoadingState(isLoading) {
 function updateCounters(data) {
     if (!data) return;
     const allFiles = getAllFilesFlat(data);
+    const allFolders = getAllFoldersFlat(data);
 
-    setCounterValue('cnt-folders', data.children ? data.children.filter(c => c.type === 'folder').length : 0);
+    setCounterValue('cnt-folders', allFolders.length);
     setCounterValue('cnt-access', '24/7');
     setCounterValue('cnt-live-repo', 'ACTIVE');
     setCounterValue('cnt-new-files', getRecentFilesCount(allFiles, 7));
@@ -92,17 +94,7 @@ function updateCounters(data) {
     setCounterValue('cnt-status-mon', 'ONLINE');
     setCounterValue('cnt-repo-online', 'ONLINE');
     setCounterValue('cnt-files-total', allFiles.length);
-
-    // --- DYNAMICZNE ZLICZANIE KIEROWCÓW Z PLIKU drivers.txt ---
-    const driverFile = allFiles.find(f => f.name.toLowerCase() === 'drivers.txt');
-    if (driverFile && driverFile.content) {
-        // Jeśli Apps Script przekazuje treść pliku tekstowego:
-        const lines = driverFile.content.split(/\r?\n/).filter(line => line.trim() !== '');
-        setCounterValue('cnt-driver-id', lines.length);
-    } else {
-        // Awaryjnie, jeśli treść pobiera się inaczej lub plik czeka na pobranie zawartości
-        setCounterValue('cnt-driver-id', '32'); // Liczba z Twojego pliku (32 wpisy)
-    }
+    setCounterValue('cnt-ftp-cloud', 'ON');
 }
 
 function setCounterValue(id, val) {
@@ -113,13 +105,12 @@ function updateApiStatus(status) { setCounterValue('cnt-api-status', status); }
 function updateCloudStatus(status) { setCounterValue('cnt-gdrive-status', status); }
 function updateLastSyncTime() {
     const now = new Date();
-    // Zmiana: Wyświetlanie daty (oraz godziny) zamiast samej godziny
     const dateStr = now.toLocaleDateString('en-GB') + ' ' + now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     setCounterValue('cnt-last-sync', dateStr);
 }
 
 /* ============================================================
-   3. FOLDER CARDS SECTION
+   3. FOLDER CARDS & TREE NAVIGATION HELPERS
    ============================================================ */
 
 function updateFolderCards(data) {
@@ -135,12 +126,12 @@ function updateFolderCards(data) {
         }
 
         const countEl = document.getElementById(`folder-count-${key.toLowerCase()}`);
-        if (countEl) countEl.textContent = `${count} files`;
+        if (countEl) countEl.textContent = `${count} items`;
 
         const cardEl = document.getElementById(`folder-card-${key.toLowerCase()}`);
         if (cardEl) {
             cardEl.style.pointerEvents = 'auto';
-            cardEl.onclick = () => openFolderModal(key, folderObj);
+            cardEl.onclick = () => openFolderModal(key, folderObj, true);
         }
     });
 }
@@ -180,7 +171,7 @@ function findFolderRecursive(node, targetName) {
     if (!node || !node.children || !Array.isArray(node.children)) return null;
     for (let child of node.children) {
         if (child.type === 'folder') {
-            if (child.name.toUpperCase() === targetName.toUpperCase()) return child;
+            if (child.name.toUpperCase() === String(targetName).toUpperCase()) return child;
             let found = findFolderRecursive(child, targetName);
             if (found) return found;
         }
@@ -188,30 +179,79 @@ function findFolderRecursive(node, targetName) {
     return null;
 }
 
+function findParentFolder(root, targetIdOrName) {
+    if (!root || !root.children || !Array.isArray(root.children)) return null;
+
+    for (let child of root.children) {
+        if ((child.id && child.id === targetIdOrName) ||
+            (child.name && child.name.toLowerCase() === String(targetIdOrName).toLowerCase())) {
+            return root;
+        }
+        if (child.type === 'folder') {
+            let foundParent = findParentFolder(child, targetIdOrName);
+            if (foundParent) return foundParent;
+        }
+    }
+    return null;
+}
+
+function getFolderAncestors(root, targetIdOrName) {
+    let ancestors = [];
+    let currentTarget = targetIdOrName;
+
+    while (currentTarget) {
+        let parent = findParentFolder(root, currentTarget);
+        if (parent && parent !== root) {
+            ancestors.unshift({ key: parent.name || 'Folder', obj: parent });
+            currentTarget = parent.id || parent.name;
+        } else {
+            break;
+        }
+    }
+    return ancestors;
+}
+
 /* ============================================================
-   4. MODAL & IN-FOLDER SEARCH HANDLING
+   4. MODAL & IN-FOLDER SEARCH HANDLING (FILES & FOLDERS)
    ============================================================ */
 
-function openFolderModal(folderKey, folderObj) {
+function openFolderModal(folderKey, folderObj, resetHistory = false, historyOverride = null) {
     if (!folderKey || folderKey === '---') return;
+
+    if (resetHistory) {
+        modalFolderHistory = Array.isArray(historyOverride) ? [...historyOverride] : [];
+    } else if (historyOverride === true) {
+    } else {
+        if (currentModalFolder && currentModalFolder !== folderObj) {
+            modalFolderHistory.push({ key: currentModalFolder.name || 'Folder', obj: currentModalFolder });
+        }
+    }
 
     currentModalFolder = folderObj;
     const modal = document.getElementById('files-modal');
     const modalTitle = document.getElementById('modal-folder-title');
     const modalSearchInput = document.getElementById('modal-search-input');
 
-    let files = [];
-    if (['WORD', 'EXCEL', 'PDF', 'TXT', 'PICTURES', 'VIDEO'].includes(folderKey) && driveData) {
-        files = filterFilesByType(getAllFilesFlat(driveData), folderKey);
+    let items = [];
+    if (['WORD', 'EXCEL', 'PDF', 'TXT', 'PICTURES', 'VIDEO'].includes(folderKey) && driveData && resetHistory && (!historyOverride || historyOverride.length === 0)) {
+        items = filterFilesByType(getAllFilesFlat(driveData), folderKey);
     } else {
-        files = folderObj ? getAllFilesFlat(folderObj) : [];
+        if (folderObj && folderObj.children) {
+            items = folderObj.children;
+        } else {
+            items = [];
+        }
     }
 
-    if (modalTitle) modalTitle.textContent = `Folder: ${folderKey} (${files.length} files)`;
+    if (modalTitle) {
+        let backBtnHtml = modalFolderHistory.length > 0 ?
+            `<button class="modal-back-nav-btn" onclick="goBackModalFolder()" type="button" title="Back to previous folder">← Back</button>` : '';
+        modalTitle.innerHTML = `${backBtnHtml} Folder: ${escapeHtml(folderKey)} (${items.length} items)`;
+    }
 
     if (modalSearchInput) {
         modalSearchInput.value = '';
-        modalSearchInput.placeholder = 'Search file in this folder...';
+        modalSearchInput.placeholder = 'Search item in this folder...';
         let parentWrapper = modalSearchInput.parentElement;
 
         if (parentWrapper) {
@@ -220,8 +260,8 @@ function openFolderModal(folderKey, folderObj) {
         }
     }
 
-    renderModalFileList(files);
-    initModalSearch(files);
+    renderModalItemList(items);
+    initModalSearch(items);
 
     const filesListContainer = document.getElementById('modal-files-list');
     if (filesListContainer && filesListContainer.previousElementSibling) {
@@ -234,40 +274,75 @@ function openFolderModal(folderKey, folderObj) {
     }
 }
 
+function goBackModalFolder() {
+    if (modalFolderHistory.length > 0) {
+        const prev = modalFolderHistory.pop();
+        openFolderModal(prev.key, prev.obj, false, true);
+    }
+}
+
 function closeModal() {
     const modal = document.getElementById('files-modal');
     if (modal) {
         modal.classList.remove('active');
         document.body.style.overflow = '';
     }
+    modalFolderHistory = [];
     clearHighlights();
 }
 
-function renderModalFileList(files) {
+function renderModalItemList(items) {
     const container = document.getElementById('modal-files-list');
     if (!container) return;
-    if (!files || files.length === 0) {
-        container.innerHTML = '<div class="file-row-empty" style="text-align:center; padding: 15px; color: #666;">No files in this folder.</div>';
+    if (!items || items.length === 0) {
+        container.innerHTML = '<div class="file-row-empty" style="text-align:center; padding: 15px; color: #666;">No items in this folder.</div>';
         return;
     }
-    container.innerHTML = files.map((file) => `
-        <div class="file-row" id="file-row-${file.id}">
-            <div class="file-name-cell">
-                <svg class="file-icon-svg" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/>
-                </svg>
-                <span>${escapeHtml(file.name)}</span>
-            </div>
-            <div class="file-date-cell">${formatDate(file.updated)}</div>
-            <div class="file-actions-cell">
-                <a href="${file.previewUrl || '#'}" target="_blank" class="file-action-btn">Preview</a>
-                <a href="${file.downloadUrl || '#'}" target="_blank" class="file-action-btn file-action-primary">Download</a>
-            </div>
-        </div>
-    `).join('');
+
+    const sortedItems = [...items].sort((a, b) => {
+        if (a.type === 'folder' && b.type !== 'folder') return -1;
+        if (a.type !== 'folder' && b.type === 'folder') return 1;
+        return a.name.localeCompare(b.name);
+    });
+
+    container.innerHTML = sortedItems.map((item) => {
+        if (item.type === 'folder') {
+            const subCount = item.children ? item.children.length : 0;
+            return `
+                <div class="file-row folder-row-item" id="folder-row-${escapeHtml(item.name)}" style="cursor: pointer;" onclick='openFolderModal(${JSON.stringify(item.name)}, ${JSON.stringify(item)}, false)'>
+                    <div class="file-name-cell">
+                        <svg class="file-icon-svg" viewBox="0 0 24 24" fill="#ff2d55" style="width: 20px; height: 20px; margin-right: 8px;">
+                            <path d="M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"/>
+                        </svg>
+                        <strong style="color: #ff2d55;">${escapeHtml(item.name)}</strong> <span style="font-size: 11px; color: #718096; margin-left: 6px;">(${subCount} items)</span>
+                    </div>
+                    <div class="file-date-cell">Subfolder</div>
+                    <div class="file-actions-cell">
+                        <button class="file-action-btn file-action-primary" type="button">Open Folder</button>
+                    </div>
+                </div>
+            `;
+        } else {
+            return `
+                <div class="file-row" id="file-row-${escapeHtml(item.id)}">
+                    <div class="file-name-cell">
+                        <svg class="file-icon-svg" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/>
+                        </svg>
+                        <span>${escapeHtml(item.name)}</span>
+                    </div>
+                    <div class="file-date-cell">${formatDate(item.updated)}</div>
+                    <div class="file-actions-cell">
+                        <a href="${item.previewUrl || '#'}" target="_blank" class="file-action-btn">Preview</a>
+                        <a href="${item.downloadUrl || '#'}" target="_blank" class="file-action-btn file-action-primary">Download</a>
+                    </div>
+                </div>
+            `;
+        }
+    }).join('');
 }
 
-function initModalSearch(files) {
+function initModalSearch(items) {
     const input = document.getElementById('modal-search-input');
     const suggestionsBox = document.getElementById('modal-search-suggestions');
     if (!input) return;
@@ -279,19 +354,19 @@ function initModalSearch(files) {
                 suggestionsBox.classList.remove('file-search-suggestions-visible');
                 suggestionsBox.innerHTML = '';
             }
-            renderModalFileList(files);
+            renderModalItemList(items);
             return;
         }
 
-        const filtered = files.filter(f => f.name.toLowerCase().includes(query));
-        renderModalFileList(filtered);
+        const filtered = items.filter(i => i.name.toLowerCase().includes(query));
+        renderModalItemList(filtered);
 
         if (suggestionsBox) {
             if (filtered.length > 0) {
-                suggestionsBox.innerHTML = filtered.map(f => `
-                    <div class="file-search-suggestion-item" data-id="${f.id}">
-                        <span class="file-search-suggestion-type">FILE</span>
-                        <span class="file-search-suggestion-main">${escapeHtml(f.name)}</span>
+                suggestionsBox.innerHTML = filtered.map(i => `
+                    <div class="file-search-suggestion-item" data-id="${i.id || i.name}" data-type="${i.type}">
+                        <span class="file-search-suggestion-type">${i.type === 'folder' ? 'FOLDER' : 'FILE'}</span>
+                        <span class="file-search-suggestion-main">${escapeHtml(i.name)}</span>
                     </div>
                 `).join('');
                 suggestionsBox.classList.add('file-search-suggestions-visible');
@@ -299,7 +374,15 @@ function initModalSearch(files) {
                 suggestionsBox.querySelectorAll('.file-search-suggestion-item').forEach(item => {
                     item.onclick = (event) => {
                         event.stopPropagation();
-                        highlightAndScrollToFile(item.getAttribute('data-id'));
+                        const type = item.getAttribute('data-type');
+                        const name = item.querySelector('.file-search-suggestion-main').textContent;
+
+                        if (type === 'folder') {
+                            const subFolderObj = items.find(i => i.name === name && i.type === 'folder');
+                            if (subFolderObj) openFolderModal(subFolderObj.name, subFolderObj, false);
+                        } else {
+                            highlightAndScrollToFile(item.getAttribute('data-id'));
+                        }
                         suggestionsBox.classList.remove('file-search-suggestions-visible');
                     };
                 });
@@ -311,7 +394,7 @@ function initModalSearch(files) {
 }
 
 /* ============================================================
-   5. GLOBAL SEARCH (SECTION 2)
+   5. GLOBAL SEARCH (SECTION 2 - INCLUDES FOLDERS & FILES)
    ============================================================ */
 
 function initGlobalSearch() {
@@ -319,7 +402,7 @@ function initGlobalSearch() {
     const suggestionsBox = document.getElementById('global-search-suggestions');
     if (!input || !suggestionsBox) return;
 
-    input.placeholder = "Search files...";
+    input.placeholder = "Search folders or files...";
 
     input.addEventListener('input', (e) => {
         const query = e.target.value.toLowerCase().trim();
@@ -328,15 +411,15 @@ function initGlobalSearch() {
             suggestionsBox.innerHTML = '';
             return;
         }
-        const allFilesWithFolder = getAllFilesWithFolderPath(driveData);
-        const matches = allFilesWithFolder.filter(f => f.name.toLowerCase().includes(query));
+        const allItemsWithFolder = getAllItemsWithFolderPath(driveData);
+        const matches = allItemsWithFolder.filter(i => i.name.toLowerCase().includes(query));
 
         if (matches.length > 0) {
-            suggestionsBox.innerHTML = matches.map(f => `
-                <div class="file-search-suggestion-item" data-id="${f.id}" data-folder-name="${escapeHtml(f.parentFolderName)}">
-                    <span class="file-search-suggestion-type">${escapeHtml(f.parentFolderName)}</span>
-                    <span class="file-search-suggestion-main">${escapeHtml(f.name)}</span>
-                    <span class="file-search-suggestion-sub">${escapeHtml(f.path)}</span>
+            suggestionsBox.innerHTML = matches.map(i => `
+                <div class="file-search-suggestion-item" data-id="${i.id || ''}" data-type="${i.type}" data-folder-name="${escapeHtml(i.parentFolderName)}" data-item-name="${escapeHtml(i.name)}">
+                    <span class="file-search-suggestion-type">${i.type === 'folder' ? 'FOLDER' : escapeHtml(i.parentFolderName)}</span>
+                    <span class="file-search-suggestion-main">${escapeHtml(i.name)}</span>
+                    <span class="file-search-suggestion-sub">${escapeHtml(i.path)}</span>
                 </div>
             `).join('');
             suggestionsBox.classList.add('file-search-suggestions-visible');
@@ -344,19 +427,31 @@ function initGlobalSearch() {
             suggestionsBox.querySelectorAll('.file-search-suggestion-item').forEach(item => {
                 item.onclick = (event) => {
                     event.stopPropagation();
-                    const fileId = item.getAttribute('data-id');
+                    const itemType = item.getAttribute('data-type');
+                    const itemId = item.getAttribute('data-id');
                     const folderName = item.getAttribute('data-folder-name');
+                    const itemName = item.getAttribute('data-item-name');
 
-                    let folderObj = findFolderRecursive(driveData, folderName);
-                    if (!folderObj && driveData.children) {
-                        folderObj = driveData.children.find(c => c.type === 'folder' && c.name.toUpperCase() === folderName.toUpperCase());
-                    }
-                    if (!folderObj) {
-                        folderObj = findFolderByNameOrType(driveData, folderName);
-                    }
+                    if (itemType === 'folder') {
+                        let targetFolder = findFolderRecursive(driveData, itemName);
+                        if (!targetFolder && driveData.children) {
+                            targetFolder = driveData.children.find(c => c.type === 'folder' && c.name.toUpperCase() === itemName.toUpperCase());
+                        }
+                        let ancestors = getFolderAncestors(driveData, itemName);
+                        openFolderModal(itemName, targetFolder, true, ancestors);
+                    } else {
+                        let parentFolder = findParentFolder(driveData, itemId) || findParentFolder(driveData, itemName);
+                        let actualFolderName = parentFolder ? parentFolder.name : folderName;
+                        let folderObj = parentFolder || findFolderRecursive(driveData, actualFolderName);
 
-                    openFolderModal(folderName, folderObj);
-                    setTimeout(() => highlightAndScrollToFile(fileId), 250);
+                        if (!folderObj) {
+                            folderObj = findFolderByNameOrType(driveData, actualFolderName);
+                        }
+
+                        let ancestors = getFolderAncestors(driveData, actualFolderName);
+                        openFolderModal(actualFolderName, folderObj, true, ancestors);
+                        setTimeout(() => highlightAndScrollToFile(itemId), 250);
+                    }
 
                     input.value = '';
                     suggestionsBox.classList.remove('file-search-suggestions-visible');
@@ -379,14 +474,14 @@ function initGlobalSearch() {
 }
 
 /* ============================================================
-   6. ISOLATED CSS STRUCTURE & LOADER STYLES
+   6. ISOLATED CSS STRUCTURE & STYLES
    ============================================================ */
 
 function injectHighlightStyles() {
     if (document.getElementById('custom-modal-fixes-style')) return;
 
     setTimeout(() => {
-        document.querySelectorAll('.folder-card, .counter-card, .stat-card, div[class*="card"], .tile').forEach(card => {
+        document.querySelectorAll('.counter-card, .stat-card, div[class*="card"]:not(.folder-card), .tile:not(.folder-card)').forEach(card => {
             const children = card.children;
             Array.from(children).forEach((child, index) => {
                 if (index === 0 || index === children.length - 1) {
@@ -403,7 +498,6 @@ function injectHighlightStyles() {
     const style = document.createElement('style');
     style.id = 'custom-modal-fixes-style';
     style.innerHTML = `
-        /* SYNC LOADER OVERLAY */
         #repo-sync-loader-overlay {
             position: fixed;
             top: 50%;
@@ -457,7 +551,25 @@ function injectHighlightStyles() {
             font-weight: 500;
         }
 
-        /* GLOBAL SEARCH BAR (SECTION 2) */
+        .modal-back-nav-btn {
+            background: #ff2d55 !important;
+            color: #ffffff !important;
+            border: none !important;
+            padding: 6px 14px !important;
+            border-radius: 8px !important;
+            font-size: 12px !important;
+            font-weight: 600 !important;
+            cursor: pointer !important;
+            margin-right: 12px !important;
+            transition: background 0.2s ease !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            box-shadow: 0 2px 6px rgba(255, 45, 85, 0.3) !important;
+        }
+        .modal-back-nav-btn:hover {
+            background: #e02448 !important;
+        }
+
         .files-search-bar:not(#files-modal .files-search-bar) {
             width: 80% !important;
             max-width: 900px !important;
@@ -484,7 +596,6 @@ function injectHighlightStyles() {
             box-sizing: border-box !important;
         }
 
-        /* MODAL SEARCH BAR ISOLATION */
         #files-modal .modal-search-wrapper-isolated,
         #files-modal .files-search-bar,
         #files-modal div:has(> #modal-search-input) {
@@ -540,7 +651,6 @@ function injectHighlightStyles() {
             box-shadow: inset 0 1px 3px rgba(0,0,0,0.05), 0 0 10px rgba(255, 45, 85, 0.35) !important;
         }
 
-        /* DESKTOP MODAL TABLE HEADER & ROWS */
         .modal-dynamic-header-fix {
             display: grid !important;
             grid-template-columns: 2fr 1.5fr 1.5fr !important;
@@ -598,7 +708,6 @@ function injectHighlightStyles() {
             gap: 8px !important;
         }
 
-        /* POPRAWKA MOBILE MODAL */
         @media (max-width: 768px) {
             .modal-dynamic-header-fix {
                 display: none !important;
@@ -636,7 +745,6 @@ function injectHighlightStyles() {
             }
         }
 
-        /* GLOW EFFECT */
         @keyframes filePulseGlow {
             0% { box-shadow: 0 0 3px rgba(255, 45, 85, 0.4); border-color: rgba(255, 45, 85, 0.5); }
             50% { box-shadow: 0 0 10px rgba(255, 45, 85, 0.85); border-color: rgba(255, 45, 85, 1); }
@@ -648,19 +756,44 @@ function injectHighlightStyles() {
             border: 2px solid #ff2d55 !important;
         }
 
-        /* STRICT FONT SIZE UNIFICATION FOR ALL TILES, FOLDERS AND COUNTERS (SECTIONS 1, 3, 4) */
-        .folder-card span, .counter-card span, .stat-card span, .tile span,
-        .folder-card p, .counter-card p, .stat-card p, .tile p,
-        .folder-card small, .counter-card small, .stat-card small, .tile small,
-        div[class*="card"] *:first-child, div[class*="card"] *:last-child,
-        .tile *:first-child, .tile *:last-child {
+        .folder-row-item {
+            background: rgba(255, 45, 85, 0.03);
+            border-radius: 8px;
+            transition: background 0.2s ease;
+        }
+        .folder-row-item:hover {
+            background: rgba(255, 45, 85, 0.08);
+        }
+
+        .counter-card span, .stat-card span, 
+        .counter-card p, .stat-card p, 
+        .counter-card small, .stat-card small, 
+        div[class*="card"]:not(.folder-card) *:first-child, div[class*="card"]:not(.folder-card) *:last-child,
+        .tile:not(.folder-card) *:first-child, .tile:not(.folder-card) *:last-child {
             font-size: 13px !important;
             font-weight: 600 !important;
         }
 
-        .folder-card *:nth-child(2), .counter-card *:nth-child(2), .stat-card *:nth-child(2), .tile *:nth-child(2) {
+        .counter-card *:nth-child(2), .stat-card *:nth-child(2) {
             font-size: 22px !important;
             font-weight: 700 !important;
+        }
+
+        /* ========================================================
+           SEKCJA FOLDERS / FTP — W TYM MIEJSCU ZMIANIASZ CZCIONKĘ
+           ======================================================== */
+        .folder-card span, 
+        .folder-card p, 
+        .folder-card small, 
+        .folder-card *:first-child, 
+        .folder-card *:last-child {
+            font-size: 20px !important; /* <--- TUTAJ zmień rozmiar czcionki dla etykiet/tytułóW */
+            font-weight: 600 !important; /* <--- TUTAJ waga czcionki */
+        }
+
+        .folder-card *:nth-child(2) {
+            font-size: 15px !important; /* <--- TUTAJ zmień rozmiar głównej wartości/licznika w kafelku */
+            font-weight: 700 !important; /* <--- TUTAJ waga głównej wartości */
         }
     `;
     document.head.appendChild(style);
@@ -697,29 +830,54 @@ function getAllFilesFlat(node) {
     return files;
 }
 
-function getAllFilesWithFolderPath(node, currentPath = '', parentFolderObj = null) {
-    let files = [];
-    if (!node) return files;
+function getAllFoldersFlat(node) {
+    let folders = [];
+    if (!node) return folders;
+    if (node.type === 'folder') {
+        folders.push(node);
+    }
+    if (node.children && Array.isArray(node.children)) {
+        node.children.forEach(child => {
+            folders = folders.concat(getAllFoldersFlat(child));
+        });
+    }
+    return folders;
+}
+
+function getAllItemsWithFolderPath(node, currentPath = '', parentFolderObj = null) {
+    let items = [];
+    if (!node) return items;
 
     const nodeName = node.name || 'Root';
     const newPath = currentPath ? `${currentPath}/${nodeName}` : nodeName;
 
+    if (node.type === 'folder' && currentPath !== '') {
+        let parentName = parentFolderObj ? parentFolderObj.name : 'Main';
+        items.push({
+            ...node,
+            path: currentPath,
+            parentFolderName: parentName,
+            parentFolderKey: parentName
+        });
+    }
+
     if (node.type === 'file') {
         let parentName = parentFolderObj ? parentFolderObj.name : 'Main';
-
-        files.push({
+        items.push({
             ...node,
             path: currentPath || 'Main Directory',
             parentFolderName: parentName,
             parentFolderKey: parentName
         });
-    } else if (node.children && Array.isArray(node.children)) {
+    }
+
+    if (node.children && Array.isArray(node.children)) {
         node.children.forEach(child => {
             const currentParent = node.type === 'folder' ? node : parentFolderObj;
-            files = files.concat(getAllFilesWithFolderPath(child, newPath, currentParent));
+            items = items.concat(getAllItemsWithFolderPath(child, newPath, currentParent));
         });
     }
-    return files;
+    return items;
 }
 
 function countFilesInTree(node) { return getAllFilesFlat(node).length; }

@@ -1,13 +1,14 @@
 <!DOCTYPE html>
-<html lang="pl">
+<html lang="en">
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KP GASLOGISTIK - Cloud</title>
+    <title>KP GASLOGISTIK - Cloud Download Center</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
         rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <link rel="stylesheet" href="assets/css/base.css">
     <link rel="stylesheet" href="assets/css/header.css">
@@ -17,7 +18,6 @@
     <link rel="stylesheet" href="assets/css/dashboard-content.css">
     <link rel="stylesheet" href="assets/css/cloud.css">
 
-    <!-- Poprawiona ścieżka do favicon w folderze assets/favicon -->
     <link rel="icon" type="image/x-icon" href="assets/favicon/favicon.ico">
 </head>
 
@@ -29,24 +29,21 @@
         <header class="header-container">
             <div class="title-tile">
                 <h1 class="title-main">ENTERPRISE LOGISTICS & INTELLIGENCE PLATFORM</h1>
-                <span class="title-sub">Premium Command Center</span>
+                <span class="title-sub">Cloud Download Center</span>
             </div>
 
             <div class="operator-tile" id="operator-container">
-
                 <div class="operator-icons">
                     <a href="#" class="icon-btn tooltip-container" data-tooltip="CLOUD" onclick="openLoginPopup()">
                         <svg class="op-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                             <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z" />
                         </svg>
                     </a>
-
                     <a href="#" class="icon-btn tooltip-container" data-tooltip="ALERTS" onclick="openLoginPopup()">
                         <svg class="op-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                             <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0" />
                         </svg>
                     </a>
-
                     <a href="#" class="icon-btn tooltip-container" data-tooltip="LOGIN" onclick="openLoginPopup()">
                         <svg class="op-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
@@ -56,10 +53,9 @@
                 </div>
 
                 <div class="operator-info">
-                    <span id="operator-name">OPERATOR</span>
+                    <span id="operator-name">ADMIN</span>
                     <span id="session-timer">--:--</span>
                 </div>
-
             </div>
         </header>
 
@@ -162,37 +158,74 @@
             </div>
 
             <!-- MAIN CONTENT AREA -->
-            <main class="main-window-area">
-
+            <main class="main-window-area" id="main-content-area">
                 <div class="command-center">
-
-                    <!-- GŁÓWNY, BAZOWY, NADRZĘDNY KAFEL -->
                     <div class="master-container-tile">
 
-                        <!-- NADRZĘDNY NAGŁÓWEK DLA CAŁEGO KONTENERA -->
                         <h2 class="weather-watch-title"
                             style="font-size: 18px; margin-bottom: 20px; border-bottom: 2px solid rgba(255, 42, 109, 0.3); padding-bottom: 10px;">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ff2a6d"
                                 stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path>
                             </svg>
-                            CLOUD STORAGE & REPOSITORY
+                            CLOUD DOWNLOAD CENTER
                         </h2>
 
-                        <!-- SEKCJA 1 — STATUS OVERVIEW -->
+                        <!-- SEKCJA 1 — STATUS OVERVIEW (COUNTER & TILES) -->
                         <section class="repository-panel">
                             <div class="panel-dot-texture"></div>
-
                             <header class="panel-header">
-                                <h1>CLOUD REPOSITORY - CENTER - (under construction... soon...)</h1>
+                                <h1>DRIVE DASHBOARD OVERVIEW</h1>
                                 <div class="header-divider">
                                     <div class="divider-glow"></div>
                                 </div>
                             </header>
 
+                            <div class="tiles-grid">
+                                <div class="tile">
+                                    <div class="icon-wrapper"><i class="fa-solid fa-users"></i></div>
+                                    <div class="tile-number" id="stat-drivers-count">0</div>
+                                    <div class="tile-label">DRIVERS DOCUMENTS</div>
+                                </div>
+                                <div class="tile">
+                                    <div class="icon-wrapper"><i class="fa-solid fa-truck"></i></div>
+                                    <div class="tile-number" id="stat-trucks-count">0</div>
+                                    <div class="tile-label">TRUCKS FILES</div>
+                                </div>
+                                <div class="tile">
+                                    <div class="icon-wrapper"><i class="fa-solid fa-trailer"></i></div>
+                                    <div class="tile-number" id="stat-trailers-count">0</div>
+                                    <div class="tile-label">TANKTRAILERS FILES</div>
+                                </div>
+                                <div class="tile">
+                                    <div class="icon-wrapper"><i class="fa-solid fa-file-excel"></i></div>
+                                    <div class="tile-number" id="stat-excel-count">0</div>
+                                    <div class="tile-label">EXCEL DATABASE</div>
+                                </div>
+                                <div class="tile">
+                                    <div class="icon-wrapper"><i class="fa-solid fa-folder-open"></i></div>
+                                    <div class="tile-number" id="stat-total-files">0</div>
+                                    <div class="tile-label">TOTAL CLOUD FILES</div>
+                                </div>
+                                <div class="tile">
+                                    <div class="icon-wrapper"><i class="fa-solid fa-signal"></i></div>
+                                    <div class="tile-number text-small" id="api-status-badge">CONNECTING...</div>
+                                    <div class="tile-label">API CONNECTION</div>
+                                </div>
+                                <div class="tile">
+                                    <div class="icon-wrapper"><i class="fa-solid fa-cloud"></i></div>
+                                    <div class="tile-number text-small" id="cloud-status-badge">INIT</div>
+                                    <div class="tile-label">DRIVE STATUS</div>
+                                </div>
+                                <div class="tile">
+                                    <div class="icon-wrapper"><i class="fa-solid fa-clock"></i></div>
+                                    <div class="tile-number text-small-sub" id="last-sync-time">--:--</div>
+                                    <div class="tile-label">LAST SYNC</div>
+                                </div>
+                            </div>
                         </section>
 
-                        <!-- SEKCJA 2 — ADDRESS SEARCH -->
+                        <!-- SEKCJA 2 — GLOBAL SEARCH -->
                         <section class="inner-command-center">
                             <h3 class="weather-watch-title">
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff2a6d"
@@ -200,116 +233,178 @@
                                     <circle cx="11" cy="11" r="8"></circle>
                                     <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                                 </svg>
-                                ADDRESS SEARCH
+                                GLOBAL DRIVE SEARCH
                             </h3>
 
-                            <div class="files-search-bar" style="max-width: 50%; margin: 0 auto;">
+                            <div class="files-search-bar" style="max-width: 60%; margin: 0 auto;">
                                 <div class="files-search-main">
                                     <div class="file-search-inner">
-                                        <input type="text" id="global-search-input" class="file-search-input"
-                                            placeholder="Szukaj pliku po nazwie lub rozszerzeniu..."
+                                        <input type="text" id="global-cloud-search" class="file-search-input"
+                                            placeholder="Search across all 'gas' folders & files..."
                                             autocomplete="off" />
-                                        <div id="global-search-suggestions" class="file-search-suggestions"></div>
+                                        <button id="clear-search-btn" class="clear-search-btn"
+                                            style="display:none;">&times;</button>
                                     </div>
                                 </div>
                             </div>
                         </section>
 
-                        <!-- SEKCJA 3 — FOLDERS / FTP -->
+                        <!-- SEKCJA 3 — MAIN FOLDERS EXPLORER -->
                         <main class="repository-panel files-section-panel">
                             <div class="panel-dot-texture"></div>
-
                             <header class="panel-header">
-                                <h1>FOLDERS / FTP - (under construction... soon...)</h1>
+                                <h1>DRIVE REPOSITORY EXPLORER</h1>
                                 <div class="header-divider">
                                     <div class="divider-glow"></div>
                                 </div>
                             </header>
 
+                            <div class="folders-grid">
+                                <div class="tile folder-card" data-folder="drivers">
+                                    <div class="icon-wrapper"><i class="fa-solid fa-folder-closed"></i></div>
+                                    <div class="tile-number text-small">DRIVERS</div>
+                                    <div class="tile-label" id="badge-drivers-count">0 files</div>
+                                </div>
+                                <div class="tile folder-card" data-folder="trucks">
+                                    <div class="icon-wrapper"><i class="fa-solid fa-folder-closed"></i></div>
+                                    <div class="tile-number text-small">TRUCKS</div>
+                                    <div class="tile-label" id="badge-trucks-count">0 files</div>
+                                </div>
+                                <div class="tile folder-card" data-folder="tanktrailers">
+                                    <div class="icon-wrapper"><i class="fa-solid fa-folder-closed"></i></div>
+                                    <div class="tile-number text-small">TANKTRAILERS</div>
+                                    <div class="tile-label" id="badge-tanktrailers-count">0 files</div>
+                                </div>
+                            </div>
                         </main>
 
-                        <!-- SEKCJA 4 — REPOSITORY & CLOUD STATUS -->
-                        <main class="repository-panel cloud-status-panel">
+                        <!-- SEKCJA 4 — DRIVERS DETAILS TILE TRIGGER -->
+                        <section class="repository-panel" style="margin-top: 25px;">
                             <div class="panel-dot-texture"></div>
-
                             <header class="panel-header">
-                                <h1>REPOSITORY & CLOUD STATUS- (under construction... soon...)</h1>
+                                <h1>DRIVERS DETAILS DATABASE - Files Encrypted</h1>
                                 <div class="header-divider">
                                     <div class="divider-glow"></div>
                                 </div>
                             </header>
 
-                        </main>
+                            <div class="drivers-trigger-wrapper">
+                                <div class="tile drivers-trigger-card" id="open-drivers-details-btn">
+                                    <div class="drivers-trigger-icon">
+                                        <i class="fa-solid fa-id-card"></i>
+                                    </div>
+                                    <div class="drivers-trigger-content">
+                                        <div class="drivers-trigger-title">DRIVERS DETAILS</div>
+                                        <div class="drivers-trigger-sub">Live Interactive Database & Licence Expiration
+                                            Tracker</div>
+                                    </div>
+                                    <div class="drivers-trigger-action">
+                                        <span>OPEN DATABASE</span>
+                                        <i class="fa-solid fa-arrow-right"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
 
                     </div>
                 </div>
-
             </main>
 
         </div>
-
     </div>
 
-    <!-- POPUP MODAL DLA LISTY PLIKÓW W FOLDERZE -->
-    <div id="files-modal" class="modal-backdrop">
+    <!-- EXPLORER MODAL -->
+    <div id="cloud-modal" class="modal-backdrop">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 id="modal-folder-title">Folder: ---</h3>
-                <button id="modal-close-btn" class="modal-close">&times;</button>
+                <div>
+                    <h3 id="modal-folder-name">FOLDER EXPLORER</h3>
+                    <div id="modal-breadcrumb" class="modal-breadcrumb">gas / ...</div>
+                </div>
+                <div class="modal-actions">
+                    <button id="modal-back-btn" class="file-action-btn"><i class="fa-solid fa-arrow-left"></i>
+                        BACK</button>
+                    <button id="close-modal-btn" class="modal-close">&times;</button>
+                </div>
             </div>
             <div class="modal-body">
-                <div class="file-search-inner" style="margin-bottom: 15px;">
-                    <input type="text" id="modal-search-input" class="file-search-input"
-                        placeholder="Szukaj pliku w tym folderze..." autocomplete="off">
-                    <div id="modal-search-suggestions" class="file-search-suggestions"></div>
-                </div>
-
                 <div class="files-list-wrapper">
-                    <div class="files-header-row">
-                        <span>Nazwa pliku</span>
-                        <span>Ostatnia modyfikacja</span>
-                        <span>Akcja</span>
-                    </div>
-                    <div id="modal-files-list" class="files-list"></div>
+                    <table class="cloud-table">
+                        <thead>
+                            <tr class="files-header-row">
+                                <th style="text-align: left;">NAME</th>
+                                <th>TYPE / PATH</th>
+                                <th>SIZE</th>
+                                <th style="text-align: right;">ACTION</th>
+                            </tr>
+                        </thead>
+                        <tbody id="modal-file-list"></tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- AUTH POPUP -->
-    <div id="auth-popup" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%;
-               background:rgba(0,0,0,0.5); backdrop-filter:blur(5px);
-               z-index:99999; justify-content:center; align-items:center;">
-
-        <form style="background:#e0e0e0; padding:30px; border-radius:40px; width:400px;
-                        text-align:center; border:1px solid #bbb; box-shadow:0 10px 25px rgba(0,0,0,0.3);"
-            onsubmit="return false;">
-
-            <h2 style="color:#e91e63; font-size:18px; margin:0; font-weight:800;">KP GASLOGISTIK</h2>
-            <p style="font-size:20px; color:#333; margin:10px 0; font-weight:700;">ENTERPRISE SECURITY GATE</p>
-            <p style="font-size:12px; color:#555; margin-bottom:20px;">Premium Command Center Access</p>
-
-            <div style="text-align:left; font-size:11px; font-weight:bold; margin-bottom:5px; color:#333;">LOGIN</div>
-            <input type="text" id="user-login" autocomplete="username" style="width:100%; padding:12px; margin-bottom:15px; border:1px solid #999;
-                       border-radius:25px; background:white;">
-
-            <div style="text-align:left; font-size:11px; font-weight:bold; margin-bottom:5px; color:#333;">PASSWORD
-            </div>
-            <input type="password" id="user-pass" autocomplete="current-password" style="width:100%; padding:12px; margin-bottom:15px; border:1px solid #999;
-                       border-radius:25px; background:white;">
-
-            <div style="display:flex; gap:10px; margin-top:10px;">
-                <button type="button" onclick="handleLogin()" style="flex:1; padding:12px; border:none; border-radius:20px;
-                           color:white; font-weight:bold; cursor:pointer; background:#e91e63;">LOGIN</button>
-
-                <button type="button" onclick="closeAuthPopup()" style="flex:1; padding:12px; border:none; border-radius:20px;
-                           color:white; font-weight:bold; cursor:pointer; background:#e91e63;">CANCEL</button>
+    <!-- DRIVERS DETAILS MODAL -->
+    <div id="drivers-modal" class="modal-backdrop">
+        <div class="modal-content drivers-modal-content">
+            <div class="modal-header">
+                <div class="drivers-modal-header-info">
+                    <h3><i class="fa-solid fa-id-card" style="color: #ff2a6d; margin-right: 8px;"></i> DRIVERS DETAILS
+                        DATABASE</h3>
+                    <div class="modal-breadcrumb">KP GASLOGISTIK FLEET DRIVERS & LICENCES</div>
+                </div>
+                <button id="close-drivers-modal-btn" class="modal-close">&times;</button>
             </div>
 
+            <div class="drivers-filter-bar">
+                <div class="file-search-inner" style="width: 100%;">
+                    <input type="text" id="drivers-search-input" class="file-search-input"
+                        placeholder="Search driver by name, phone or email..." autocomplete="off" />
+                </div>
+            </div>
+
+            <div class="modal-body">
+                <div class="files-list-wrapper">
+                    <table class="cloud-table drivers-data-table">
+                        <thead>
+                            <tr class="files-header-row">
+                                <th style="text-align: center; width: 50px;">ID</th>
+                                <th style="text-align: left;">DRIVER NAME</th>
+                                <th style="text-align: left;">PHONE / WHATSAPP</th>
+                                <th style="text-align: left;">EMAIL</th>
+                                <th style="text-align: center;">LICENCE EXPIRATION</th>
+                            </tr>
+                        </thead>
+                        <tbody id="drivers-table-body"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- AUTH POPUP (Z ID ZGODNYMI Z AUTH.JS) -->
+    <div id="auth-popup" class="auth-popup-overlay" style="display:none;">
+        <form class="auth-popup-form" onsubmit="return false;">
+            <h2 class="auth-popup-title">KP GASLOGISTIK</h2>
+            <p class="auth-popup-subtitle">ENTERPRISE SECURITY GATE</p>
+            <p class="auth-popup-note">Cloud Command Center Access</p>
+
+            <div class="auth-field-label">LOGIN</div>
+            <input type="text" id="user-login" autocomplete="username" class="auth-input">
+
+            <div class="auth-field-label">PASSWORD</div>
+            <input type="password" id="user-pass" autocomplete="current-password" class="auth-input">
+
+            <div class="auth-buttons-wrapper">
+                <button type="button" onclick="handleLogin()" class="auth-btn primary">LOGIN</button>
+                <button type="button" onclick="closeAuthPopup()" class="auth-btn secondary">CANCEL</button>
+            </div>
         </form>
     </div>
 
     <!-- SCRIPTS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script src="assets/js/main.js"></script>
     <script src="assets/js/auth.js"></script>
     <script src="assets/js/cloud.js"></script>

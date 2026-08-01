@@ -1,5 +1,4 @@
 /* MATRIX — Wersja B (nowoczesna, responsywna, tylko macierz się przewija) */
-
 .matrix-content-area {
     margin-top: 20px;
     width: 100%;
@@ -26,7 +25,6 @@
 /* ============================================================
    SPINNER ŁADOWANIA DANYCH MATRIX — POPRAWIONY POZYCJONER MOBILE
    ============================================================ */
-
 .matrix-spinner-wrapper {
     display: flex;
     align-items: center;
@@ -94,10 +92,9 @@
     }
 }
 
-/* ========================= */
-/* GŁÓWNA SIATKA MACIERZY */
-/* ========================= */
-
+/* =========================
+   GŁÓWNA SIATKA MACIERZY
+   ========================= */
 #matrix-container.matrix-grid {
     display: inline-grid;
     grid-template-columns: var(--firstColWidth) repeat(calc(var(--cols) - 1), 32px);
@@ -146,7 +143,6 @@
     min-height: 24px !important;
     max-height: 24px !important;
     font-size: var(--firstColFont) !important;
-    /* <--- TUTAJ regulujesz wielkość czcionki miast w 1. kolumnie na DESKTOPIE (zmienna JS) */
     padding: 0 4px !important;
     white-space: nowrap;
     overflow: hidden;
@@ -204,10 +200,9 @@
     border-radius: 6px;
 }
 
-/* ========================= */
-/* MOBILE — MATRIX GRID */
-/* ========================= */
-
+/* =========================
+   MOBILE — MATRIX GRID
+   ========================= */
 @media (max-width: 768px) {
     #matrix-container.matrix-grid {
         grid-template-columns: var(--firstColWidth) repeat(calc(var(--cols) - 1), 28px);
@@ -226,7 +221,6 @@
     /* TUTAJ regulujesz wielkość czcionki miast w 1. kolumnie w widoku MOBILE */
     .matrix-col-header {
         font-size: 8px !important;
-        /* <--- Zmień tę wartość, aby dopasować czcionkę miast 1. kolumny na telefonie */
         letter-spacing: -0.03em !important;
         padding: 0 2px !important;
         white-space: normal !important;
@@ -246,7 +240,6 @@
         min-height: 110px !important;
         max-height: 110px !important;
         font-size: 8px !important;
-        /* <--- Zmień tę wartość, aby dopasować czcionkę nagłówków górnych na telefonie */
         letter-spacing: -0.03em !important;
         padding: 2px 0 !important;
         white-space: normal !important;
@@ -328,7 +321,6 @@
     max-height: 160px;
     font-weight: 500;
     font-size: 11px;
-    /* <--- TUTAJ regulujesz wielkość czcionki NAGŁÓWKÓW (pionowych miast u góry) w widoku DESKTOP */
     padding: 2px 0;
     writing-mode: vertical-rl;
     text-orientation: mixed;
@@ -345,62 +337,55 @@
     border: 1px solid rgba(0, 0, 0, 0.35);
 }
 
-/* ========================= */
-/* CIENKI 3D PASEK NAD WYSZUKIWARKAMI */
-/* ========================= */
-
+/* =========================
+   CIENKI 3D PASEK NAD WYSZUKIWARKAMI
+   ========================= */
 #matrix-stats-separator {
     width: 100%;
     max-width: 980px;
     margin: 0 auto 20px auto;
     height: 10px;
     border-radius: 999px;
-
     background: linear-gradient(90deg,
             rgba(0, 0, 0, 0.15),
             rgba(255, 255, 255, 0.85),
             rgba(0, 0, 0, 0.25));
-
     box-shadow:
         inset 0 1px 2px rgba(255, 255, 255, 0.7),
         0 2px 4px rgba(0, 0, 0, 0.25);
 }
 
-/* ========================= */
-/* STATYSTYKI */
-/* ========================= */
-
+/* =========================
+   STATYSTYKI
+   ========================= */
 #matrix-stats-row {
     width: 100%;
     max-width: 980px;
-
     margin: 22px auto 18px auto;
     transform: translateY(4px);
-
     display: flex;
     justify-content: center;
     gap: 12px;
 }
 
+/* 🔧 FIX: Wyśrodkowanie tekstu w kafelkach LOCATIONS / ROUTES / LAST UPDATE */
 .matrix-stat-tile {
     flex: 0 0 auto;
     min-width: 150px;
-    padding: 16px 14px;
-
+    padding: 0 22px;
+    height: 54px;
     border-radius: 999px;
-
     background: linear-gradient(135deg,
             rgba(255, 255, 255, 0.85) 0%,
             rgba(245, 245, 245, 0.75) 50%,
             rgba(235, 235, 235, 0.65) 100%);
+    -webkit-backdrop-filter: blur(8px);
     backdrop-filter: blur(8px);
     border: 1px solid rgba(0, 0, 0, 0.35);
-
     box-shadow:
         inset 0 1px 2px rgba(255, 255, 255, 0.7),
         inset 0 -1px 2px rgba(0, 0, 0, 0.18),
         0 2px 4px rgba(0, 0, 0, 0.25);
-
     font-family: "Plus Jakarta Sans", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
     font-size: 11px;
     font-weight: 700;
@@ -408,8 +393,11 @@
     text-transform: uppercase;
     color: #000;
     text-align: center;
-
     white-space: nowrap;
+    /* 🔧 FIX: flexbox wyśrodkowuje tekst idealnie w pionie i poziomie */
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .matrix-stat-tile:hover {
@@ -418,10 +406,9 @@
         inset 0 1px 2px rgba(255, 255, 255, 0.8);
 }
 
-/* ========================= */
-/* PREMIUM WYSZUKIWARKI — FULL PACK */
-/* ========================= */
-
+/* =========================
+   PREMIUM WYSZUKIWARKI — FULL PACK
+   ========================= */
 #matrix-tools {
     display: flex;
     flex-direction: row;
@@ -443,6 +430,7 @@
     background: linear-gradient(135deg,
             rgba(255, 255, 255, 0.75),
             rgba(240, 240, 240, 0.55));
+    -webkit-backdrop-filter: blur(12px);
     backdrop-filter: blur(12px);
     box-shadow:
         inset 0 0 10px rgba(255, 255, 255, 0.6),
@@ -450,7 +438,6 @@
     font-size: 13px;
     font-weight: 500;
     transition: all 0.25s ease;
-
     background-image: url('data:image/svg+xml;utf8,<svg fill="rgba(0,0,0,0.45)" height="20" width="20" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C8.01 14 6 11.99 6 9.5S8.01 5 10.5 5 15 7.01 15 9.5 12.99 14 10.5 14z"/></svg>');
     background-repeat: no-repeat;
     background-size: 20px;
@@ -480,6 +467,7 @@
     background: linear-gradient(135deg,
             rgba(255, 255, 255, 0.75),
             rgba(240, 240, 240, 0.55));
+    -webkit-backdrop-filter: blur(12px);
     backdrop-filter: blur(12px);
     box-shadow:
         inset 0 0 10px rgba(255, 255, 255, 0.6),
@@ -502,6 +490,7 @@
     background: linear-gradient(135deg,
             rgba(255, 255, 255, 0.95),
             rgba(240, 240, 240, 0.85));
+    -webkit-backdrop-filter: blur(14px);
     backdrop-filter: blur(14px);
     border-radius: 14px;
     border: 1px solid rgba(0, 0, 0, 0.45);
@@ -582,12 +571,16 @@
         transform: translateY(0);
     }
 
+    /* 🔧 FIX: mobile też flexbox dla idealnego wyśrodkowania */
     .matrix-stat-tile {
         min-width: 0;
         width: 100%;
-        text-align: center;
+        height: 48px;
+        padding: 0 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         font-size: 11px;
-        padding: 10px 12px;
     }
 
     #matrix-tools {
