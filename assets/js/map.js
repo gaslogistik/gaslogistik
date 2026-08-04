@@ -1,6 +1,6 @@
 /* =========================
-   LIVE MAP — JS (PREMIUM DROPDOWN VERSION)
-   ========================= */
+LIVE MAP — JS (PREMIUM DROPDOWN VERSION)
+========================= */
 
 let map;
 let markers = [];
@@ -9,8 +9,8 @@ let locationsData = [];
 let autocompleteDropdown;
 
 /* =========================
-   INIT
-   ========================= */
+INIT
+========================= */
 
 document.addEventListener("DOMContentLoaded", () => {
     initMap();
@@ -21,8 +21,8 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 /* =========================
-   LEAFLET MAP
-   ========================= */
+LEAFLET MAP
+========================= */
 
 function initMap() {
     map = L.map("live-map", {
@@ -36,8 +36,8 @@ function initMap() {
 }
 
 /* =========================
-   LOAD DATA
-   ========================= */
+LOAD DATA
+========================= */
 
 async function loadMapData() {
     try {
@@ -47,18 +47,23 @@ async function loadMapData() {
         const res = await fetch(url);
         const json = await res.json();
 
-        const cities = json.cities || [];
+        /*
+          🔧 AKTUALIZACJA:
+          Dane są teraz pobierane z arkusza POINTS.
+          Backend zwraca points, ale dla bezpieczeństwa zostawiamy fallback na cities.
+        */
+        const points = json.points || json.cities || [];
         const addresses = json.addresses || [];
 
         locationsData = [
-            ...cities.map(c => ({
+            ...points.map(c => ({
                 name: c.LOCATION,
                 type: c.TYPE,
                 country: c.COUNTRY,
                 lat: Number(c.LATITUDE),
                 lng: Number(c.LONGITUDE),
                 address: c.ADDRESS,
-                source: "city"
+                source: "point"
             })),
             ...addresses.map(a => ({
                 name: a.LOCATION,
@@ -93,8 +98,8 @@ async function loadMapData() {
 }
 
 /* =========================
-   RENDER MARKERS
-   ========================= */
+RENDER MARKERS
+========================= */
 
 function renderMarkers(data) {
     markers.forEach(m => map.removeLayer(m.marker));
@@ -104,11 +109,11 @@ function renderMarkers(data) {
         const marker = L.marker([loc.lat, loc.lng]).addTo(map);
 
         marker.bindPopup(`
-            <strong>${loc.name}</strong><br>
-            ${loc.type}<br>
-            ${loc.country}<br>
-            <small>${loc.address || ""}</small>
-        `);
+      <strong>${loc.name}</strong><br>
+      ${loc.type}<br>
+      ${loc.country}<br>
+      <small>${loc.address || ""}</small>
+    `);
 
         marker.on("click", () => {
             marker.openPopup();
@@ -121,23 +126,29 @@ function renderMarkers(data) {
 }
 
 /* =========================
-   STATUS COUNTERS
-   ========================= */
+STATUS COUNTERS
+========================= */
 
 function updateStatus(data) {
     const countries = new Set(data.map(l => l.country));
     const types = new Set(data.map(l => l.type));
-    const citiesCount = data.filter(l => l.source === "city").length;
+    const pointsCount = data.filter(l => l.source === "point").length;
 
     document.getElementById("map-status").textContent = "MAP STATUS: READY";
     document.getElementById("map-countries").textContent = `COUNTRIES: ${countries.size}`;
     document.getElementById("map-types").textContent = `TYPES: ${types.size}`;
-    document.getElementById("map-cities").textContent = `CITIES: ${citiesCount}`;
+
+    /*
+      🔧 AKTUALIZACJA:
+      ID elementu zostaje bez zmian: map-cities.
+      Zmieniamy tylko wyświetlany tekst na POINTS, aby nie dotykać CSS/layoutu.
+    */
+    document.getElementById("map-cities").textContent = `POINTS: ${pointsCount}`;
 }
 
 /* =========================
-   CUSTOM DROPDOWN — POPULATE
-   ========================= */
+CUSTOM DROPDOWN — POPULATE
+========================= */
 
 function populateCustomDropdowns(data) {
     const countryList = document.getElementById("filter-country-list");
@@ -146,7 +157,6 @@ function populateCustomDropdowns(data) {
     /* =========================
        USUWAMY N/A oraz ADDRESS
        ========================= */
-
     const rawCountries = [...new Set(data.map(l => l.country))];
     const rawTypes = [...new Set(data.map(l => l.type))];
 
@@ -156,7 +166,6 @@ function populateCustomDropdowns(data) {
     /* =========================
        GENEROWANIE OPCJI
        ========================= */
-
     countries.forEach(c => {
         const opt = document.createElement("div");
         opt.className = "live-map-filter-option";
@@ -175,13 +184,12 @@ function populateCustomDropdowns(data) {
 }
 
 /* =========================
-   CUSTOM DROPDOWN — SETUP
-   ========================= */
+CUSTOM DROPDOWN — SETUP
+========================= */
 
 function setupCustomDropdowns() {
     const selectedCountry = document.querySelector("#filter-country-dropdown .live-map-filter-selected");
     const selectedType = document.querySelector("#filter-type-dropdown .live-map-filter-selected");
-
     const listCountry = document.getElementById("filter-country-list");
     const listType = document.getElementById("filter-type-list");
 
@@ -206,8 +214,8 @@ function setupCustomDropdowns() {
 }
 
 /* =========================
-   DROPDOWN — OPEN/CLOSE
-   ========================= */
+DROPDOWN — OPEN/CLOSE
+========================= */
 
 function toggleDropdown(list, selected) {
     const isOpen = list.style.display === "block";
@@ -226,10 +234,9 @@ function closeDropdown(list, selected) {
     selected.classList.remove("active");
 }
 
-
 /* =========================
-   APPLY FILTERS
-   ========================= */
+APPLY FILTERS
+========================= */
 
 function applyFilters() {
     const country = document.querySelector("#filter-country-dropdown .live-map-filter-selected").textContent;
@@ -246,8 +253,8 @@ function applyFilters() {
 }
 
 /* =========================
-   HIGHLIGHTS
-   ========================= */
+HIGHLIGHTS
+========================= */
 
 function highlightLocation(loc) {
     if (highlightCircle) {
@@ -274,7 +281,6 @@ function animatedHighlight(loc) {
     mapContainer.appendChild(hl);
 
     const point = map.latLngToContainerPoint([loc.lat, loc.lng]);
-
     hl.style.left = point.x + "px";
     hl.style.top = point.y + "px";
 
@@ -282,8 +288,8 @@ function animatedHighlight(loc) {
 }
 
 /* =========================
-   SEARCH + GO TO LOCATION
-   ========================= */
+SEARCH + GO TO LOCATION
+========================= */
 
 function setupSearch() {
     const input = document.getElementById("location-search");
@@ -318,8 +324,8 @@ function goToLocation(loc) {
 }
 
 /* =========================
-   AUTOCOMPLETE DROPDOWN
-   ========================= */
+AUTOCOMPLETE DROPDOWN
+========================= */
 
 function setupAutocompleteDropdown() {
     const input = document.getElementById("location-search");
@@ -338,8 +344,12 @@ function setupAutocompleteDropdown() {
             return;
         }
 
+        /*
+          🔧 AKTUALIZACJA:
+          Autocomplete używa teraz danych z POINTS, source = "point".
+        */
         const matches = locationsData.filter(loc =>
-            loc.source === "city" &&
+            loc.source === "point" &&
             loc.name.toLowerCase().includes(query)
         );
 
@@ -383,11 +393,10 @@ function renderAutocomplete(matches) {
 }
 
 /* =========================
-   GLOBAL CLICK — RESET MAP + CLEAR SEARCH + CLOSE EVERYTHING
-   ========================= */
+GLOBAL CLICK — RESET MAP + CLEAR SEARCH + CLOSE EVERYTHING
+========================= */
 
 document.addEventListener("click", e => {
-
     const clickedInsideFilterDropdown = e.target.closest(".live-map-filter-dropdown");
     const clickedInsideSearch = e.target.closest(".live-map-search");
     const clickedInsideAutocomplete = e.target.closest(".live-map-dropdown");
@@ -458,15 +467,15 @@ document.addEventListener("click", e => {
     document.querySelectorAll(".live-map-filter-list").forEach(list => {
         list.style.display = "none";
     });
+
     document.querySelectorAll(".live-map-filter-selected").forEach(sel => {
         sel.classList.remove("active");
     });
 });
 
-
 /* =========================
-   WINDOW RESIZE — FIX HIGHLIGHT POSITION
-   ========================= */
+WINDOW RESIZE — FIX HIGHLIGHT POSITION
+========================= */
 
 window.addEventListener("resize", () => {
     const hl = document.querySelector(".location-highlight");
@@ -484,8 +493,8 @@ window.addEventListener("resize", () => {
 });
 
 /* =========================
-   MAP CLICK — CLOSE AUTOCOMPLETE
-   ========================= */
+MAP CLICK — CLOSE AUTOCOMPLETE
+========================= */
 
 document.addEventListener("DOMContentLoaded", () => {
     map.on("click", () => {
