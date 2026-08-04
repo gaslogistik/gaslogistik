@@ -1,4 +1,3 @@
-import { fetchDriveData } from './gdriveApi.js';
 import { fetchAllAdminDocsData, updateDocsData } from './gdocsApi.js';
 import { initAdminCalendar } from './calendar.js';
 import { initAdminModals } from './modal.js';
@@ -133,7 +132,10 @@ function injectHighlightStyles() {
 }
 
 /**
- * Ładuje dane z Google Drive API oraz Google Docs/Sheets API równolegle.
+ * Ładuje dane z Google Sheets API.
+ * 🔧 FIX: Usunięto dynamiczny sprawdzacz Google Drive API —
+ * kafelek GOOGLE DRIVE jest stały (ONLINE), jak pozostałe kafelki w tej sekcji,
+ * a panel nie czeka już na odpowiedź skryptu Drive.
  */
 async function loadAllDashboardData() {
     setInitialLoadingState(true);
@@ -141,20 +143,9 @@ async function loadAllDashboardData() {
     try {
         setElText('cnt-status-monitor', 'CHECKING');
 
-        const [driveResult, docsResult] = await Promise.allSettled([
-            fetchDriveData(),
+        const [docsResult] = await Promise.allSettled([
             fetchAllAdminDocsData()
         ]);
-
-        // Obsługa wyników z Google Drive API
-        if (driveResult.status === 'fulfilled' && driveResult.value) {
-            globalState.drive = driveResult.value;
-            console.log('📁 Otrzymane dane z Google Drive API:', driveResult.value);
-            setElTextAndColor('cnt-gdrive-status', 'ONLINE', '#009A44');
-        } else {
-            console.warn('⚠️ Problem z połączeniem z Google Drive API');
-            setElTextAndColor('cnt-gdrive-status', 'OFFLINE', '#ff4d4d');
-        }
 
         // Obsługa wyników z Google Sheets / Docs API
         if (docsResult.status === 'fulfilled' && docsResult.value) {
@@ -295,7 +286,13 @@ function updateCounters(state) {
     const usersData = docs.users || system.users || system.USERS || [];
     setElText('cnt-users', countValidRecordsAny(usersData));
 
-    // 8. WSPÓŁDZIELONE STAŁE STATUSY
+    /* ============================================================
+       8. WSPÓŁDZIELONE STAŁE STATUSY
+       🔧 FIX: GOOGLE DRIVE jest STAŁYM, zielonym kafelkiem ONLINE —
+       dokładnie tak samo jak pozostałe liczniki w tej sekcji.
+       Żadne API nie może go nadpisać na OFFLINE.
+       ============================================================ */
+    setElTextAndColor('cnt-gdrive-status', 'ONLINE', '#009A44');
     setElTextAndColor('cnt-access-status', '24/7', '#009A44');
     setElTextAndColor('cnt-repo-active', 'ACTIVE', '#009A44');
     setElTextAndColor('cnt-repo-online', 'ONLINE', '#009A44');
