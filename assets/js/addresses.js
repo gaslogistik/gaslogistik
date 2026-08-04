@@ -260,6 +260,30 @@ function buildCitiesSearchIndex(cities) {
     }));
 }
 
+/* =========================
+SEARCH NORMALIZATION (PL / DE)
+🔧 NOWE — IDENTYCZNIE JAK W MAP.JS:
+Wyszukiwanie "bez ogonków" — polskie znaki diakrytyczne
+i niemieckie litery są normalizowane po obu stronach
+(zapytanie I dane), więc:
+  Kłobuczyn    -> klobuczyn
+  kąty         -> katy
+  Straße       -> strasse
+  Fürstenwalde -> furstenwalde
+========================= */
+
+function normalizeSearchText(value) {
+    return String(value || "")
+        .toLowerCase()
+        .replace(/ß/g, "ss")   // niemieckie ß -> ss
+        .replace(/ł/g, "l")    // polskie ł (NFD go nie rozbija)
+        .normalize("NFD")      // rozkład znaków (ą -> a + ogonek, ä -> a + kropki itd.)
+        .replace(/[\u0300-\u036f]/g, "") // usuwamy znaki diakrytyczne
+        .replace(/[^a-z0-9]+/g, " ")     // tylko litery i cyfry
+        .replace(/\s+/g, " ")
+        .trim();
+}
+
 function initAddressesSearch(cities) {
     buildCitiesSearchIndex(cities);
 
@@ -296,7 +320,8 @@ function initAddressesSearch(cities) {
     }
 
     input.addEventListener("input", () => {
-        const q = input.value.trim().toLowerCase();
+        /* 🔧 NOWE: zapytanie normalizowane (bez PL/DE znaków) */
+        const q = normalizeSearchText(input.value);
 
         clearSuggestions();
         clearHighlight();
@@ -305,7 +330,8 @@ function initAddressesSearch(cities) {
 
         const matches = citiesSearchIndex
             .filter(item => {
-                const haystack = (
+                /* 🔧 NOWE: haystack też normalizowany — LOCATION+TYPE+COUNTRY+ADDRESS */
+                const haystack = normalizeSearchText(
                     item.location +
                     " " +
                     item.type +
@@ -313,8 +339,7 @@ function initAddressesSearch(cities) {
                     item.country +
                     " " +
                     item.address
-                ).toLowerCase();
-
+                );
                 return haystack.includes(q);
             })
             .slice(0, 8);
@@ -373,7 +398,7 @@ dowolną liczbę razy bez odświeżania strony.
 
 let typeFilterBound = false;
 
-/* 🔧 FIX: PEŁNA lista z POINTS — nigdy nenadpisywana przez filtry */
+/* 🔧 FIX: PEŁNA lista z POINTS — nigdy nienadpisywana przez filtry */
 let allCitiesData = [];
 
 /* 🔧 NOWE: dynamiczna lista typów z kolumny TYPE */
