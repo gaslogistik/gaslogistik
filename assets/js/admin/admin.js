@@ -39,17 +39,16 @@ function setInitialLoadingState(isLoading) {
         if (!loader) {
             loader = document.createElement('div');
             loader.id = loaderId;
-            loader.innerHTML = `
-                <div class="sync-loader-box">
-                    <div class="sync-spinner"></div>
-                    <div class="sync-loader-text-container">
-                        <span class="sync-loader-title">Synchronizacja danych...</span>
-                        <span class="sync-loader-subtitle">Proszę czekać na przeliczenie liczników</span>
-                    </div>
-                </div>
-            `;
+            loader.innerHTML = `<div class="sync-loader-box">
+        <div class="sync-spinner"></div>
+        <div class="sync-loader-text-container">
+          <span class="sync-loader-title">Synchronizacja danych...</span>
+          <span class="sync-loader-subtitle">Proszę czekać na przeliczenie liczników</span>
+        </div>
+      </div>`;
             document.body.appendChild(loader);
         }
+
         loader.style.display = 'flex';
         document.body.classList.add('loading-active');
     } else {
@@ -69,74 +68,67 @@ function injectHighlightStyles() {
     const style = document.createElement('style');
     style.id = 'admin-sync-loader-styles';
     style.innerHTML = `
-        #repo-sync-loader-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(240, 242, 245, 0.45);
-            backdrop-filter: blur(6px);
-            -webkit-backdrop-filter: blur(6px);
-            z-index: 9999;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: inherit;
-        }
-
-        .sync-loader-box {
-            background: rgba(255, 255, 255, 0.95);
-            padding: 24px 36px;
-            border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(230, 0, 92, 0.08), 
-                        0 4px 12px rgba(0, 0, 0, 0.04);
-            display: flex;
-            align-items: center;
-            gap: 18px;
-            border: 1px solid rgba(230, 0, 92, 0.12);
-        }
-
-        .sync-spinner {
-            width: 38px;
-            height: 38px;
-            min-width: 38px;
-            border: 4px solid rgba(230, 0, 92, 0.12);
-            border-top: 4px solid #e6005c;
-            border-radius: 50%;
-            animation: spinAdmin 0.8s cubic-bezier(0.6, 0.2, 0.1, 1) infinite;
-        }
-
-        .sync-loader-text-container {
-            display: flex;
-            flex-direction: column;
-            text-align: left;
-        }
-
-        .sync-loader-title {
-            font-size: 15px;
-            font-weight: 700;
-            color: #1a1a2e;
-            letter-spacing: -0.2px;
-        }
-
-        .sync-loader-subtitle {
-            font-size: 12px;
-            font-weight: 500;
-            color: #8c8c9e;
-            margin-top: 2px;
-        }
-
-        @keyframes spinAdmin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        body.loading-active {
-            pointer-events: none;
-            user-select: none;
-        }
-    `;
+  #repo-sync-loader-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(240, 242, 245, 0.45);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: inherit;
+  }
+  .sync-loader-box {
+      background: rgba(255, 255, 255, 0.95);
+      padding: 24px 36px;
+      border-radius: 20px;
+      box-shadow: 0 15px 35px rgba(230, 0, 92, 0.08), 
+                  0 4px 12px rgba(0, 0, 0, 0.04);
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      border: 1px solid rgba(230, 0, 92, 0.12);
+  }
+  .sync-spinner {
+      width: 38px;
+      height: 38px;
+      min-width: 38px;
+      border: 4px solid rgba(230, 0, 92, 0.12);
+      border-top: 4px solid #e6005c;
+      border-radius: 50%;
+      animation: spinAdmin 0.8s cubic-bezier(0.6, 0.2, 0.1, 1) infinite;
+  }
+  .sync-loader-text-container {
+      display: flex;
+      flex-direction: column;
+      text-align: left;
+  }
+  .sync-loader-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #1a1a2e;
+      letter-spacing: -0.2px;
+  }
+  .sync-loader-subtitle {
+      font-size: 12px;
+      font-weight: 500;
+      color: #8c8c9e;
+      margin-top: 2px;
+  }
+  @keyframes spinAdmin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+  }
+  body.loading-active {
+      pointer-events: none;
+      user-select: none;
+  }
+`;
     document.head.appendChild(style);
 }
 
@@ -145,6 +137,7 @@ function injectHighlightStyles() {
  */
 async function loadAllDashboardData() {
     setInitialLoadingState(true);
+
     try {
         setElText('cnt-status-monitor', 'CHECKING');
 
@@ -176,7 +169,6 @@ async function loadAllDashboardData() {
 
         // Przeliczenie kafelków i statystyk
         updateCounters(globalState);
-
     } catch (err) {
         console.error('❌ Błąd krytyczny podczas ładowania danych:', err);
         setElText('cnt-status-monitor', 'ERROR');
@@ -205,30 +197,45 @@ function updateCounters(state) {
     // 3. DRIVERS (Kierowcy)
     const rawDrivers = system.drivers || system.DRIVERS || system.driversList || docs.drivers || docs.DRIVERS || [];
     let validDriversCount = 0;
+
     if (Array.isArray(rawDrivers)) {
         validDriversCount = rawDrivers.filter(driver => {
             if (!driver) return false;
+
             const name = driver.NAME || driver.Name || driver.name;
             const id = driver.ID || driver.id || driver.Id;
 
             if (name && name.toString().trim() !== '' && name.toString().trim().toUpperCase() !== 'NAME') return true;
+
             if (Array.isArray(driver)) {
                 const rowName = driver[1];
                 const rowId = driver[0];
                 if (rowName && rowName.toString().trim() !== '' && rowName.toString().trim().toUpperCase() !== 'NAME') return true;
                 return rowId && rowId.toString().trim() !== '' && rowId.toString().trim().toUpperCase() !== 'ID';
             }
+
             return id && id.toString().trim() !== '' && id.toString().trim().toUpperCase() !== 'ID';
         }).length;
     }
+
     setElText('cnt-drivers', validDriversCount);
 
     // 4. RELATIONS (Relacje)
     const relationsList = system.relations || system.RELATIONS || docs.relations || [];
     setElText('cnt-relations', countValidRecordsAny(relationsList));
 
-    // 5. MIASTA I KRAJE (CITIES)
-    const citiesList = system.cities || system.CITIES || docs.cities || [];
+    /* ============================================================
+       5. MIASTA I KRAJE
+       🔧 AKTUALIZACJA:
+       Liczniki CITIES / COUNTRIES / VIGO STATIONS (DE) / HUBS (ALL)
+       pobierają teraz dane z nowego arkusza POINTS
+       (tak samo jak addresses.html i map.html).
+       Nazwa licznika "CITIES" zostaje BEZ ZMIAN — zmienia się tylko źródło danych.
+       ============================================================ */
+    const citiesList = Array.isArray(system.points)
+        ? system.points
+        : (system.cities || system.CITIES || docs.cities || []);
+
     setElText('cnt-cities', countValidRecordsAny(citiesList));
 
     const countriesSet = new Set();
@@ -318,6 +325,7 @@ function startLiveClock() {
  */
 function countValidRecordsAny(data) {
     if (!data) return 0;
+
     const list = Array.isArray(data) ? data : (data.data || data.rows || data.items || []);
     if (!Array.isArray(list)) return 0;
 
@@ -359,7 +367,7 @@ function parseSheetDate(dateStr) {
     if (!dateStr) return null;
     if (dateStr instanceof Date) return dateStr;
 
-    const parts = dateStr.toString().split(/[\/.-]/);
+    const parts = dateStr.toString().split(/[/.-]/);
     if (parts.length === 3) {
         const day = parseInt(parts[0], 10);
         const month = parseInt(parts[1], 10) - 1;
@@ -367,6 +375,7 @@ function parseSheetDate(dateStr) {
         if (year < 100) year += 2000;
         return new Date(year, month, day);
     }
+
     const d = new Date(dateStr);
     return isNaN(d.getTime()) ? null : d;
 }

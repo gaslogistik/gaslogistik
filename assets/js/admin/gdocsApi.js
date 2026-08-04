@@ -29,11 +29,13 @@ export async function fetchDocsData(action = 'getsystemdata') {
         return data;
     } catch (error) {
         clearTimeout(timeoutId);
+
         if (error.name === 'AbortError') {
             console.error(`⏱️ Przekroczono limit czasu żądania (Timeout) dla akcji: ${action}`);
         } else {
-            console.error(` Błąd podczas pobierania danych z Google Docs (${action}):`, error);
+            console.error(`Błąd podczas pobierania danych z Google Docs (${action}):`, error);
         }
+
         return {}; // 🔧 FIX: Zwróć pusty obiekt zamiast throw
     }
 }
@@ -42,22 +44,26 @@ export async function fetchAllAdminDocsData() {
     try {
         console.log('📡 Pobieranie danych z Google Sheets API...');
 
-        const [systemData, vehiclesData, adminData, alertsData] = await Promise.all([
+        const [systemData, vehiclesData, adminData, alertsData, pointsData] = await Promise.all([
             fetchDocsData('getsystemdata'),
             fetchDocsData('getvehiclesdata'),
             fetchDocsData('getadmindata'),
-            fetchDocsData('getalerts')
+            fetchDocsData('getalerts'),
+            fetchDocsData('getaddressesdata') // 🔧 NOWE: arkusz POINTS (ten sam endpoint co addresses.html)
         ]);
 
         console.log('✅ systemData:', systemData);
         console.log('✅ vehiclesData:', vehiclesData);
         console.log('✅ adminData:', adminData);
         console.log('✅ alertsData:', alertsData);
+        console.log('✅ pointsData (POINTS):', pointsData);
 
         // 🔧 FIX: Bezpieczne wyciąganie danych z fallbackami
         return {
             system: {
                 cities: (systemData.cities || systemData.CITIES || []),
+                // 🔧 NOWE: dane z arkusza POINTS dla liczników admina
+                points: (pointsData.points || pointsData.cities || []),
                 relations: (systemData.relations || systemData.RELATIONS || []),
                 drivers: (systemData.drivers || systemData.DRIVERS || [])
             },
@@ -72,9 +78,10 @@ export async function fetchAllAdminDocsData() {
         };
     } catch (error) {
         console.error('❌ Błąd podczas pobierania danych admina:', error);
+
         // 🔧 FIX: Zwróć pustą strukturę zamiast wyrzucać błąd
         return {
-            system: { cities: [], relations: [], drivers: [] },
+            system: { cities: [], points: [], relations: [], drivers: [] },
             vehicles: { trucks: [], tanktrailers: [] },
             users: [],
             loginHistory: [],
@@ -113,11 +120,13 @@ export async function updateDocsData(action, payload = {}) {
         return result;
     } catch (error) {
         clearTimeout(timeoutId);
+
         if (error.name === 'AbortError') {
             console.error(`⏱️ Przekroczono limit czasu zapisu (Timeout) dla akcji: ${action}`);
         } else {
             console.error(`❌ Błąd podczas aktualizacji Google Docs (${action}):`, error);
         }
+
         throw error;
     }
 }
