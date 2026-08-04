@@ -352,7 +352,39 @@ function initAddressesSearch(cities) {
 
 /* ============================================================
 PREMIUM TYPE FILTER — CUSTOM DROPDOWN
+
+🔧 AKTUALIZACJA:
+Opcje dropdowna są teraz BUDOWANE DYNAMICZNIE z kolumny TYPE
+(arkusz POINTS) — koniec ze statyczną listą w HTML.
+Każdy nowy typ dodany w arkuszu pojawi się tutaj automatycznie,
+w kolejności pojawiania się w danych.
 ============================================================ */
+
+let typeFilterBound = false;
+
+/* 🔧 NOWE: dynamiczna lista typów z kolumny TYPE */
+function buildTypeDropdownOptions(typeDropdown, cities) {
+    const typesSet = new Set(); // Set zachowuje kolejność pojawiania się
+
+    cities.forEach(c => {
+        const t = String(safeGet(c, "TYPE", "")).trim();
+        if (t) typesSet.add(t);
+    });
+
+    typeDropdown.innerHTML = "";
+
+    const allLi = document.createElement("li");
+    allLi.setAttribute("data-value", "");
+    allLi.textContent = "TYPE: ALL";
+    typeDropdown.appendChild(allLi);
+
+    typesSet.forEach(t => {
+        const li = document.createElement("li");
+        li.setAttribute("data-value", t);
+        li.textContent = t;
+        typeDropdown.appendChild(li);
+    });
+}
 
 function initTypeFilter(cities) {
     const typeButton = document.getElementById("adr-type-button");
@@ -360,6 +392,13 @@ function initTypeFilter(cities) {
     const searchInput = document.getElementById("addresses-search-input");
 
     if (!typeButton || !typeDropdown) return;
+
+    /* 🔧 NOWE: za każdym załadowaniem danych przebudowujemy listę typów */
+    buildTypeDropdownOptions(typeDropdown, cities);
+
+    /* Zdarzenia pinamy tylko RAZ (delegacja działa dla dynamicznych li) */
+    if (typeFilterBound) return;
+    typeFilterBound = true;
 
     /* 🔥 1 — ROZWIJANIE DROPDOWNA + RESET ANIMACJI */
     typeButton.addEventListener("click", (e) => {
@@ -380,38 +419,39 @@ function initTypeFilter(cities) {
         }
     });
 
-    /* 🔥 2 — WYBÓR OPCJI */
-    typeDropdown.querySelectorAll("li").forEach(item => {
-        item.addEventListener("click", (e) => {
-            e.stopPropagation();
+    /* 🔥 2 — WYBÓR OPCJI (delegacja zdarzeń na dropdownie) */
+    typeDropdown.addEventListener("click", (e) => {
+        const item = e.target.closest("li");
+        if (!item || !typeDropdown.contains(item)) return;
 
-            const val = item.getAttribute("data-value");
-            const label = item.textContent;
+        e.stopPropagation();
 
-            typeButton.textContent = label;
-            typeDropdown.classList.remove("visible");
-            searchInput.value = "";
+        const val = item.getAttribute("data-value");
+        const label = item.textContent;
 
-            if (!val) {
-                renderAddressesList(cities);
-                return;
-            }
+        typeButton.textContent = label;
+        typeDropdown.classList.remove("visible");
+        if (searchInput) searchInput.value = "";
 
-            const filtered = cities.filter(c => {
-                const type = safeGet(c, "TYPE", "");
-                return String(type).trim() === val;
-            });
+        if (!val) {
+            renderAddressesList(citiesCache);
+            return;
+        }
 
-            renderAddressesList(filtered);
+        const filtered = citiesCache.filter(c => {
+            const type = safeGet(c, "TYPE", "");
+            return String(type).trim() === val;
         });
+
+        renderAddressesList(filtered);
     });
 
     /* 🔥 3 — KLIK POZA DROPDOWNEM = RESET */
     document.addEventListener("click", () => {
         typeDropdown.classList.remove("visible");
         typeButton.textContent = "TYPE: ALL";
-        searchInput.value = "";
-        renderAddressesList(cities);
+        if (searchInput) searchInput.value = "";
+        renderAddressesList(citiesCache);
     });
 }
 
