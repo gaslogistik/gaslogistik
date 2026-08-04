@@ -48,6 +48,14 @@ async function loadCitiesData() {
             ? data.points
             : (Array.isArray(data.cities) ? data.cities : []);
 
+        /*
+          🔧 FIX: PEŁNA lista danych z POINTS.
+          Jest ustawiana TYLKO tutaj i NIGDY nie jest nadpisywana
+          przez filtry — dzięki temu zmiana typu działa zawsze,
+          wielokrotnie, bez odświeżania strony.
+        */
+        allCitiesData = cities.slice();
+
         updateAddressCounters(cities);
         renderAddressesList(cities);
         initAddressesSearch(cities);
@@ -354,13 +362,19 @@ function initAddressesSearch(cities) {
 PREMIUM TYPE FILTER — CUSTOM DROPDOWN
 
 🔧 AKTUALIZACJA:
-Opcje dropdowna są teraz BUDOWANE DYNAMICZNIE z kolumny TYPE
-(arkusz POINTS) — koniec ze statyczną listą w HTML.
-Każdy nowy typ dodany w arkuszu pojawi się tutaj automatycznie,
-w kolejności pojawiania się w danych.
+Opcje dropdowna są BUDOWANE DYNAMICZNIE z kolumny TYPE (POINTS).
+
+🔧 FIX (NAPRAWA WIELOKROTNEGO FILTROWANIA):
+Filtry liczą ZAWSZE od pełnej listy allCitiesData,
+a NIE od citiesCache (które renderAddressesList nadpisuje
+przefiltrowaną listą). Dzięki temu można zmieniać typ
+dowolną liczbę razy bez odświeżania strony.
 ============================================================ */
 
 let typeFilterBound = false;
+
+/* 🔧 FIX: PEŁNA lista z POINTS — nigdy nenadpisywana przez filtry */
+let allCitiesData = [];
 
 /* 🔧 NOWE: dynamiczna lista typów z kolumny TYPE */
 function buildTypeDropdownOptions(typeDropdown, cities) {
@@ -433,12 +447,14 @@ function initTypeFilter(cities) {
         typeDropdown.classList.remove("visible");
         if (searchInput) searchInput.value = "";
 
+        /* 🔧 FIX: TYPE: ALL wraca do PEŁNEJ listy */
         if (!val) {
-            renderAddressesList(citiesCache);
+            renderAddressesList(allCitiesData);
             return;
         }
 
-        const filtered = citiesCache.filter(c => {
+        /* 🔧 FIX: filtr liczymy ZAWSZE od PEŁNEJ listy allCitiesData */
+        const filtered = allCitiesData.filter(c => {
             const type = safeGet(c, "TYPE", "");
             return String(type).trim() === val;
         });
@@ -451,7 +467,8 @@ function initTypeFilter(cities) {
         typeDropdown.classList.remove("visible");
         typeButton.textContent = "TYPE: ALL";
         if (searchInput) searchInput.value = "";
-        renderAddressesList(citiesCache);
+        /* 🔧 FIX: reset wraca do PEŁNEJ listy */
+        renderAddressesList(allCitiesData);
     });
 }
 
