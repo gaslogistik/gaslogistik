@@ -1,16 +1,21 @@
 /* ============================================================
-   ADDRESSES MODULE — PREMIUM, STABLE, WYŁĄCZNIE Z ARKUSZA CITIES
-   ============================================================ */
+ADDRESSES MODULE — PREMIUM, STABLE, WYŁĄCZNIE Z ARKUSZA POINTS
+============================================================ */
 
-/* ⭐ PRAWIDŁOWY ENDPOINT Z TWOJEGO KODU.GS ⭐
-   getMapData() → { cities: [...] }
+/*
+  ⭐ PRAWIDŁOWY ENDPOINT Z KOD.GS ⭐
+  getAddressesData() → { points: [...] }
+
+  🔧 AKTUALIZACJA:
+  Strona Addresses pobiera teraz dane tylko z arkusza POINTS.
+  Matrix pozostaje na CITIES + RELATIONS.
 */
 const ADDRESSES_API_URL =
-    "https://script.google.com/macros/s/AKfycbwbZ_KSjyTTDM2iONJC87-jgVZysubMfKChDxDs8l1RKJgjUJ6Q2_7oA_RhuDna39Ra/exec?action=getmapdata";
+    "https://script.google.com/macros/s/AKfycbwbZ_KSjyTTDM2iONJC87-jgVZysubMfKChDxDs8l1RKJgjUJ6Q2_7oA_RhuDna39Ra/exec?action=getaddressesdata";
 
 /* ============================================================
-   MAIN LOADER
-   ============================================================ */
+MAIN LOADER
+============================================================ */
 
 document.addEventListener("DOMContentLoaded", () => {
     initAddressLoader();
@@ -18,8 +23,8 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 /* ============================================================
-   FETCH + ROUTING
-   ============================================================ */
+FETCH + ROUTING
+============================================================ */
 
 async function loadCitiesData() {
     showAddressesSpinner("Gaslogistik DATA Synchronization - Wait a moment please...");
@@ -33,7 +38,15 @@ async function loadCitiesData() {
         const response = await fetch(ADDRESSES_API_URL);
         const data = await response.json();
 
-        const cities = Array.isArray(data.cities) ? data.cities : [];
+        /*
+          🔧 AKTUALIZACJA:
+          Pobieramy dane z POINTS.
+          Backend zwraca points, ale zostawiamy fallback na cities,
+          bo cities w tym endpoincie również pochodzi z POINTS.
+        */
+        const cities = Array.isArray(data.points)
+            ? data.points
+            : (Array.isArray(data.cities) ? data.cities : []);
 
         updateAddressCounters(cities);
         renderAddressesList(cities);
@@ -49,7 +62,7 @@ async function loadCitiesData() {
         }, 400);
 
     } catch (err) {
-        console.error("CITIES API ERROR:", err);
+        console.error("POINTS API ERROR:", err);
         showAddressesErrorState();
     } finally {
         hideAddressesSpinner();
@@ -57,22 +70,23 @@ async function loadCitiesData() {
 }
 
 /* ============================================================
-   SPINNER LOADER LOGIC
-   ============================================================ */
+SPINNER LOADER LOGIC
+============================================================ */
 
 function initAddressLoader() {
     window.showAddressesSpinner = function (message = "Gaslogistik DATA Synchronization - Wait a moment please...") {
         let spinner = document.getElementById("addresses-loading-spinner");
+
         if (!spinner) {
             spinner = document.createElement("div");
             spinner.id = "addresses-loading-spinner";
             spinner.className = "addresses-spinner-wrapper";
             spinner.innerHTML = `
-                <div class="addresses-spinner-card">
-                    <div class="addresses-spinner-circle"></div>
-                    <p class="addresses-spinner-text" id="addresses-spinner-msg">${escapeHtml(message)}</p>
-                </div>
-            `;
+        <div class="addresses-spinner-card">
+          <div class="addresses-spinner-circle"></div>
+          <p class="addresses-spinner-text" id="addresses-spinner-msg">${escapeHtml(message)}</p>
+        </div>
+      `;
             document.body.appendChild(spinner);
         } else {
             const msgEl = document.getElementById("addresses-spinner-msg");
@@ -90,8 +104,8 @@ function initAddressLoader() {
 }
 
 /* ============================================================
-   SAFE GET
-   ============================================================ */
+SAFE GET
+============================================================ */
 
 function safeGet(obj, key, fallback = "—") {
     if (!obj || typeof obj !== "object") return fallback;
@@ -100,8 +114,8 @@ function safeGet(obj, key, fallback = "—") {
 }
 
 /* ============================================================
-   SEKCJA 1 — GASLOGISTIK DELIVERY LOCATIONS (CITIES)
-   ============================================================ */
+SEKCJA 1 — GASLOGISTIK DELIVERY LOCATIONS (POINTS)
+============================================================ */
 
 function updateAddressCounters(cities) {
     const allowedCountries = ["BE", "NL", "DE", "UA", "PL"];
@@ -142,8 +156,8 @@ function setCounter(id, value) {
 }
 
 /* ============================================================
-   SEKCJA 3 — ALL ADDRESSES (CITIES)
-   ============================================================ */
+SEKCJA 3 — ALL ADDRESSES (POINTS)
+============================================================ */
 
 let citiesCache = [];
 
@@ -162,10 +176,14 @@ function renderAddressesList(cities) {
         const address = safeGet(c, "ADDRESS");
         const lat = safeGet(c, "LATITUDE");
         const lng = safeGet(c, "LONGITUDE");
-        const coords = lat && lng ? `${lat},${lng}` : "—";
+
+        const coords = (lat !== "—" && lng !== "—")
+            ? `${lat},${lng}`
+            : "—";
 
         const row = document.createElement("div");
         row.className = "address-row";
+
         row.setAttribute("data-location", location);
         row.setAttribute("data-type", type);
         row.setAttribute("data-country", country);
@@ -174,27 +192,30 @@ function renderAddressesList(cities) {
 
         const coordsHtml = coords !== "—"
             ? `
-            <div class="address-coords-cell">
-                <button class="addr-coord-btn" data-coords="${coords}" data-action="maps">Google Maps</button>
-                <button class="addr-coord-btn" data-coords="${coords}" data-action="copy">Copy</button>
-            </div>
-        `
+        <div class="address-coords-cell">
+          <button class="addr-coord-btn" data-coords="${coords}" data-action="maps">Google Maps</button>
+          <button class="addr-coord-btn" data-coords="${coords}" data-action="copy">Copy</button>
+        </div>
+      `
             : `<span>—</span>`;
 
         row.innerHTML = `
-            <span>${location}</span>
-            <span>${type}</span>
-            <span>${country}</span>
-            <span>${address}</span>
-            ${coordsHtml}
-        `;
+      <span>${location}</span>
+      <span>${type}</span>
+      <span>${country}</span>
+      <span>${address}</span>
+      ${coordsHtml}
+    `;
 
         row.addEventListener("click", e => {
             const target = e.target;
+
             if (target.classList.contains("addr-coord-btn")) {
                 e.stopPropagation();
+
                 const c = target.getAttribute("data-coords") || "";
                 const action = target.getAttribute("data-action");
+
                 handleCoordsAction(c, action);
             }
         });
@@ -205,6 +226,7 @@ function renderAddressesList(cities) {
 
 function handleCoordsAction(coords, action) {
     if (!coords || coords === "—") return;
+
     if (action === "maps") {
         const url = `https://www.google.com/maps?q=${encodeURIComponent(coords)}`;
         window.open(url, "_blank");
@@ -216,8 +238,8 @@ function handleCoordsAction(coords, action) {
 }
 
 /* ============================================================
-   SEKCJA 2 — SEARCH + TYPE FILTER (CITIES)
-   ============================================================ */
+SEKCJA 2 — SEARCH + TYPE FILTER (POINTS)
+============================================================ */
 
 let citiesSearchIndex = [];
 
@@ -267,6 +289,7 @@ function initAddressesSearch(cities) {
 
     input.addEventListener("input", () => {
         const q = input.value.trim().toLowerCase();
+
         clearSuggestions();
         clearHighlight();
 
@@ -283,6 +306,7 @@ function initAddressesSearch(cities) {
                     " " +
                     item.address
                 ).toLowerCase();
+
                 return haystack.includes(q);
             })
             .slice(0, 8);
@@ -294,10 +318,10 @@ function initAddressesSearch(cities) {
             row.className = "adr-search-suggestion-item";
 
             row.innerHTML = `
-                <span class="adr-search-suggestion-type">${m.type || "ADDR"}</span>
-                <span class="adr-search-suggestion-main">${m.location || "—"}</span>
-                <span class="adr-search-suggestion-sub">${m.country || "—"} · ${m.address || "—"}</span>
-            `;
+        <span class="adr-search-suggestion-type">${m.type || "ADDR"}</span>
+        <span class="adr-search-suggestion-main">${m.location || "—"}</span>
+        <span class="adr-search-suggestion-sub">${m.country || "—"} · ${m.address || "—"}</span>
+      `;
 
             row.addEventListener("click", e => {
                 e.stopPropagation();
@@ -327,8 +351,9 @@ function initAddressesSearch(cities) {
 }
 
 /* ============================================================
-   PREMIUM TYPE FILTER — CUSTOM DROPDOWN
-   ============================================================ */
+PREMIUM TYPE FILTER — CUSTOM DROPDOWN
+============================================================ */
+
 function initTypeFilter(cities) {
     const typeButton = document.getElementById("adr-type-button");
     const typeDropdown = document.getElementById("adr-type-dropdown");
@@ -365,7 +390,6 @@ function initTypeFilter(cities) {
 
             typeButton.textContent = label;
             typeDropdown.classList.remove("visible");
-
             searchInput.value = "";
 
             if (!val) {
@@ -392,8 +416,8 @@ function initTypeFilter(cities) {
 }
 
 /* ============================================================
-   ERROR STATE
-   ============================================================ */
+ERROR STATE
+============================================================ */
 
 function showAddressesErrorState() {
     setCounter("addr-total-locations", "ERR");
@@ -404,16 +428,22 @@ function showAddressesErrorState() {
     const listEl = document.getElementById("addresses-list");
     if (listEl) {
         listEl.innerHTML = "";
+
         const row = document.createElement("div");
         row.className = "address-row";
         row.innerHTML = `<span>API ERROR</span><span>—</span><span>—</span><span>—</span><span>—</span>`;
+
         listEl.appendChild(row);
     }
 }
 
-/* POMOCNICZE FUNKCJE UTILS */
+/* ============================================================
+POMOCNICZE FUNKCJE UTILS
+============================================================ */
+
 function escapeHtml(str) {
     if (!str) return "";
+
     return String(str)
         .replace(/&/g, "&amp;")
         .replace(/</g, "&lt;")
@@ -423,8 +453,8 @@ function escapeHtml(str) {
 }
 
 /* ============================================================
-   EXPORT
-   ============================================================ */
+EXPORT
+============================================================ */
 
 const AddressesModule = {
     loadCitiesData,
