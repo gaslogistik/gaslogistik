@@ -288,7 +288,34 @@ function animatedHighlight(loc) {
 }
 
 /* =========================
+SEARCH NORMALIZATION (PL / DE)
+🔧 NOWE:
+Wyszukiwanie "bez ogonków" — polskie znaki diakrytyczne
+i niemieckie litery są normalizowane po obu stronach
+(zapytanie AND dane), więc:
+  Kłobuczyn  -> klobuczyn
+  kąty       -> katy
+  Straße     -> strasse
+  Fürstenwalde -> furstenwalde
+========================= */
+
+function normalizeSearchText(value) {
+    return String(value || "")
+        .toLowerCase()
+        .replace(/ß/g, "ss")   // niemieckie ß -> ss
+        .replace(/ł/g, "l")    // polskie ł (NFD go nie rozbija)
+        .normalize("NFD")      // rozkład znaków (ą -> a + ogonek, ä -> a + kropki itd.)
+        .replace(/[\u0300-\u036f]/g, "") // usuwamy znaki diakrytyczne
+        .replace(/[^a-z0-9]+/g, " ")     // tylko litery i cyfry
+        .replace(/\s+/g, " ")
+        .trim();
+}
+
+/* =========================
 SEARCH + GO TO LOCATION
+🔧 AKTUALIZACJA:
+Wyszukiwarka sprawdza teraz LOCATION **oraz** ADDRESS,
+z normalizacją PL/DE (można pisać bez ogonków).
 ========================= */
 
 function setupSearch() {
@@ -296,11 +323,12 @@ function setupSearch() {
     const btn = document.getElementById("go-to-location");
 
     btn.addEventListener("click", () => {
-        const query = input.value.trim().toLowerCase();
+        const query = normalizeSearchText(input.value);
         if (!query) return;
 
         const match = locationsData.find(loc =>
-            loc.name.toLowerCase().includes(query)
+            normalizeSearchText(loc.name).includes(query) ||
+            normalizeSearchText(loc.address).includes(query)
         );
 
         if (match) {
@@ -325,6 +353,9 @@ function goToLocation(loc) {
 
 /* =========================
 AUTOCOMPLETE DROPDOWN
+🔧 AKTUALIZACJA:
+Autocomplete również szuka po LOCATION **oraz** ADDRESS,
+z normalizacją PL/DE (bez polskich i niemieckich znaków).
 ========================= */
 
 function setupAutocompleteDropdown() {
@@ -337,7 +368,7 @@ function setupAutocompleteDropdown() {
     parent.appendChild(autocompleteDropdown);
 
     input.addEventListener("input", () => {
-        const query = input.value.trim().toLowerCase();
+        const query = normalizeSearchText(input.value);
 
         if (!query) {
             autocompleteDropdown.style.display = "none";
@@ -346,11 +377,13 @@ function setupAutocompleteDropdown() {
 
         /*
           🔧 AKTUALIZACJA:
-          Autocomplete używa teraz danych z POINTS, source = "point".
+          Autocomplete używa danych z POINTS (source = "point"),
+          dopasowanie po nazwie LUB adresie, z normalizacją PL/DE.
         */
         const matches = locationsData.filter(loc =>
             loc.source === "point" &&
-            loc.name.toLowerCase().includes(query)
+            (normalizeSearchText(loc.name).includes(query) ||
+                normalizeSearchText(loc.address).includes(query))
         );
 
         renderAutocomplete(matches);
