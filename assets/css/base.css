@@ -1,0 +1,376 @@
+/* ==========================================================================
+   BASE.CSS — FUNDAMENT SYSTEMU, CZYSTA I ZOPTYMALIZOWANA WERSJA
+   ========================================================================== */
+
+:root {
+    /* Kolory bazowe */
+    --steel-bg: #f4f7fa;
+    --text-main: #333;
+    --text-sub: #666;
+
+    /* Akcenty */
+    --accent-red-adr: #ff2a6d;
+    --titanium-dark: #2c3540;
+
+    /* Pogoda */
+    --weather-tile-bg: linear-gradient(145deg, #ffffff, #f0f2f5);
+    --weather-font-main: 'Plus Jakarta Sans', sans-serif;
+    --weather-station-size: 16px;
+    --weather-row-size: 15px;
+    --weather-padding: 15px;
+}
+
+/* Reset i fundament */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background-color: var(--steel-bg);
+    color: var(--text-main);
+    min-height: 100vh;
+
+    display: block;
+    padding: 12px;
+}
+
+/* ==========================================================================
+   GLOBAL MOBILE FIX — TELEFONY
+   ========================================================================== */
+
+@media (max-width: 768px) {
+
+    .content-wrapper {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        padding: 0;
+        margin: 0;
+    }
+
+    .header-container {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 10px 0;
+        gap: 10px;
+    }
+
+    .operator-tile {
+        margin-top: 10px;
+    }
+
+    .sidebar-container {
+        width: 100%;
+        max-width: 100%;
+        margin: 0;
+        padding: 0;
+        position: relative;
+        left: 0;
+        top: 0;
+    }
+
+    .menu-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        width: 100%;
+    }
+
+    .sidebar-tile {
+        width: 100%;
+        margin: 0;
+    }
+
+    .main-window-area {
+        width: 100%;
+        margin: 0;
+        padding: 0 8px;
+    }
+}
+
+/* ==========================================================================
+   GLOBAL IPAD FIX — WSZYSTKIE PODSTRONY
+   ========================================================================== */
+
+@media only screen and (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) {
+
+    /* HEADER — ENTERPRISE + OPERATOR */
+    .header-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        width: 100%;
+        padding: 0 20px;
+        box-sizing: border-box;
+    }
+
+    .header-title {
+        flex: 1 1 60%;
+        text-align: left;
+        font-size: 16px;
+        line-height: 1.3;
+    }
+
+    .header-operator {
+        flex: 1 1 35%;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 12px;
+    }
+
+    /* Mniejsze iPady — header w dwóch rzędach */
+    @media (max-width: 900px) {
+        .header-container {
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .header-title,
+        .header-operator {
+            flex: 1 1 100%;
+            justify-content: center;
+        }
+    }
+
+    /* TOPBAR — filtry, statusy, wyszukiwarka */
+    .live-map-topbar,
+    .topbar-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        gap: 12px;
+        width: 100%;
+        padding: 0 10px;
+        box-sizing: border-box;
+    }
+
+    .live-map-filters,
+    .live-map-status,
+    .live-map-search {
+        flex: 1 1 100%;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 12px;
+    }
+
+    .live-map-filter-dropdown,
+    .status-pill,
+    .live-map-input {
+        flex: 1 1 calc(50% - 12px);
+        max-width: calc(50% - 12px);
+        text-align: center;
+    }
+
+    /* GO TO LOCATION — pełna szerokość */
+    .live-map-btn {
+        flex: 1 1 100%;
+        max-width: 100%;
+    }
+}
+
+/* ==========================================================================
+   GLOBAL IPAD PORTRAIT REFINEMENT — HEADER + TOPBAR ALIGNMENT
+   ========================================================================== */
+
+@media only screen and (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) {
+
+    /* HEADER — równomierne rozmieszczenie */
+    .header-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-evenly; /* równy rozkład */
+        align-items: center;
+        gap: 16px;
+        width: 100%;
+        padding: 10px 24px;
+        box-sizing: border-box;
+    }
+
+    .header-title {
+        flex: 1 1 48%;
+        text-align: left;
+        font-size: 15px;
+        line-height: 1.3;
+    }
+
+    .header-operator {
+        flex: 1 1 48%;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 12px;
+    }
+
+    /* TOPBAR — filtry, statusy, wyszukiwarka */
+    .live-map-topbar {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-evenly; /* równy rozkład */
+        align-items: center;
+        gap: 12px;
+        width: 100%;
+        padding: 0 12px;
+        box-sizing: border-box;
+    }
+
+    .live-map-filters,
+    .live-map-status,
+    .live-map-search {
+        flex: 1 1 100%;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-evenly;
+        gap: 12px;
+        max-width: 100%;
+    }
+
+    .live-map-filter-dropdown,
+    .status-pill,
+    .live-map-input {
+        flex: 1 1 calc(45% - 12px);
+        max-width: calc(45% - 12px);
+        text-align: center;
+    }
+
+    /* GO TO LOCATION — pełna szerokość */
+    .live-map-btn {
+        flex: 1 1 100%;
+        max-width: 100%;
+    }
+}
+
+/* ==========================================================================
+   GLOBAL IPAD PORTRAIT FINAL FIX — HEADER + TOPBAR SYMMETRY
+   ========================================================================== */
+
+@media only screen and (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) {
+
+    /* HEADER — ENTERPRISE + OPERATOR */
+    .header-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        /* dwa równe kafelki */
+        align-items: center;
+        justify-items: center;
+        gap: 16px;
+        width: 100%;
+        padding: 12px 24px;
+        box-sizing: border-box;
+    }
+
+    .header-title {
+        justify-self: start;
+        text-align: left;
+        font-size: 15px;
+        line-height: 1.3;
+    }
+
+    .header-operator {
+        justify-self: end;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 12px;
+        flex-wrap: wrap;
+        /* zapobiega uciekaniu ikonek */
+    }
+
+    /* TOPBAR — filtry, statusy, wyszukiwarka */
+    .live-map-topbar {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-auto-rows: minmax(40px, auto);
+        gap: 12px;
+        width: 100%;
+        padding: 0 12px;
+        box-sizing: border-box;
+        align-items: center;
+        justify-items: center;
+    }
+
+    .live-map-filters,
+    .live-map-status,
+    .live-map-search {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+        width: 100%;
+        justify-items: center;
+    }
+
+    .live-map-filter-dropdown,
+    .status-pill,
+    .live-map-input {
+        width: 100%;
+        text-align: center;
+    }
+
+    /* GO TO LOCATION — pełna szerokość */
+    .live-map-btn {
+        grid-column: span 2;
+        width: 100%;
+        text-align: center;
+    }
+}
+
+/* ==========================================================================
+   GLOBAL HEADER OPERATOR FIX — IPAD + MOBILE
+   ========================================================================== */
+
+@media only screen and (min-width: 768px) and (max-width: 1024px) {
+
+    .header-operator {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 14px;
+        padding: 12px 20px;
+        /* więcej przestrzeni wewnątrz */
+        min-width: 220px;
+        /* minimalna szerokość kafelka */
+        max-width: 280px;
+        /* zapobiega rozciąganiu na całą szerokość */
+        border-radius: 16px;
+        background: linear-gradient(145deg, #f9f9f9, #eaeaea);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25),
+            inset 0 1px 2px rgba(255, 255, 255, 0.4);
+    }
+
+    .header-operator svg {
+        flex-shrink: 0;
+        /* zapobiega ściskaniu ikon */
+        width: 22px;
+        height: 22px;
+    }
+
+    .header-operator span {
+        font-size: 13px;
+        font-weight: 600;
+        color: #333;
+        white-space: nowrap;
+        /* nie łamie tekstu OPERATOR */
+    }
+}
+
+/* Dodatkowo dla mniejszych ekranów */
+@media (max-width: 767px) {
+    .header-operator {
+        flex-wrap: wrap;
+        /* pozwala ikonom przejść w drugi rząd */
+        justify-content: center;
+        min-width: 200px;
+        padding: 10px 16px;
+    }
+}
+

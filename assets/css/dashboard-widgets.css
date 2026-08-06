@@ -1,0 +1,159 @@
+/* ==========================================================================
+   DASHBOARD-WIDGETS.CSS - OCZYSZCZONA I ZOPTYMALIZOWANA WERSJA
+   ========================================================================== */
+
+/* --- KONFIGURACJA POGODY --- */
+#weather-grid {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    /* Mobile: 1 kolumna */
+    gap: 10px !important;
+    padding: 10px !important;
+}
+
+/* Tablet i mniejsze laptopy */
+@media (min-width: 768px) {
+    #weather-grid {
+        grid-template-columns: repeat(3, 1fr) !important;
+    }
+}
+
+/* Desktop: 5 kolumn */
+@media (min-width: 992px) {
+    #weather-grid {
+        grid-template-columns: repeat(5, 1fr) !important;
+        gap: 10px !important;
+    }
+}
+
+/* --- KAFELKI POGODY - STYL 3D --- */
+.weather-tile {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    padding: 15px 8px !important;
+    border: 1.5px solid #ff2a6d !important;
+    border-radius: 20px !important;
+    box-shadow: 8px 8px 16px #b8b9be, -8px -8px 16px #ffffff !important;
+    min-width: 0 !important;
+    width: 100% !important;
+    overflow: hidden !important;
+}
+
+.weather-tile:hover {
+    transform: translateY(-5px);
+}
+
+/* Motywy pogodowe */
+.weather-sunny {
+    background: linear-gradient(135deg, #fffde7 0%, #fff9c4 100%);
+}
+
+.weather-cloudy {
+    background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
+}
+
+.weather-rainy {
+    background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+}
+
+.weather-day {
+    background: #ffffff;
+}
+
+.weather-night {
+    background: linear-gradient(275deg, #dedddd 0%, #f4ebf1 100%) !important;
+    color: #000 !important;
+}
+
+.weather-night .weather-station,
+.weather-night .weather-temp,
+.weather-night .row-label,
+.weather-night .row-value {
+    color: #000 !important;
+}
+
+/* --- IKONY I TYPOGRAFIA POGODOWA --- */
+.weather-station {
+    font-size: clamp(10px, 1.2vw, 16px) !important;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    text-align: center !important;
+    width: 100% !important;
+    white-space: normal !important;
+    word-wrap: break-word !important;
+    hyphens: auto !important;
+    line-height: 1.1 !important;
+    min-height: 2.2em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.weather-icon-centered {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    font-size: 34px;
+    margin: 15px 0;
+    animation: combinedFloat 4s ease-in-out infinite;
+    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.5));
+}
+
+@keyframes combinedFloat {
+
+    0%,
+    100% {
+        transform: translateY(0) scale(1);
+    }
+
+    50% {
+        transform: translateY(-11px) scale(1.2);
+    }
+}
+
+.weather-temp {
+    font-size: 24px;
+    margin: 5px 0;
+    font-weight: 700;
+}
+
+/* --- WIERSZE DANYCH --- */
+.weather-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 4px 0;
+}
+
+.row-icon {
+    width: 25px;
+    flex-shrink: 0;
+}
+
+.row-label {
+    flex: 1;
+    text-align: left;
+    padding: 0 12px;
+    font-size: 14px;
+}
+
+.row-value {
+    flex-shrink: 0;
+    text-align: right;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.sun-times {
+    margin-top: 5px;
+    padding-top: 8px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    font-size: 10px;
+    text-align: center;
+    width: 100%;
+    opacity: 0.8;
+}
