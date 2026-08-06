@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://gaslogistik.github.io/sitemap.xml
