@@ -1,0 +1,406 @@
+/* ==========================================================================
+   KP GASLOGISTIK - MOBILE-FIRST NEUMORPHIC DESIGN SYSTEM
+   Priorytet Nr 1: Pełna responsywność smartfonowa, brak przewijania w poziomie.
+   ========================================================================== */
+
+:root {
+    /* Paleta kolorów - Surowy, industrialny tytan i stal */
+    --steel-bg: #eef1f6;
+    --titanium-dark: #2c3540;
+    --text-main: #1e252b;
+    --text-sub: #68768a;
+    --accent-red-adr: #d93838;
+
+    /* Pancerne cienie głębokiego neumorfizmu (3D) */
+    --neo-shadow-out: 6px 6px 14px #ccdaf0, -6px -6px 14px #ffffff;
+    --neo-shadow-in: inset 4px 4px 10px #ccdaf0, inset -4px -4px 10px #ffffff;
+    --neo-shadow-header: inset 2px 2px 5px #ffffff, 4px 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Reset i blokada rozjeżdżania się pudełek */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+    /* Usunięcie domyślnego podświetlenia na telefonach */
+}
+
+body {
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    background-color: var(--steel-bg);
+    color: var(--text-main);
+    line-height: 1.4;
+    padding: 8px;
+    /* Mały margines na ekranie telefonu */
+    overflow-x: hidden;
+    /* Bezwzględny zakaz przewijania w bok */
+}
+
+/* GŁÓWNY KONTENER SYSTEMU (Na telefonie układa się pionowo) */
+.base-root-tile {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 100%;
+    gap: 12px;
+}
+
+/* ==========================================================================
+   NAGŁÓWEK (Zoptymalizowany pod wąskie ekrany)
+   ========================================================================== */
+.header-container {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    background: var(--steel-bg);
+    border-radius: 16px;
+    box-shadow: var(--neo-shadow-header);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+}
+
+.logo-tile svg {
+    width: 28px;
+    height: 28px;
+    color: var(--titanium-dark);
+}
+
+.title-tile h1 {
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    color: var(--titanium-dark);
+}
+
+.system-badge {
+    display: inline-block;
+    font-size: 9px;
+    font-weight: 700;
+    background: var(--titanium-dark);
+    color: #fff;
+    padding: 2px 6px;
+    border-radius: 6px;
+    margin-top: 2px;
+}
+
+.operator-tile {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.operator-avatar {
+    width: 28px;
+    height: 28px;
+    background: var(--steel-bg);
+    box-shadow: var(--neo-shadow-out);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--titanium-dark);
+}
+
+.operator-info {
+    display: none;
+    /* Ukrywamy zbędny tekst na małych telefonach, zostaje sam awatar */
+}
+
+/* ==========================================================================
+   MENU NAWIGACYJNE (Mobilny Grid Dotykowy - Duże kafelki pod kciuk)
+   ========================================================================== */
+.sidebar-container {
+    width: 100%;
+    max-width: 100%;
+}
+
+.menu-grid {
+    display: grid;
+    /* Dwa duże, stabilne kafelki obok siebie na ekranie telefonu */
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    width: 100%;
+}
+
+.menu-tile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 16px 10px;
+    background: var(--steel-bg);
+    border-radius: 14px;
+    box-shadow: var(--neo-shadow-out);
+    color: var(--titanium-dark);
+    text-decoration: none;
+    font-size: 11px;
+    font-weight: 700;
+    text-align: center;
+    transition: all 0.15s ease;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+/* Aktywna zakładka ma głęboki wklęsły wcisk, dając sygnał dotykowy */
+.menu-tile.active {
+    box-shadow: var(--neo-shadow-in);
+    color: var(--text-main);
+    background: #e6eaf0;
+}
+
+/* ==========================================================================
+   GŁÓWNY OBSZAR ROBOCZY / OKNA DATA
+   ========================================================================== */
+.main-window-area {
+    width: 100%;
+    max-width: 100%;
+}
+
+.command-center {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+}
+
+/* Kafelki parametrów dynamicznych (KPI / Liczniki) */
+.nav-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    /* Na telefonie maksymalnie 2 obok siebie */
+    gap: 10px;
+    width: 100%;
+}
+
+/* Jeśli w kodzie HTML wymusimy style inline, to te reguły ich pilnują */
+@media (max-width: 768px) {
+    .nav-container[style*="grid-template-columns: repeat(8, 1fr)"] {
+        grid-template-columns: repeat(2, 1fr) !important;
+        /* Spłaszczenie 8 kafli z plików do 2 kolumn na telefonie */
+    }
+}
+
+.nav-tile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px;
+    background: var(--steel-bg);
+    border-radius: 14px;
+    box-shadow: var(--neo-shadow-out);
+    max-width: 100%;
+}
+
+.tile-icon {
+    font-size: 20px;
+}
+
+.tile-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.tile-content .val {
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--titanium-dark);
+}
+
+.tile-content .lbl {
+    font-size: 9px;
+    font-weight: 700;
+    color: var(--text-sub);
+    text-transform: uppercase;
+}
+
+/* Główny kontener widoku danych */
+.global-overview-container {
+    background: var(--steel-bg);
+    border-radius: 16px;
+    box-shadow: var(--neo-shadow-out);
+    padding: 12px;
+    width: 100%;
+    max-width: 100%;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.overview-header h3 {
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--titanium-dark);
+    margin-bottom: 10px;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+}
+
+/* Wewnętrzna rzeźba pod mapę, tabele lub moduły silnika */
+.interactive-radar-view {
+    position: relative;
+    width: 100%;
+    min-height: 260px;
+    background: var(--steel-bg);
+    border-radius: 14px;
+    box-shadow: var(--neo-shadow-in);
+    overflow: hidden;
+    /* Blokada wychodzenia danych na zewnątrz kontenera */
+}
+
+/* ==========================================================================
+   MEDIA QUERIES (Automatyczne rozwijanie interfejsu na komputery/tablety)
+   ========================================================================== */
+@media (min-width: 768px) {
+    body {
+        padding: 20px;
+    }
+
+    .base-root-tile {
+        display: grid;
+        grid-template-columns: 240px 1fr;
+        grid-template-rows: auto 1fr;
+        gap: 20px;
+        height: calc(100vh - 40px);
+    }
+
+    .header-container {
+        grid-column: 1 / 3;
+        grid-template-columns: auto 1fr auto;
+    }
+
+    .operator-info {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .op-name {
+        font-size: 12px;
+        font-weight: 800;
+        color: var(--titanium-dark);
+    }
+
+    .op-status {
+        font-size: 10px;
+        font-weight: 600;
+        color: var(--text-sub);
+    }
+
+    .sidebar-container {
+        grid-column: 1 / 2;
+    }
+
+    .menu-grid {
+        grid-template-columns: 1fr;
+        /* Na komputerze menu pionowe, jedno pod drugim */
+        gap: 12px;
+    }
+
+    .menu-tile {
+        flex-direction: row;
+        justify-content: flex-start;
+        gap: 12px;
+        padding: 14px 20px;
+        font-size: 13px;
+    }
+
+    .main-window-area {
+        grid-column: 2 / 3;
+    }
+
+    .nav-container {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    /* Przywrócenie 8 kafli w rzędzie wyłącznie na dużych ekranach */
+    @media (min-width: 1200px) {
+        .nav-container[style*="grid-template-columns: repeat(8, 1fr)"] {
+            grid-template-columns: repeat(8, 1fr) !important;
+        }
+    }
+
+    .interactive-radar-view {
+        min-height: 450px;
+    }
+}
+
+/* ==========================================================================
+   WZMOCNIONE TŁO: SZCZOTKOWANE CIEMNE ALUMINIUM & AKTUALIZACJA MENU
+   ========================================================================== */
+
+/* 2) TŁO BAZOWE - Głębokie, ciemniejsze szczotkowane aluminium */
+.base-root-tile {
+    background: linear-gradient(145deg, #bdc5d1 0%, #aab3c2 50%, #9ba5b5 100%) !important;
+    background-image: repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.03) 0px, rgba(255, 255, 255, 0.03) 2px, transparent 2px, transparent 4px),
+        linear-gradient(145deg, #c4cbd7 0%, #a2abbb 100%) !important;
+    /* Efekt mikro-szczotkowania metalu */
+    padding: 14px;
+    border-radius: 24px;
+    box-shadow: inset 3px 3px 10px rgba(255, 255, 255, 0.5), 0px 15px 35px rgba(0, 0, 0, 0.15) !important;
+    border: 1px solid #949fae !important;
+}
+
+/* KAFELKI - Kontrastowe prostokąty na ciemniejszym tle */
+.menu-tile {
+    display: grid !important;
+    grid-template-columns: 32px 1fr !important;
+    align-items: center;
+    gap: 16px;
+    padding: 18px 20px !important;
+    min-height: 58px !important;
+    background: #eef1f6;
+    border-radius: 16px !important;
+    box-shadow: 4px 4px 10px #8893a4, -4px -4px 10px #f5f8fc !important;
+    /* Dostosowane cienie do ciemniejszego tła */
+    border: 1.5px solid #bdc6db !important;
+    text-decoration: none;
+    transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* AKTYWNY KAFELEK - Maksymalnie czytelne wgniecenie w ciemne aluminium */
+.menu-tile.active {
+    box-shadow: inset 6px 6px 14px #7a8698, inset -6px -6px 14px #ffffff !important;
+    background: #d5dde9 !important;
+    border: 1.5px solid #8ba0c0 !important;
+}
+
+/* ==========================================================================
+   UNIFIKACJA KOLORYSTYKI IKON WG WZORCA 1_2.jpg (NEONOWY AMARANT / MAGENTA)
+   ========================================================================== */
+
+.menu-tile-icon-svg {
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    /* Zmiana koloru na precyzyjny amarant/magenta z kafelka wzorcowego */
+    color: #ff2a6d !important;
+
+    /* Subtelny, nowoczesny efekt poświaty pod ikoną liniową */
+    filter: drop-shadow(0px 2px 4px rgba(255, 42, 109, 0.25)) !important;
+    opacity: 0.95;
+    transition: all 0.15s ease;
+}
+
+/* Zachowanie koloru i poświaty również w stanie wciśniętym (aktywnym) */
+.menu-tile.active .menu-tile-icon-svg {
+    opacity: 1;
+    color: #ff2a6d !important;
+    filter: drop-shadow(0px 2px 6px rgba(255, 42, 109, 0.4)) !important;
+    transform: scale(0.95);
+}
+
+.menu-tile-main {
+    font-size: 13px !important;
+    font-weight: 800 !important;
+    color: var(--titanium-dark) !important;
+    letter-spacing: 0.8px;
+    text-align: left;
+    text-transform: uppercase;
+}
+
+.menu-tile.active .menu-tile-main {
+    color: #1a2332 !important;
+}
